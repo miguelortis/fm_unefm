@@ -71,7 +71,7 @@ export default function ModalEditBeneficiary({ setVisibleModalEdit, visibleModal
           type: 'SET_BENEFICIARY',
           payload: data,
         })
-        console.log(data)
+        //console.log(data)
         setVisibleModalEdit(false)
       } catch (error) {
         if (error) {
