@@ -27,7 +27,6 @@ import {
   CNavItem,
   CRow,
   CSmartTable,
-  CTooltip,
 } from '@coreui/react-pro'
 import axios from 'axios'
 
@@ -46,7 +45,7 @@ export default function TableBeneficiaries() {
     const handleReport = async () => {
       try {
         setLoading(false)
-        const { data } = await axios.get('http://localhost:5000/report')
+        const { data } = await axios.get('https://backend-fmunefm.herokuapp.com/report')
         console.log('data', data)
         setReport(data)
         if (data) {
@@ -133,7 +132,7 @@ export default function TableBeneficiaries() {
                     <ExcelColumn label="Cedula" value="cedula" />
                     <ExcelColumn label="Nombre" value="name" />
                     <ExcelColumn label="Apellido" value="lastName" />
-                    <ExcelColumn label="Apellido" value="afiliados/0/cedula" />
+                    <ExcelColumn label="Apellido" value="afiliados, cedula" />
                   </ExcelSheet>
                   {/* <ExcelSheet data={report?.afiliados} name="Beneficiarios">
                     <ExcelColumn label="Cedula Titular" value="idCard" />

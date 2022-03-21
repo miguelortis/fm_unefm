@@ -10,7 +10,6 @@ import {
   CCardBody,
   CCardImage,
   CCardImageOverlay,
-  CCardLink,
   CCardText,
   CCardTitle,
   CCol,

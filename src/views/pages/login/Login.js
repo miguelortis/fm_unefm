@@ -29,7 +29,7 @@ const Login = () => {
     const idCard = document.getElementById('idCard').value
     const password = document.getElementById('password').value
     try {
-      const result = await fetch('http://localhost:3100/fmunefm/login', {
+      const result = await fetch('https://backend-fmunefm.herokuapp.com/fmunefm/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

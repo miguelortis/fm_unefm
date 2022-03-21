@@ -15,7 +15,7 @@ const useIsLogin = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { data } = await axios.get('http://localhost:3100/profile', {
+        const { data } = await axios.get('https://backend-fmunefm.herokuapp.com/profile', {
           headers: {
             authorization: `Bearer ${localStorage.getItem('token')}`,
           },
