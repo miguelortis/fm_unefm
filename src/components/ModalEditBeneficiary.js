@@ -25,8 +25,6 @@ import {
   CFormCheck,
   CFormSelect,
   CFormSwitch,
-  CBadge,
-  CPopover,
   CTooltip,
 } from '@coreui/react-pro'
 import { cilSend } from '@coreui/icons'
@@ -40,7 +38,7 @@ export default function ModalEditBeneficiary({ setVisibleModalEdit, visibleModal
   }
 
   const {
-    state: { currentUser, currentBeneficiaries },
+    state: { currentUser },
     dispatch,
   } = useContext(Context)
   //const dataUser = currentUser?.dataUser
