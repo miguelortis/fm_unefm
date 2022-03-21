@@ -50,12 +50,12 @@ export default function TableBeneficiaries() {
     setVisibleModalEdit(!visibleModalEdit)
   }
 
-  const deleteBeneficiary = async (id) => {
+  const deleteBeneficiary = async (idCard) => {
     try {
-      console.log(id)
+      console.log(idCard)
 
       const res = await axios.delete(
-        `https://backend-fmunefm.herokuapp.com/beneficiary/delete/${id}`,
+        `https://backend-fmunefm.herokuapp.com/beneficiary/delete/${idCard}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -293,7 +293,7 @@ export default function TableBeneficiaries() {
                         <CIcon icon={cilSettings} size="xxl" />
                       </CButton>
                       <CButton
-                        onClick={deleteBeneficiary(item.id)}
+                        onClick={() => deleteBeneficiary(item.idCard)}
                         size="lg"
                         color="light"
                         shape="rounded-pill"
