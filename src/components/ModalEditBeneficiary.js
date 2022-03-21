@@ -59,7 +59,7 @@ export default function ModalEditBeneficiary({ setVisibleModalEdit, visibleModal
         setValidated(true)
 
         const { data } = await axios.post(
-          'https://backend-fmunefm.herokuapp.com/beneficiary/register',
+          'https://backend-fmunefm.herokuapp.com/fmunefm/beneficiary/register',
           datosBeneficiary,
           {
             headers: {
