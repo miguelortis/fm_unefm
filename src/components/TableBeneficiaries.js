@@ -34,6 +34,7 @@ import {
   CSmartTable,
   CTooltip,
 } from '@coreui/react-pro'
+import axios from 'axios'
 
 export default function TableBeneficiaries() {
   const {
@@ -47,6 +48,27 @@ export default function TableBeneficiaries() {
   console.log(Beneficiaries)
   const handleModalEditBeneficiary = () => {
     setVisibleModalEdit(!visibleModalEdit)
+  }
+
+  const deleteBeneficiary = async (id) => {
+    try {
+      console.log(id)
+
+      const res = await axios.delete(
+        `https://backend-fmunefm.herokuapp.com/beneficiary/delete/${id}`,
+        {
+          headers: {
+            authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        },
+      )
+
+      console.log(res)
+    } catch (error) {
+      if (error) {
+        console.log(error)
+      }
+    }
   }
   //console.log(currentUser)
 
@@ -270,7 +292,12 @@ export default function TableBeneficiaries() {
                       >
                         <CIcon icon={cilSettings} size="xxl" />
                       </CButton>
-                      <CButton size="lg" color="light" shape="rounded-pill">
+                      <CButton
+                        onClick={deleteBeneficiary(item.id)}
+                        size="lg"
+                        color="light"
+                        shape="rounded-pill"
+                      >
                         <CIcon icon={cilTrash} size="xxl" />
                       </CButton>
                     </CCardBody>
