@@ -99,7 +99,7 @@ export default function TableBeneficiaries() {
     { label: 'Estado', key: 'status', _style: { width: '20%' } },
     {
       key: 'show_details',
-      label: 'Opciones',
+      label: 'Detalles',
       _style: { width: '1%' },
       filter: false,
       sorter: false,
@@ -283,7 +283,7 @@ export default function TableBeneficiaries() {
                         </CCol>
                       </CRow>
                       <br />
-                      <CButton
+                      {/* <CButton
                         onClick={() => handleModalEditBeneficiary(item)}
                         size="lg"
                         color="light"
@@ -298,7 +298,7 @@ export default function TableBeneficiaries() {
                         shape="rounded-pill"
                       >
                         <CIcon icon={cilTrash} size="xxl" />
-                      </CButton>
+                      </CButton> */}
                       {item.relationship ? (
                         <h5
                           style={{
@@ -340,13 +340,13 @@ export default function TableBeneficiaries() {
                             <CTableHeaderCell scope="col">Nº</CTableHeaderCell>
                             <CTableHeaderCell scope="col">Cedula</CTableHeaderCell>
                             <CTableHeaderCell scope="col">Nombre</CTableHeaderCell>
-                            <CTableHeaderCell scope="col">Fecha de Nac</CTableHeaderCell>
                             <CTableHeaderCell scope="col">parentesco</CTableHeaderCell>
                           </CTableRow>
                         </CTableHead>
                         <CTableBody>
                           {item.relationship ? (
                             <CTableRow>
+                              <CTableHeaderCell scope="row">1</CTableHeaderCell>
                               <CTableDataCell>
                                 {item.userId.documentType}
                                 {item.userId.idCard}
