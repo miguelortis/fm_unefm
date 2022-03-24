@@ -3,6 +3,7 @@ import madre from '../../assets/images/avatars/madre.svg'
 import conyugeF from '../../assets/images/avatars/conyugeF.svg'
 import conyugeM from '../../assets/images/avatars/conyugeM.svg'
 import fondoCard from '../../assets/images/image.jpg'
+import * as moment from 'moment'
 import {
   CAvatar,
   CButton,
@@ -30,6 +31,7 @@ export default function Profile() {
   const {
     state: { currentUser },
   } = useContext(Context)
+  const fecha = moment(currentUser?.registrationDate).format('DD MMM YYYY')
 
   const calcularEdad = () => {
     var hoy = new Date()
@@ -47,34 +49,39 @@ export default function Profile() {
   return (
     <>
       <CRow>
-        <CCol style={{ marginLeft: 'auto', marginRight: 'auto' }} xs={12} md={10} lg={9} xl={8}>
+        <CCol style={{ marginLeft: 'auto', marginRight: 'auto' }} xs={12} md={10} lg={10} xl={10}>
           <CCard>
             <CCardImage style={{ height: '10rem' }} orientation="top" src={fondoCard} />
             <CCardImageOverlay
-              style={{ textAlignLast: 'center', textShadow: '0.2em 0.2em 0.2em #fff' }}
+              style={{
+                textAlignLast: 'center',
+                textShadow: '0.3em 0.3em 0.2em rgba(19, 21, 22, 0.575)',
+              }}
             >
               <CAvatar
                 src={
-                  edad < 50 && currentUser?.sex === 'masculino'
+                  edad < 50 && currentUser?.sex === 'MASCULINO'
                     ? conyugeM
-                    : edad < 50 && currentUser?.sex === 'femenino'
+                    : edad < 50 && currentUser?.sex === 'FEMENINO'
                     ? conyugeF
-                    : edad > 50 && currentUser?.sex === 'masculino'
+                    : edad > 50 && currentUser?.sex === 'MASCULINO'
                     ? padre
-                    : edad > 50 && currentUser?.sex === 'femenino'
+                    : edad > 50 && currentUser?.sex === 'FEMENINO'
                     ? madre
                     : '??'
                 }
                 size="xl"
               />
               <br />
-              <br />
-              <CCardTitle>
-                {currentUser?.name?.replace(/\b\w/g, (l) => l.toUpperCase()) +
-                  ' ' +
-                  currentUser?.lastName?.replace(/\b\w/g, (l) => l.toUpperCase())}
+
+              <CCardTitle style={{ color: '#fff' }}>
+                <b>
+                  {currentUser?.name?.toLowerCase().replace(/\b\w/g, (l) => l.toUpperCase()) +
+                    ' ' +
+                    currentUser?.lastName?.toLowerCase().replace(/\b\w/g, (l) => l.toUpperCase())}
+                </b>
               </CCardTitle>
-              <CCardText>
+              <CCardText style={{ color: '#fff' }}>
                 {currentUser?.documentType?.toUpperCase() + ' ' + currentUser?.idCard}
               </CCardText>
             </CCardImageOverlay>
@@ -91,7 +98,7 @@ export default function Profile() {
                     <b>Fecha de Nacimiento:</b> {currentUser?.dateBirth}
                   </CListGroupItem>
                   <CListGroupItem>
-                    <b>Fecha de Registro:</b> {currentUser?.registrationDate}
+                    <b>Fecha de Registro:</b> {fecha}
                   </CListGroupItem>
                   <CListGroupItem>
                     <b>Lugar de Nacimiento:</b> {currentUser?.placeBirth}
