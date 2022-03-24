@@ -26,6 +26,7 @@ import {
   CFormSelect,
   CFormSwitch,
   CTooltip,
+  CSpinner,
 } from '@coreui/react-pro'
 import { cilSend } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
@@ -45,8 +46,10 @@ export default function ModalEditBeneficiary({ setVisibleModalEdit, visibleModal
 
   const [validated, setValidated] = useState(false)
   const [datosBeneficiary, setDatosBeneficiary] = useState(null)
+  const [spinner, setSpinner] = useState(true)
 
   const handleEditModal = async (event) => {
+    setSpinner(false)
     event.preventDefault()
     const form = event.currentTarget
     if (form.checkValidity() === false) {
@@ -72,6 +75,7 @@ export default function ModalEditBeneficiary({ setVisibleModalEdit, visibleModal
           payload: data,
         })
         //console.log(data)
+        setSpinner(true)
         setVisibleModalEdit(false)
       } catch (error) {
         if (error) {
@@ -90,6 +94,22 @@ export default function ModalEditBeneficiary({ setVisibleModalEdit, visibleModal
         setVisibleModalEdit(false)
       }}
     >
+      <div
+        hidden={spinner}
+        style={{
+          position: 'absolute',
+          width: '100%',
+          height: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 999,
+          backgroundColor: 'rgba(8, 34, 49, 0.575)',
+        }}
+      >
+        <CSpinner style={{ display: 'block' }} color="info" />
+        <span style={{ display: 'block', color: '#fff' }}>...Cargando</span>
+      </div>
       <CModalHeader>
         <CModalTitle>Agregar Familiar</CModalTitle>
       </CModalHeader>
@@ -111,7 +131,7 @@ export default function ModalEditBeneficiary({ setVisibleModalEdit, visibleModal
                   setDatosBeneficiary({
                     ...datosBeneficiary,
                     relationship: e.target.value,
-                    sex: 'masculino',
+                    sex: 'MASCULINO',
                   })
                 }}
                 button={{ color: 'info', variant: 'outline' }}
@@ -120,7 +140,7 @@ export default function ModalEditBeneficiary({ setVisibleModalEdit, visibleModal
                 name="relationship"
                 id="hijo"
                 required
-                value="hijo"
+                value="HIJO"
               />
             </CTooltip>
             <CTooltip trigger="focus" content="Hija" placement="top">
@@ -129,7 +149,7 @@ export default function ModalEditBeneficiary({ setVisibleModalEdit, visibleModal
                   setDatosBeneficiary({
                     ...datosBeneficiary,
                     relationship: e.target.value,
-                    sex: 'femenino',
+                    sex: 'FEMENINO',
                   })
                 }}
                 button={{ color: 'info', variant: 'outline' }}
@@ -138,7 +158,7 @@ export default function ModalEditBeneficiary({ setVisibleModalEdit, visibleModal
                 name="relationship"
                 id="hija"
                 required
-                value="hija"
+                value="HIJO"
               />
             </CTooltip>
             <CTooltip content="Padre" placement="top" trigger="focus">
@@ -147,7 +167,7 @@ export default function ModalEditBeneficiary({ setVisibleModalEdit, visibleModal
                   setDatosBeneficiary({
                     ...datosBeneficiary,
                     relationship: e.target.value,
-                    sex: 'masculino',
+                    sex: 'MASCULINO',
                   })
                 }}
                 button={{ color: 'info', variant: 'outline' }}
@@ -156,7 +176,7 @@ export default function ModalEditBeneficiary({ setVisibleModalEdit, visibleModal
                 name="relationship"
                 id="padre"
                 required
-                value="padre"
+                value="PADRE"
               />
             </CTooltip>
             <CTooltip content="Madre" placement="top" trigger="focus">
@@ -165,7 +185,7 @@ export default function ModalEditBeneficiary({ setVisibleModalEdit, visibleModal
                   setDatosBeneficiary({
                     ...datosBeneficiary,
                     relationship: e.target.value,
-                    sex: 'femenino',
+                    sex: 'FEMENINO',
                   })
                 }}
                 button={{ color: 'info', variant: 'outline' }}
@@ -174,7 +194,7 @@ export default function ModalEditBeneficiary({ setVisibleModalEdit, visibleModal
                 name="relationship"
                 id="madre"
                 required
-                value="madre"
+                value="MADRE"
               />
             </CTooltip>
             <CTooltip content="Conyuge" placement="top" trigger="focus">
@@ -183,7 +203,7 @@ export default function ModalEditBeneficiary({ setVisibleModalEdit, visibleModal
                   setDatosBeneficiary({
                     ...datosBeneficiary,
                     relationship: e.target.value,
-                    sex: currentUser.sex === 'Masculino' ? 'femenino' : 'masculino',
+                    sex: currentUser.sex === 'MASCULINO' ? 'FEMENINO' : 'MASCULINO',
                   })
                 }}
                 button={{ color: 'info', variant: 'outline' }}
@@ -192,7 +212,7 @@ export default function ModalEditBeneficiary({ setVisibleModalEdit, visibleModal
                 name="relationship"
                 id="conyuge"
                 required
-                value="conyuge"
+                value="CONYUGE"
               />
             </CTooltip>
 
@@ -250,7 +270,7 @@ export default function ModalEditBeneficiary({ setVisibleModalEdit, visibleModal
             <CFormFloating className="mb-3">
               <CFormInput
                 onChange={(e) => {
-                  setDatosBeneficiary({ ...datosBeneficiary, name: e.target.value })
+                  setDatosBeneficiary({ ...datosBeneficiary, name: e.target.value.toUpperCase() })
                 }}
                 value={datosBeneficiary?.name}
                 type="text"
@@ -268,7 +288,10 @@ export default function ModalEditBeneficiary({ setVisibleModalEdit, visibleModal
             <CFormFloating className="mb-3">
               <CFormInput
                 onChange={(e) => {
-                  setDatosBeneficiary({ ...datosBeneficiary, lastName: e.target.value })
+                  setDatosBeneficiary({
+                    ...datosBeneficiary,
+                    lastName: e.target.value.toUpperCase(),
+                  })
                 }}
                 value={datosBeneficiary?.lastName}
                 type="text"
@@ -301,33 +324,9 @@ export default function ModalEditBeneficiary({ setVisibleModalEdit, visibleModal
               </CFormFeedback>
             </CFormFloating>
           </CCol>
-          {/* <CCol md={3} className="position-relative">
-            <CFormLabel htmlFor="validationTooltip04">City</CFormLabel>
-            <CFormSelect id="validationTooltip04" required>
-              <option disabled value="">
-                Choose...
-              </option>
-              <option>...</option>
-            </CFormSelect>
-            <CFormFeedback tooltip invalid>
-              Please provide a valid city.
-            </CFormFeedback>
-          </CCol>
-          <CCol md={3} className="position-relative">
-            <CFormLabel htmlFor="validationTooltip05">City</CFormLabel>
-            <CFormInput type="text" id="validationTooltip05" required />
-            <CFormFeedback tooltip invalid>
-              Please provide a valid zip.
-            </CFormFeedback>
-          </CCol> */}
+
           <CCol xs={12} className="position-relative">
-            <CButton
-              //onClick={() => setVisibleModalEdit(false)}
-              type="submit"
-              size="lg"
-              color="info"
-              shape="rounded-pill"
-            >
+            <CButton type="submit" size="lg" color="info" shape="rounded-pill">
               <CIcon icon={cilSend} size="xl" />
               <span>Enviar</span>
             </CButton>

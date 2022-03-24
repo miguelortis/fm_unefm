@@ -42,7 +42,7 @@ const AppHeader = () => {
         <CHeaderDivider />
         <CHeaderNav className="d-none d-md-flex me-auto">
           <CNavItem>
-            <CNavLink to="/dashboard" component={NavLink} activeClassName="active">
+            <CNavLink to="/account" component={NavLink} activeClassName="active">
               Inicio
             </CNavLink>
           </CNavItem>
@@ -72,7 +72,7 @@ const AppHeader = () => {
         </CHeaderNav>
 
         <CHeaderNav className="ms-3">
-          <h4> {currentUser?.name?.replace(/\b\w/g, (l) => l.toUpperCase())}</h4>
+          <h4> {currentUser?.name?.toLowerCase().replace(/\b\w/g, (l) => l.toUpperCase())}</h4>
 
           <AppHeaderDropdown />
         </CHeaderNav>

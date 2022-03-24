@@ -21,12 +21,22 @@ import { cilLockLocked, cilUser, cilPeople, cilClock } from '@coreui/icons'
 import { Link } from 'react-router-dom'
 
 import axios from 'axios'
+import { Redirect } from 'react-router-dom'
+import { CSpinner } from '@coreui/react-pro'
 
 const Register = () => {
   const [newUser, setNewUser] = useState({})
   const [passwordConfirm, setPasswordConfirm] = useState(null)
+  const [spinner, setSpinner] = useState(true)
+  if (!!localStorage.getItem('token')) {
+    return <Redirect to="/account" />
+  }
+
+  // const res = 'PEDRO'
+  // console.log(res.toLowerCase().replace(/\b\w/g, (l) => l.toUpperCase()))
 
   const handleOk = () => {
+    setSpinner(false)
     if (
       newUser.name == null ||
       newUser.dateBirth == null ||
@@ -44,23 +54,26 @@ const Register = () => {
       newUser.placeBirth == null
     ) {
       alert('Completa todos los campos por favor')
+      setSpinner(true)
     } else {
       if (!passwordConfirm) {
+        setSpinner(true)
         alert('la contraseña de confirmacion no coincide')
       } else {
-        /*         let usuario = { user: newUser }
-        console.log(usuario) */
-        console.log(newUser)
+        // setNewUser({ ...newUser, registrationDate: new Date() })
+        // console.log(newUser)
 
         axios
           .post('http://localhost:3100/fmunefm/register', newUser)
           .then((res) => {
             console.log(res)
-            // if (res.status === 200 || res.status === 201) {
-            //   form.resetFields()
-            //   setAfiliados([])
-            //   success()
-            //   setInputDisablet(null)
+            if (res.status === 200 || res.status === 201) {
+              setNewUser({})
+              document.getElementById('Form').reset()
+              setSpinner(true)
+              //   success()
+              //   setInputDisablet(null)
+            }
           })
           .catch((err) => {
             if (err) {
@@ -90,8 +103,24 @@ const Register = () => {
         <CRow className="justify-content-center">
           <CCol lg={10} xl={10}>
             <CCard className="mx-4">
+              <div
+                hidden={spinner}
+                style={{
+                  position: 'absolute',
+                  width: '100%',
+                  height: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  zIndex: 999,
+                  backgroundColor: 'rgba(8, 34, 49, 0.575)',
+                }}
+              >
+                <CSpinner style={{ display: 'block' }} color="info" />
+                <span style={{ display: 'block', color: '#fff' }}>...Cargando</span>
+              </div>
               <CCardBody className="p-4">
-                <CForm onSubmit={(e) => e.preventDefault()} className="row g-3">
+                <CForm id="Form" onSubmit={(e) => e.preventDefault()} className="row g-3">
                   <h1>Registrate</h1>
                   <p className="text-medium-emphasis">Crea tu cuenta</p>
                   {/* *****************CEDULA**************** */}
@@ -111,8 +140,8 @@ const Register = () => {
                           aria-label="Default select example"
                         >
                           <option></option>
-                          <option value="V">V</option>
-                          <option value="E">E</option>
+                          <option value="v">V</option>
+                          <option value="e">E</option>
                         </CFormSelect>
                       </CCol>
                       <CCol>
@@ -176,7 +205,7 @@ const Register = () => {
                         required
                         value={newUser.name}
                         onChange={(e) => {
-                          setNewUser({ ...newUser, name: e.target.value })
+                          setNewUser({ ...newUser, name: e.target.value.toUpperCase() })
                         }}
                         name="name"
                         placeholder="Nombres"
@@ -194,7 +223,7 @@ const Register = () => {
                         required
                         value={newUser.lastName}
                         onChange={(e) => {
-                          setNewUser({ ...newUser, lastName: e.target.value })
+                          setNewUser({ ...newUser, lastName: e.target.value.toUpperCase() })
                         }}
                         name="lastName"
                         placeholder="Apellidos"
@@ -210,7 +239,7 @@ const Register = () => {
                         required
                         value={newUser.email}
                         onChange={(e) => {
-                          setNewUser({ ...newUser, email: e.target.value })
+                          setNewUser({ ...newUser, email: e.target.value.toUpperCase() })
                         }}
                         name="email"
                         placeholder="Correo electronico"
@@ -247,7 +276,7 @@ const Register = () => {
                         required
                         value={newUser.placeBirth}
                         onChange={(e) => {
-                          setNewUser({ ...newUser, placeBirth: e.target.value })
+                          setNewUser({ ...newUser, placeBirth: e.target.value.toUpperCase() })
                         }}
                         name="placeBirth"
                         placeholder="Lugar de Nacimiento"
@@ -265,7 +294,7 @@ const Register = () => {
                         required
                         value={newUser.direction}
                         onChange={(e) => {
-                          setNewUser({ ...newUser, direction: e.target.value })
+                          setNewUser({ ...newUser, direction: e.target.value.toUpperCase() })
                         }}
                         name="direction"
                         rows=" 1 "
@@ -301,14 +330,14 @@ const Register = () => {
                         required
                         value={newUser.sex}
                         onChange={(e) => {
-                          setNewUser({ ...newUser, sex: e.target.value })
+                          setNewUser({ ...newUser, sex: e.target.value.toUpperCase() })
                         }}
                         name="sex"
                         id="Sexo"
                       >
                         <option></option>
-                        <option value="Masculino">Masculino</option>
-                        <option value="Femenino">Femenino</option>
+                        <option value="MASCULINO">Masculino</option>
+                        <option value="FEMENINO">Femenino</option>
                       </CFormSelect>
                       <CFormLabel htmlFor="Sexo">Sexo</CFormLabel>
                     </CFormFloating>
@@ -320,17 +349,17 @@ const Register = () => {
                         required
                         value={newUser.civilStatus}
                         onChange={(e) => {
-                          setNewUser({ ...newUser, civilStatus: e.target.value })
+                          setNewUser({ ...newUser, civilStatus: e.target.value.toUpperCase() })
                         }}
                         name="civilStatus"
                         id="Edocivil"
                       >
                         <option></option>
-                        <option value="Soltero/a">Soltero/a</option>
-                        <option value="Casado/a">Casado/a</option>
-                        <option value="Divorciado/a">Divorciado/a</option>
-                        <option value="Viudo/a">Viudo/a</option>
-                        <option value="Otro">Otro</option>
+                        <option value="SOLTERO/A">Soltero/a</option>
+                        <option value="CASADO/A">Casado/a</option>
+                        <option value="DIVORCIADO/A">Divorciado/a</option>
+                        <option value="VIUDO/A">Viudo/a</option>
+                        <option value="OTRO">Otro</option>
                       </CFormSelect>
                       <CFormLabel htmlFor="Edocivil">Edo. Civil</CFormLabel>
                     </CFormFloating>
@@ -343,15 +372,15 @@ const Register = () => {
                         required
                         value={newUser.category}
                         onChange={(e) => {
-                          setNewUser({ ...newUser, category: e.target.value })
+                          setNewUser({ ...newUser, category: e.target.value.toUpperCase() })
                         }}
                         name="category"
                         id="Categoria"
                       >
                         <option></option>
-                        <option value="Docente">Docente</option>
-                        <option value="Administrativo">Administrativo</option>
-                        <option value="Obrero">Obrero</option>
+                        <option value="DOCENTE">Docente</option>
+                        <option value="ADMINISTRATIVO">Administrativo</option>
+                        <option value="OBRERO">Obrero</option>
                       </CFormSelect>
                       <CFormLabel htmlFor="Categoria">Categoria</CFormLabel>
                     </CFormFloating>
@@ -363,15 +392,15 @@ const Register = () => {
                         required
                         value={newUser.personalType}
                         onChange={(e) => {
-                          setNewUser({ ...newUser, personalType: e.target.value })
+                          setNewUser({ ...newUser, personalType: e.target.value.toUpperCase() })
                         }}
                         name="personalType"
                         id="tipoPersonal"
                       >
                         <option></option>
-                        <option value="Fijo">Fijo</option>
-                        <option value="Contratado">Contratado</option>
-                        <option value="Jubilado">Jubilado</option>
+                        <option value="FIJO">Fijo</option>
+                        <option value="CONTRATADO">Contratado</option>
+                        <option value="JUBILADO">Jubilado</option>
                       </CFormSelect>
                       <CFormLabel htmlFor="tipoPersonal">Estatus</CFormLabel>.
                     </CFormFloating>

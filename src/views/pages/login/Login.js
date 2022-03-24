@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link, Redirect, useHistory } from 'react-router-dom'
 
 import {
@@ -16,20 +16,22 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
+import { CSpinner } from '@coreui/react-pro'
 
 const Login = () => {
   const history = useHistory()
-
+  const [spinner, setSpinner] = useState(true)
   if (!!localStorage.getItem('token')) {
-    return <Redirect to="/" />
+    return <Redirect to="/account" />
   }
 
   async function handleLogin(e) {
+    setSpinner(false)
     e.preventDefault()
     const idCard = document.getElementById('idCard').value
     const password = document.getElementById('password').value
     try {
-      const result = await fetch('https://backend-fmunefm.herokuapp.com/fmunefm/login', {
+      const result = await fetch('http://localhost:3100/fmunefm/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -42,13 +44,17 @@ const Login = () => {
       console.log(result)
       if (result.status === 202) {
         localStorage.setItem('token', result.data)
-        history.push('/')
+        history.push('/account')
+        setSpinner(true)
       } else if (result.status === 204) {
         alert('usuario no existe')
+        setSpinner(true)
       } else if (result.status === 400) {
         alert('Contraseña incorrecta')
+        setSpinner(true)
       } else if (result.status === 401) {
         alert('Este usuario se encuentra en espera para ser verificado')
+        setSpinner(true)
       }
     } catch (error) {
       console.log(error)
@@ -57,6 +63,22 @@ const Login = () => {
 
   return (
     <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
+      <div
+        hidden={spinner}
+        style={{
+          position: 'absolute',
+          width: '100%',
+          height: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 999,
+          backgroundColor: 'rgba(8, 34, 49, 0.575)',
+        }}
+      >
+        <CSpinner style={{ display: 'block' }} color="info" />
+        <span style={{ display: 'block', color: '#fff' }}>...Cargando</span>
+      </div>
       <CContainer>
         <CRow className="justify-content-center">
           <CCol md={8}>

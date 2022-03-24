@@ -54,7 +54,7 @@ import avatar6 from 'src/assets/images/avatars/6.jpg'
 const WidgetsDropdown = lazy(() => import('../widgets/WidgetsDropdown.js'))
 const WidgetsBrand = lazy(() => import('../widgets/WidgetsBrand.js'))
 
-const Dashboard = () => {
+const Account = () => {
   const random = (min, max) => {
     return Math.floor(Math.random() * (max - min + 1) + min)
   }
@@ -460,4 +460,4 @@ const Dashboard = () => {
   )
 }
 
-export default Dashboard
+export default Account

@@ -3,13 +3,15 @@ import PropTypes from 'prop-types'
 
 const initialState = {
   currentUser: null,
-  currentBeneficiaries: [],
+  dataTotal: [],
 }
 
 const reducer = (state, action) => {
   switch (action.type) {
     case 'SET_USER_DATA':
       return { ...state, currentUser: { ...state.currentUser, ...action.payload } }
+    case 'SET_DATA_TOTAL':
+      return { ...state, dataTotal: action.payload }
     case 'SET_BENEFICIARY':
       return {
         ...state,
@@ -18,10 +20,10 @@ const reducer = (state, action) => {
           beneficiaries: [...state.currentUser.beneficiaries, action.payload],
         },
       }
-    case 'SET_BENEFICIARIES':
-      return { ...state, currentBeneficiaries: [...action.payload] }
+    // case 'SET_BENEFICIARIES':
+    //   return { ...state, currentBeneficiaries: [...action.payload] }
     case 'RESET':
-      return { ...state, currentUser: null, currentBeneficiaries: [] }
+      return { ...state, currentUser: null, dataTotal: [] }
     default:
       return state
   }

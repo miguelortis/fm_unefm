@@ -1,23 +1,20 @@
 import React from 'react'
 import CIcon from '@coreui/icons-react'
-import { cilStar, cilUser, cilHome, cilGroup, cilPencil } from '@coreui/icons'
+import { cilStar, cilUser, cilHome, cilGroup } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
 const _nav = [
   {
-    role: 'user',
     component: CNavItem,
     name: 'Inicio',
     to: '/account',
     icon: <CIcon icon={cilHome} customClassName="nav-icon" />,
-
     // badge: {
     //   color: 'info',
     //   text: 'NEW',
     // },
   },
   {
-    role: 'user',
     component: CNavGroup,
     name: 'Perfil',
     icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
@@ -35,44 +32,25 @@ const _nav = [
     ],
   },
   {
-    role: 'user',
     component: CNavTitle,
     name: 'Beneficiarios',
   },
   {
-    role: 'user',
     component: CNavItem,
     name: 'Familiares',
     to: '/beneficiaries',
     icon: <CIcon icon={cilGroup} customClassName="nav-icon" />,
   },
-  // {
-  //   role: 'fAmDuMnIeNfm',
-  //   component: CNavItem,
-  //   name: 'Reporte',
-  //   to: '/report',
-  //   icon: <CIcon icon={cilHome} customClassName="nav-icon" />,
-  //   // badge: {
-  //   //   color: 'info',
-  //   //   text: 'NEW',
-  //   // },
-  // },
-
-  ////////RECEPCION////////
   {
-    role: 'fRmEuCnEePfCmION',
-    component: CNavTitle,
-    name: 'panel recepcion',
-  },
-  {
-    role: 'fRmEuCnEePfCmION',
     component: CNavItem,
-    name: 'Consulta de Afiliados ',
-    to: '/consultafiliados',
-    icon: <CIcon icon={cilPencil} customClassName="nav-icon" />,
+    name: 'Reporte',
+    to: '/report',
+    icon: <CIcon icon={cilHome} customClassName="nav-icon" />,
+    // badge: {
+    //   color: 'info',
+    //   text: 'NEW',
+    // },
   },
-
-  //////////
   // {
   //   component: CNavItem,
   //   name: 'Modificar Familiar',
@@ -238,7 +216,6 @@ const _nav = [
   //   icon: <CIcon icon={cilChartPie} customClassName="nav-icon" />,
   // },
   {
-    role: 'gzsdg',
     component: CNavGroup,
     name: 'Icons',
     icon: <CIcon icon={cilStar} customClassName="nav-icon" />,

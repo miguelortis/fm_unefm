@@ -1,20 +1,19 @@
 import React, { useState } from 'react'
-import verify from '../assets/icons/usuarioVerificado.png'
+import verify from '../../assets/icons/usuarioVerificado.png'
 import { useContext } from 'react'
-import { Context } from '../contexts/Context'
-import hijo from '../assets/images/avatars/hijo.svg'
-import hija from '../assets/images/avatars/hija.svg'
-import padre from '../assets/images/avatars/padre.svg'
-import madre from '../assets/images/avatars/madre.svg'
-import conyugeF from '../assets/images/avatars/conyugeF.svg'
-import conyugeM from '../assets/images/avatars/conyugeM.svg'
+import { Context } from '../../contexts/Context'
+import hijo from '../../assets/images/avatars/hijo.svg'
+import hija from '../../assets/images/avatars/hija.svg'
+import padre from '../../assets/images/avatars/padre.svg'
+import madre from '../../assets/images/avatars/madre.svg'
+import conyugeF from '../../assets/images/avatars/conyugeF.svg'
+import conyugeM from '../../assets/images/avatars/conyugeM.svg'
 
 import { CButton, CSpinner } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilMenu, cilX, cilSettings, cilTrash, cilUserPlus } from '@coreui/icons'
-import ModalEditBeneficiary from './ModalEditBeneficiary'
+import ModalEditBeneficiary from '../../components/ModalEditBeneficiary'
 import {
-  CAvatar,
   CBadge,
   CCard,
   CCardBody,
@@ -32,20 +31,34 @@ import {
   CNavItem,
   CRow,
   CSmartTable,
+  CTable,
+  CTableBody,
+  CTableDataCell,
+  CTableHead,
+  CTableHeaderCell,
+  CTableRow,
   CTooltip,
 } from '@coreui/react-pro'
 import axios from 'axios'
+import { Redirect } from 'react-router-dom'
 
 export default function TableBeneficiaries() {
   const {
-    state: { currentUser },
+    state: { dataTotal, currentUser },
   } = useContext(Context)
-  const Beneficiaries = currentUser?.beneficiaries
+
   const [visibleModalEdit, setVisibleModalEdit] = useState(false)
   const [details, setDetails] = useState([])
   const [visible, setVisible] = useState(false)
 
-  console.log(Beneficiaries)
+  if (
+    (!!localStorage.getItem('token') && currentUser?.role === 'user') ||
+    currentUser?.role === ''
+  ) {
+    return <Redirect to="/unauthorised" />
+  }
+
+  console.log(dataTotal)
   const handleModalEditBeneficiary = () => {
     setVisibleModalEdit(!visibleModalEdit)
   }
@@ -119,7 +132,7 @@ export default function TableBeneficiaries() {
     <>
       <CNavbar expand="lg" colorScheme="dark" className="bg-dark">
         <CContainer fluid>
-          <CNavbarBrand>Carga Familiar</CNavbarBrand>
+          <CNavbarBrand>Consulta de Afiliados y Familiares</CNavbarBrand>
           <CNavbarToggler
             aria-label="Toggle navigation"
             aria-expanded={visible}
@@ -150,7 +163,7 @@ export default function TableBeneficiaries() {
         cleaner
         clickableRows
         columns={columns}
-        items={Beneficiaries}
+        items={dataTotal}
         itemsPerPageSelect
         itemsPerPage={5}
         pagination
@@ -158,31 +171,11 @@ export default function TableBeneficiaries() {
           name: (item) => (
             <td>
               <CTooltip
-                content={item.relationship.replace(/\b\w/g, (l) => l.toUpperCase())}
+                content={item.relationship ? 'Familiar' : 'Titular'}
                 placement="top"
                 trigger="hover"
               >
-                <h5>
-                  <CAvatar
-                    size="xl"
-                    src={
-                      item.relationship === 'PADRE'
-                        ? padre
-                        : item.relationship === 'MADRE'
-                        ? madre
-                        : item.relationship === 'HIJA'
-                        ? hija
-                        : item.relationship === 'HIJO'
-                        ? hijo
-                        : item.relationship === 'CONYUGE' && item.sex === 'FEMENINO'
-                        ? conyugeF
-                        : item.relationship === 'CONYUGE' && item.sex === 'MASCULINO'
-                        ? conyugeM
-                        : ''
-                    }
-                  />{' '}
-                  {item.name.toLowerCase().replace(/\b\w/g, (l) => l.toUpperCase())}{' '}
-                </h5>
+                <h5> {item.name.replace(/\b\w/g, (l) => l.toUpperCase())} </h5>
               </CTooltip>
             </td>
           ),
@@ -198,7 +191,11 @@ export default function TableBeneficiaries() {
           status: (item) => (
             <td>
               <CTooltip
-                content={item.status ? 'Verificado' : 'En espera'}
+                content={
+                  item.status
+                    ? 'Verificado'
+                    : 'En espera. Por favor, llevar documentos a la oficina principal del fondo mutual para su verificacion'
+                }
                 placement="top"
                 trigger="hover"
               >
@@ -252,18 +249,16 @@ export default function TableBeneficiaries() {
                             rounded
                             thumbnail
                             src={
-                              item?.relationship === 'HIJO' && item?.sex === 'MASCULINO'
+                              item?.relationship === 'hijo/a' && item?.sex === 'masculino'
                                 ? hijo
-                                : item?.relationship === 'HIJO' && item?.sex === 'FEMENINO'
+                                : item?.relationship === 'hijo/a' && item?.sex === 'femenino'
                                 ? hija
-                                : item?.relationship === 'MADRE' && item?.sex === 'FEMENINO'
+                                : item?.relationship === 'madre' && item?.sex === 'femenino'
                                 ? madre
-                                : item?.relationship === 'PADRE' && item?.sex === 'MASCULINO'
+                                : item?.relationship === 'padre' && item?.sex === 'masculino'
                                 ? padre
-                                : item.relationship === 'CONYUGE' && item.sex === 'FEMENINO'
+                                : item.relationship === 'conyuge' && item.sex === 'femenino'
                                 ? conyugeF
-                                : item.relationship === 'CONYUGE' && item.sex === 'MASCULINO'
-                                ? conyugeM
                                 : hijo
                             }
                             width={150}
@@ -302,6 +297,78 @@ export default function TableBeneficiaries() {
                       >
                         <CIcon icon={cilTrash} size="xxl" />
                       </CButton>
+                      {item.relationship ? (
+                        <h5
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                          }}
+                        >
+                          Es{' '}
+                          {item.relationship.toLowerCase().replace(/\b\w/g, (l) => l.toUpperCase())}{' '}
+                          del Titular:
+                        </h5>
+                      ) : (
+                        <h5
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                          }}
+                        >
+                          {item.beneficiaries.length === 0
+                            ? 'No posee Carga Familiar'
+                            : 'Carga Familiar'}
+                        </h5>
+                      )}
+
+                      <CTable
+                        hidden={
+                          item.beneficiaries
+                            ? item.beneficiaries.length === 0
+                              ? true
+                              : false
+                            : false
+                        }
+                        hover
+                      >
+                        <CTableHead>
+                          <CTableRow>
+                            <CTableHeaderCell scope="col">Nº</CTableHeaderCell>
+                            <CTableHeaderCell scope="col">Cedula</CTableHeaderCell>
+                            <CTableHeaderCell scope="col">Nombre</CTableHeaderCell>
+                            <CTableHeaderCell scope="col">Fecha de Nac</CTableHeaderCell>
+                            <CTableHeaderCell scope="col">parentesco</CTableHeaderCell>
+                          </CTableRow>
+                        </CTableHead>
+                        <CTableBody>
+                          {item.relationship ? (
+                            <CTableRow>
+                              <CTableDataCell>
+                                {item.userId.documentType}
+                                {item.userId.idCard}
+                              </CTableDataCell>
+                              <CTableDataCell>{item.userId.name}</CTableDataCell>
+                              <CTableDataCell>{item.userId.dateBirth}</CTableDataCell>
+                              <CTableDataCell>{item.userId.relationship}</CTableDataCell>
+                            </CTableRow>
+                          ) : (
+                            item?.beneficiaries?.map((el, index) => (
+                              <CTableRow key={index}>
+                                <CTableHeaderCell scope="row">{index + 1}</CTableHeaderCell>
+                                <CTableDataCell>
+                                  {el.documentType}
+                                  {el.idCard}
+                                </CTableDataCell>
+                                <CTableDataCell>{el.name}</CTableDataCell>
+                                <CTableDataCell>{el.dateBirth}</CTableDataCell>
+                                <CTableDataCell>{el.relationship}</CTableDataCell>
+                              </CTableRow>
+                            ))
+                          )}
+                        </CTableBody>
+                      </CTable>
                     </CCardBody>
                   </CCard>
                 </CCollapse>

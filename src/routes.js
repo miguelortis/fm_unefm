@@ -1,8 +1,9 @@
 import React, { lazy } from 'react'
 
-const Dashboard = lazy(() => import('./views/dashboard/Dashboard'))
+const Account = lazy(() => import('./views/account/Account'))
 const Profile = lazy(() => import('./views/profile/Profile'))
 const Beneficiaries = lazy(() => import('./views/beneficiaries/Beneficiaries'))
+const Consultafiliados = lazy(() => import('./views/consultafiliados/Consultafiliados'))
 const Report = lazy(() => import('./views/report'))
 const Colors = lazy(() => import('./views/theme/colors/Colors'))
 const Typography = lazy(() => import('./views/theme/typography/Typography'))
@@ -55,9 +56,10 @@ const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
-  { path: '/dashboard', name: 'Dashboard', component: Dashboard },
   { path: '/profile', name: 'Profile', component: Profile },
+  { path: '/account', name: 'Account', component: Account },
   { path: '/beneficiaries', name: 'Beneficiaries', component: Beneficiaries },
+  { path: '/consultafiliados', name: 'Consultafiliados', component: Consultafiliados },
   { path: '/report', name: 'Reporte', component: Report },
   { path: '/theme', name: 'Theme', component: Colors, exact: true },
   { path: '/theme/colors', name: 'Colors', component: Colors },

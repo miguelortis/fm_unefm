@@ -62,13 +62,13 @@ const AppHeaderDropdown = () => {
       <CDropdownToggle placement="bottom-end" className="py-0" caret={true}>
         <CAvatar
           src={
-            edad < 50 && currentUser?.sex === 'masculino'
+            edad < 50 && currentUser?.sex === 'MASCULINO'
               ? conyugeM
-              : edad < 50 && currentUser?.sex === 'femenino'
+              : edad < 50 && currentUser?.sex === 'FEMENINO'
               ? conyugeF
-              : edad > 50 && currentUser?.sex === 'masculino'
+              : edad > 50 && currentUser?.sex === 'MASCULINO'
               ? padre
-              : edad > 50 && currentUser?.sex === 'femenino'
+              : edad > 50 && currentUser?.sex === 'FEMENINO'
               ? madre
               : '??'
           }

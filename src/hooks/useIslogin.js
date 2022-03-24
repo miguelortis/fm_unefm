@@ -15,7 +15,7 @@ const useIsLogin = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { data } = await axios.get('https://backend-fmunefm.herokuapp.com/profile', {
+        const { data } = await axios.get('http://localhost:3100/profile', {
           headers: {
             authorization: `Bearer ${localStorage.getItem('token')}`,
           },
@@ -37,7 +37,6 @@ const useIsLogin = () => {
       }
     }
     if (!!localStorage.getItem('token') && currentUser === null) {
-      console.log('se ejecuto')
       fetchData()
     }
 

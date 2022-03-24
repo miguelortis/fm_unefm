@@ -18,7 +18,7 @@ import {
 
 const WidgetsBrand = lazy(() => import('../widgets/WidgetsBrand.js'))
 
-const Dashboard = () => {
+const Account = () => {
   const {
     state: { currentUser },
   } = useContext(Context)
@@ -96,4 +96,4 @@ const Dashboard = () => {
   )
 }
 
-export default Dashboard
+export default Account
