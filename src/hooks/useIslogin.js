@@ -15,7 +15,7 @@ const useIsLogin = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { data } = await axios.get('http://localhost:3100/profile', {
+        const { data } = await axios.get('https://backend-fmunefm.herokuapp.com/profile', {
           headers: {
             authorization: `Bearer ${localStorage.getItem('token')}`,
           },
@@ -47,7 +47,7 @@ const useIsLogin = () => {
   // useEffect(() => {
   //   const BeneficiaryData = async () => {
   //     try {
-  //       const { data } = await axios.post('http://localhost:3100/fmunefm/beneficiaries', {
+  //       const { data } = await axios.post('https://backend-fmunefm.herokuapp.com/fmunefm/beneficiaries', {
   //         id: currentUser?._id,
   //       })
   //       console.log('data', data)

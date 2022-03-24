@@ -259,6 +259,8 @@ export default function TableBeneficiaries() {
                                 ? padre
                                 : item.relationship === 'conyuge' && item.sex === 'femenino'
                                 ? conyugeF
+                                : item.relationship === 'conyuge' && item.sex === 'femenino'
+                                ? conyugeM
                                 : hijo
                             }
                             width={150}

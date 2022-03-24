@@ -64,7 +64,7 @@ const Register = () => {
         // console.log(newUser)
 
         axios
-          .post('http://localhost:3100/fmunefm/register', newUser)
+          .post('https://backend-fmunefm.herokuapp.com/fmunefm/register', newUser)
           .then((res) => {
             console.log(res)
             if (res.status === 200 || res.status === 201) {
