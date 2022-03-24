@@ -70,7 +70,7 @@ export default function TableBeneficiaries() {
       }
     }
   }
-  //console.log(currentUser)
+  ///console.log(currentUser)
 
   const columns = [
     {

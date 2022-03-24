@@ -43,7 +43,7 @@ export default function ModalEditBeneficiary({ setVisibleModalEdit, visibleModal
     dispatch,
   } = useContext(Context)
   //const dataUser = currentUser?.dataUser
-
+  //
   const [validated, setValidated] = useState(false)
   const [datosBeneficiary, setDatosBeneficiary] = useState(null)
   const [spinner, setSpinner] = useState(true)
