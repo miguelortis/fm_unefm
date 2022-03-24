@@ -340,7 +340,7 @@ export default function TableBeneficiaries() {
                             <CTableHeaderCell scope="col">Nº</CTableHeaderCell>
                             <CTableHeaderCell scope="col">Cedula</CTableHeaderCell>
                             <CTableHeaderCell scope="col">Nombre</CTableHeaderCell>
-                            <CTableHeaderCell scope="col">parentesco</CTableHeaderCell>
+                            <CTableHeaderCell scope="col">Parentesco</CTableHeaderCell>
                           </CTableRow>
                         </CTableHead>
                         <CTableBody>
