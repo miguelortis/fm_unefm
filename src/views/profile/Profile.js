@@ -117,6 +117,9 @@ export default function Profile() {
                     <b>Fecha de Nacimiento:</b> {currentUser?.dateBirth}
                   </CListGroupItem>
                   <CListGroupItem>
+                    <b>Fecha de Registro:</b> {fecha}
+                  </CListGroupItem>
+                  <CListGroupItem>
                     <b>Lugar de Nacimiento:</b> {currentUser?.placeBirth}
                   </CListGroupItem>
                   <CListGroupItem>
