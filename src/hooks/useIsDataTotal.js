@@ -13,7 +13,7 @@ const useIsDataTotal = () => {
 
   /////////////////SOLICITUD DATOS USUARIO /////////////////////////
   useEffect(() => {
-    /////////////////SOLICITUD DATOS FAMILIARES///////////////////////
+    //////////////////SOLICITUD DATOS FAMILIARES///////////////////////
     const DataTotal = async () => {
       try {
         const { data } = await axios.get('https://backend-fmunefm.herokuapp.com/fmunefm/consult', {

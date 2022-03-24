@@ -236,7 +236,7 @@ const _nav = [
   //   name: 'Charts',
   //   to: '/charts',
   //   icon: <CIcon icon={cilChartPie} customClassName="nav-icon" />,
-  // },
+  /// },
   {
     role: 'gzsdg',
     component: CNavGroup,

@@ -10,7 +10,7 @@ import logoFM from 'src/assets/images/logoFMW.png'
 import SimpleBar from 'simplebar-react'
 import 'simplebar/dist/simplebar.min.css'
 
-// sidebar nav config
+/// sidebar nav config
 import navigation from '../_nav'
 
 const AppSidebar = () => {
