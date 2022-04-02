@@ -1,41 +1,52 @@
-import React, { useState } from 'react'
-
-import {
-  CButton,
-  CCard,
-  CCardBody,
-  CCol,
-  CContainer,
-  CForm,
-  CFormFloating,
-  CFormInput,
-  CFormLabel,
-  CFormSelect,
-  CFormTextarea,
-  CInputGroup,
-  CInputGroupText,
-  CRow,
-} from '@coreui/react'
-import CIcon from '@coreui/icons-react'
-import { cilLockLocked, cilUser, cilPeople, cilClock } from '@coreui/icons'
-import { Link } from 'react-router-dom'
+import React, { Fragment, useState } from 'react'
+import Box from '@mui/material/Box'
+import Stepper from '@mui/material/Stepper'
+import Step from '@mui/material/Step'
+import StepLabel from '@mui/material/StepLabel'
+import Button from '@mui/material/Button'
+import Typography from '@mui/material/Typography'
+import PropTypes from 'prop-types'
+import { CCol, CContainer, CRow } from '@coreui/react'
+//import Visibility from '@mui/icons-material/Visibility'
+//import VisibilityOff from '@mui/icons-material/VisibilityOff'
 
 import axios from 'axios'
 import { Redirect } from 'react-router-dom'
 import { CSpinner } from '@coreui/react-pro'
+import {
+  Card,
+  CardContent,
+  FormControl,
+  Grid,
+  IconButton,
+  Input,
+  InputAdornment,
+  InputLabel,
+  MenuItem,
+  Select,
+} from '@mui/material'
 
 const Register = () => {
   const [newUser, setNewUser] = useState({})
   const [passwordConfirm, setPasswordConfirm] = useState(null)
   const [spinner, setSpinner] = useState(true)
+  const [activeStep, setActiveStep] = useState(0)
+  const [skipped, setSkipped] = useState(new Set())
+  const [showPassword, setShowPassword] = useState(false)
+
   if (!!localStorage.getItem('token')) {
     return <Redirect to="/account" />
   }
 
   // const res = 'PEDRO'
   // console.log(res.toLowerCase().replace(/\b\w/g, (l) => l.toUpperCase()))
-
-  const handleOk = () => {
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault()
+  }
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword)
+  }
+  const handleSubmit = () => {
     setSpinner(false)
     if (
       newUser.name == null ||
@@ -82,27 +93,44 @@ const Register = () => {
           })
       }
     }
-    //  if (edadMin === true && datos.edad > 25) {
-    //    alert('No puedes agregar hijos mayores de 25 años')
-    //  } else {
-    // setAfiliados([...afiliados, disabledCedula ? { ...datos, cedula: hijosincedula } : datos])
-    //       // console.log(hijosincedula);
-    //       setIsModalVisible(false)
-    //       setDatos(0)
-    //       setDisabledInput(true)
-    //     }
-    //   }
+  }
+
+  const steps = ['Datos (inicio Sesion)', 'Datos (Personales)', 'Finalizar Registro']
+  // const isStepOptional = (step) => {
+  //   return step === 1
+  // }
+
+  const isStepSkipped = (step) => {
+    return skipped.has(step)
+  }
+
+  const handleNext = () => {
+    let newSkipped = skipped
+    if (isStepSkipped(activeStep)) {
+      newSkipped = new Set(newSkipped.values())
+      newSkipped.delete(activeStep)
+    }
+
+    setActiveStep((prevActiveStep) => prevActiveStep + 1)
+    setSkipped(newSkipped)
+  }
+
+  const handleBack = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep - 1)
   }
 
   const handleCancel = () => {
     setNewUser({})
+  }
+  const handleReset = () => {
+    setActiveStep(0)
   }
   return (
     <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
       <CContainer>
         <CRow className="justify-content-center">
           <CCol lg={10} xl={10}>
-            <CCard className="mx-4">
+            <Card sx={{ minWidth: 275 }}>
               <div
                 hidden={spinner}
                 style={{
@@ -119,309 +147,193 @@ const Register = () => {
                 <CSpinner style={{ display: 'block' }} color="info" />
                 <span style={{ display: 'block', color: '#fff' }}>...Cargando</span>
               </div>
-              <CCardBody className="p-4">
-                <CForm id="Form" onSubmit={(e) => e.preventDefault()} className="row g-3">
-                  <h1>Registrate</h1>
-                  <p className="text-medium-emphasis">Crea tu cuenta</p>
-                  {/* *****************CEDULA**************** */}
-                  <CCol md={6}>
-                    <CInputGroup className="mb-3">
-                      <CInputGroupText>
-                        <CIcon icon={cilUser} />
-                      </CInputGroupText>
-                      <CCol md={3} xl={2}>
-                        <CFormSelect
-                          required
-                          onChange={(e) => {
-                            setNewUser({ ...newUser, documentType: e.target.value })
-                            console.log(e.target.value)
-                          }}
-                          name="documentType"
-                          aria-label="Default select example"
-                        >
-                          <option></option>
-                          <option value="v">V</option>
-                          <option value="e">E</option>
-                        </CFormSelect>
-                      </CCol>
-                      <CCol>
-                        <CFormInput
-                          required
-                          value={newUser.idCard}
-                          onChange={(e) => {
-                            setNewUser({ ...newUser, idCard: e.target.value })
-                          }}
-                          name="idCard"
-                          type="number"
-                          placeholder="Cedula"
-                        />
-                      </CCol>
-                    </CInputGroup>
-                  </CCol>
-                  {/* *****************CONTRASEÑA**************** */}
-                  <CCol md={6}>
-                    <CInputGroup className="mb-3">
-                      <CInputGroupText>
-                        <CIcon icon={cilLockLocked} />
-                      </CInputGroupText>
-                      <CFormInput
-                        required
-                        value={newUser.password}
-                        onChange={(e) => {
-                          setNewUser({ ...newUser, password: e.target.value })
-                        }}
-                        name="password"
-                        type="password"
-                        placeholder="Contraseña"
-                        autoComplete="new-password"
-                      />
-                    </CInputGroup>
-                  </CCol>
-                  <CCol md={6}>
-                    <CInputGroup className="mb-4">
-                      <CInputGroupText>
-                        <CIcon icon={cilLockLocked} />
-                      </CInputGroupText>
-                      <CFormInput
-                        required
-                        onChange={(e) => {
-                          e.target.value === newUser.password
-                            ? setPasswordConfirm(true)
-                            : setPasswordConfirm(false)
-                        }}
-                        type="password"
-                        placeholder="Confirmar Contraseña"
-                        autoComplete="new-password"
-                      />
-                    </CInputGroup>
-                  </CCol>
-                  {/* *****************NOMBRE**************** */}
-                  <CCol md={6}>
-                    <CInputGroup className="mb-3">
-                      <CInputGroupText>
-                        <CIcon icon={cilPeople} />
-                      </CInputGroupText>
-                      <CFormInput
-                        required
-                        value={newUser.name}
-                        onChange={(e) => {
-                          setNewUser({ ...newUser, name: e.target.value.toUpperCase() })
-                        }}
-                        name="name"
-                        placeholder="Nombres"
-                        autoComplete="Nombres"
-                      />
-                    </CInputGroup>
-                  </CCol>
-                  {/* *****************APELLIDO**************** */}
-                  <CCol md={6}>
-                    <CInputGroup className="mb-3">
-                      <CInputGroupText>
-                        <CIcon icon={cilPeople} />
-                      </CInputGroupText>
-                      <CFormInput
-                        required
-                        value={newUser.lastName}
-                        onChange={(e) => {
-                          setNewUser({ ...newUser, lastName: e.target.value.toUpperCase() })
-                        }}
-                        name="lastName"
-                        placeholder="Apellidos"
-                        autoComplete="Apellidos"
-                      />
-                    </CInputGroup>
-                  </CCol>
-                  {/* *****************CORREO**************** */}
-                  <CCol md={6}>
-                    <CInputGroup className="mb-3">
-                      <CInputGroupText>@</CInputGroupText>
-                      <CFormInput
-                        required
-                        value={newUser.email}
-                        onChange={(e) => {
-                          setNewUser({ ...newUser, email: e.target.value.toUpperCase() })
-                        }}
-                        name="email"
-                        placeholder="Correo electronico"
-                        autoComplete="email"
-                      />
-                    </CInputGroup>
-                  </CCol>
-                  {/* *****************FECHA NACIMIENTO**************** */}
-                  <CCol md={6}>
-                    <CInputGroup className="mb-3">
-                      <CInputGroupText>
-                        <CIcon icon={cilClock} />
-                      </CInputGroupText>
-                      <CFormInput
-                        required
-                        value={newUser.dateBirth}
-                        onChange={(e) => {
-                          setNewUser({ ...newUser, dateBirth: e.target.value })
-                        }}
-                        name="dateBirth"
-                        placeholder="Fecha de Nacimiento"
-                        type="date"
-                      />
-                    </CInputGroup>
-                  </CCol>
 
-                  {/* *****************LUGAR NACIMIENTO**************** */}
-                  <CCol md={6}>
-                    <CInputGroup className="mb-3">
-                      <CInputGroupText>
-                        <CIcon icon={cilClock} />
-                      </CInputGroupText>
-                      <CFormInput
-                        required
-                        value={newUser.placeBirth}
-                        onChange={(e) => {
-                          setNewUser({ ...newUser, placeBirth: e.target.value.toUpperCase() })
-                        }}
-                        name="placeBirth"
-                        placeholder="Lugar de Nacimiento"
-                        autoComplete="Lugar de Nacimiento"
-                      />
-                    </CInputGroup>
-                  </CCol>
-                  {/* *****************DIRECCION**************** */}
-                  <CCol md={6}>
-                    <CInputGroup className="mb-3">
-                      <CInputGroupText>
-                        <CIcon icon={cilPeople} />
-                      </CInputGroupText>
-                      <CFormTextarea
-                        required
-                        value={newUser.direction}
-                        onChange={(e) => {
-                          setNewUser({ ...newUser, direction: e.target.value.toUpperCase() })
-                        }}
-                        name="direction"
-                        rows=" 1 "
-                        placeholder="Direccion de Habitacion"
-                        autoComplete="Direccion"
-                      />
-                    </CInputGroup>
-                  </CCol>
-                  {/* *****************TELEFONO**************** */}
+              <h3 style={{ display: 'flex', justifyContent: 'center', padding: '5px' }}>
+                Suscripcion
+              </h3>
 
-                  <CCol md={6}>
-                    <CInputGroup className="mb-3">
-                      <CInputGroupText>
-                        <CIcon icon={cilClock} />
-                      </CInputGroupText>
-                      <CFormInput
-                        required
-                        value={newUser.phone}
-                        onChange={(e) => {
-                          setNewUser({ ...newUser, phone: e.target.value })
+              <CardContent>
+                <Box sx={{ width: '100%' }}>
+                  <Stepper activeStep={activeStep}>
+                    {steps.map((label, index) => {
+                      const stepProps = {}
+                      const labelProps = {}
+                      // if (isStepOptional(index)) {
+                      //   labelProps.optional = <Typography variant="caption">Optional</Typography>
+                      // }
+                      if (isStepSkipped(index)) {
+                        stepProps.completed = false
+                      }
+                      return (
+                        <Step key={label} {...stepProps}>
+                          <StepLabel {...labelProps}>{label}</StepLabel>
+                        </Step>
+                      )
+                    })}
+                  </Stepper>
+                  {activeStep === steps.length ? (
+                    <Fragment>
+                      <Typography sx={{ mt: 2, mb: 1 }}>
+                        All steps completed - you&apos;re finished
+                      </Typography>
+                      <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
+                        <Box sx={{ flex: '1 1 auto' }} />
+                        <Button onClick={handleReset}>Reset</Button>
+                      </Box>
+                    </Fragment>
+                  ) : (
+                    <Fragment>
+                      <br />
+                      <Box
+                        component="form"
+                        sx={{
+                          '& > :not(style)': { m: 1 },
                         }}
-                        name="phone"
-                        type="number"
-                        placeholder="Telefono"
-                        autoComplete="Telefono"
-                      />
-                    </CInputGroup>
-                  </CCol>
-                  {/* *****************SEXO**************** */}
-                  <CCol md={3} xs={6}>
-                    <CFormFloating>
-                      <CFormSelect
-                        required
-                        value={newUser.sex}
-                        onChange={(e) => {
-                          setNewUser({ ...newUser, sex: e.target.value.toUpperCase() })
-                        }}
-                        name="sex"
-                        id="Sexo"
+                        noValidate
+                        autoComplete="off"
                       >
-                        <option></option>
-                        <option value="MASCULINO">Masculino</option>
-                        <option value="FEMENINO">Femenino</option>
-                      </CFormSelect>
-                      <CFormLabel htmlFor="Sexo">Sexo</CFormLabel>
-                    </CFormFloating>
-                  </CCol>
-                  {/* *****************ESTADO CIVIL**************** */}
-                  <CCol md={3} xs={6}>
-                    <CFormFloating>
-                      <CFormSelect
-                        required
-                        value={newUser.civilStatus}
-                        onChange={(e) => {
-                          setNewUser({ ...newUser, civilStatus: e.target.value.toUpperCase() })
-                        }}
-                        name="civilStatus"
-                        id="Edocivil"
-                      >
-                        <option></option>
-                        <option value="SOLTERO/A">Soltero/a</option>
-                        <option value="CASADO/A">Casado/a</option>
-                        <option value="DIVORCIADO/A">Divorciado/a</option>
-                        <option value="VIUDO/A">Viudo/a</option>
-                        <option value="OTRO">Otro</option>
-                      </CFormSelect>
-                      <CFormLabel htmlFor="Edocivil">Edo. Civil</CFormLabel>
-                    </CFormFloating>
-                  </CCol>
-                  <br />
-                  {/* *****************CATEGORIA**************** */}
-                  <CCol md={3} xs={6}>
-                    <CFormFloating>
-                      <CFormSelect
-                        required
-                        value={newUser.category}
-                        onChange={(e) => {
-                          setNewUser({ ...newUser, category: e.target.value.toUpperCase() })
-                        }}
-                        name="category"
-                        id="Categoria"
-                      >
-                        <option></option>
-                        <option value="DOCENTE">Docente</option>
-                        <option value="ADMINISTRATIVO">Administrativo</option>
-                        <option value="OBRERO">Obrero</option>
-                      </CFormSelect>
-                      <CFormLabel htmlFor="Categoria">Categoria</CFormLabel>
-                    </CFormFloating>
-                  </CCol>
-                  {/* *****************TIPO PERSONAL**************** */}
-                  <CCol md={3} xs={6}>
-                    <CFormFloating>
-                      <CFormSelect
-                        required
-                        value={newUser.personalType}
-                        onChange={(e) => {
-                          setNewUser({ ...newUser, personalType: e.target.value.toUpperCase() })
-                        }}
-                        name="personalType"
-                        id="tipoPersonal"
-                      >
-                        <option></option>
-                        <option value="FIJO">Fijo</option>
-                        <option value="CONTRATADO">Contratado</option>
-                        <option value="JUBILADO">Jubilado</option>
-                      </CFormSelect>
-                      <CFormLabel htmlFor="tipoPersonal">Estatus</CFormLabel>.
-                    </CFormFloating>
-                  </CCol>
-                  <br />
-                  {/* *****************BOTONES**************** */}
-                  <CCol md={6} xs={6}>
-                    <CButton onClick={handleOk} color="success" type="submit">
-                      Crear Registro
-                    </CButton>
-                  </CCol>
-                  <CCol md={6} xs={6}>
-                    <Link to="/login">
-                      <CButton onClick={handleCancel} color="primary" tabIndex={-1}>
-                        Iniciar Sesion
-                      </CButton>
-                    </Link>
-                  </CCol>
-                </CForm>
-              </CCardBody>
-            </CCard>
+                        {/* ///////////////////////STEP  1////////////////////////////// */}
+                        {activeStep === 0 && (
+                          <div style={{ display: 'flex', textAlign: 'center' }}>
+                            <Grid
+                              direction="row"
+                              justifyContent="center"
+                              alignItems="center"
+                              container
+                              spacing={{ xs: 2, md: 3 }}
+                              columns={{ xs: 4, sm: 8, md: 12 }}
+                            >
+                              {/* /////////CEDULA//////////// */}
+                              <Grid item xs={4} sm={4} md={12}>
+                                <FormControl variant="standard" sx={{ minWidth: 50 }}>
+                                  <InputLabel id="documentType">Tipo</InputLabel>
+                                  <Select
+                                    required
+                                    name="documentType"
+                                    id="documentType"
+                                    value={newUser.documentType}
+                                    onChange={(e) => {
+                                      setNewUser({ ...newUser, documentType: e.target.value })
+                                      console.log(e.target.value)
+                                    }}
+                                    aria-label="Default select example"
+                                    // value={age}
+                                    // onChange={handleChange}
+                                  >
+                                    <MenuItem></MenuItem>
+                                    <MenuItem value="V">V</MenuItem>
+                                    <MenuItem value="E">E</MenuItem>
+                                  </Select>
+                                </FormControl>
+                                <FormControl variant="standard">
+                                  <InputLabel htmlFor="idCard">Cedula</InputLabel>
+                                  <Input
+                                    required
+                                    name="idCard"
+                                    id="idCard"
+                                    value={newUser.idCard}
+                                    onChange={(e) => {
+                                      setNewUser({ ...newUser, idCard: e.target.value })
+                                      console.log(e.target.value)
+                                    }}
+                                  />
+                                </FormControl>
+                              </Grid>
+                              <Grid item xs={4} sm={4} md={12}>
+                                <FormControl sx={{ width: '28ch' }} variant="standard">
+                                  <InputLabel htmlFor="standard-adornment-password">
+                                    Password
+                                  </InputLabel>
+                                  <Input
+                                    required
+                                    id="standard-adornment-password"
+                                    type={showPassword ? 'text' : 'password'}
+                                    value={newUser.password}
+                                    onChange={(e) => {
+                                      setNewUser({ ...newUser, password: e.target.value })
+                                      console.log(e.target.value)
+                                    }}
+                                    endAdornment={
+                                      <InputAdornment position="end">
+                                        <IconButton
+                                          aria-label="toggle password visibility"
+                                          onClick={handleClickShowPassword}
+                                          onMouseDown={handleMouseDownPassword}
+                                        >
+                                          {showPassword ? 'Hidde' : 'Show'}
+                                        </IconButton>
+                                      </InputAdornment>
+                                    }
+                                  />
+                                </FormControl>
+                              </Grid>
+
+                              <Grid item xs={4} sm={4} md={12}>
+                                <FormControl sx={{ width: '28ch' }}>
+                                  <InputLabel htmlFor="new-password">
+                                    Confirmar Contraseña
+                                  </InputLabel>
+                                  <Input
+                                    required
+                                    onChange={(e) => {
+                                      e.target.value === newUser.password
+                                        ? setPasswordConfirm(true)
+                                        : setPasswordConfirm(false)
+                                    }}
+                                    type="password"
+                                    name="new-password"
+                                    id="new-password"
+                                  />
+                                </FormControl>
+                                {!passwordConfirm && <div>no coincide con la contraseña</div>}
+                              </Grid>
+                            </Grid>
+                          </div>
+                        )}
+
+                        {/* ///////////////////////STEP 2 ////////////////////////////// */}
+                        {activeStep === 1 && 'Component2'}
+                        {activeStep === 2 && 'Component3'}
+                        <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
+                          <Button
+                            color="inherit"
+                            disabled={activeStep === 0}
+                            onClick={handleBack}
+                            sx={{ mr: 1 }}
+                          >
+                            Back
+                          </Button>
+                          {/* <Box sx={{ flex: '1 1 auto' }} />
+                            {isStepOptional(activeStep) && (
+                            <Button color="inherit" onClick={handleSkip} sx={{ mr: 1 }}>
+                            Skip
+                            </Button>
+                            )} */}
+                          <Box sx={{ flex: '1 1 auto' }} />
+                          {activeStep === steps.length - 1 ? (
+                            <Button onClick={handleSubmit}>Registrar Datos</Button>
+                          ) : (
+                            <Button
+                              disabled={
+                                newUser.documentType &&
+                                newUser.idCard &&
+                                newUser.password &&
+                                passwordConfirm === true
+                                  ? false
+                                  : true
+                              }
+                              onClick={handleNext}
+                            >
+                              Siguiente
+                            </Button>
+                          )}
+                        </Box>
+                      </Box>
+                    </Fragment>
+                  )}
+                </Box>
+              </CardContent>
+            </Card>
             <br />
           </CCol>
         </CRow>

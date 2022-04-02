@@ -71,6 +71,30 @@ const _nav = [
     to: '/consultafiliados',
     icon: <CIcon icon={cilPencil} customClassName="nav-icon" />,
   },
+  ////////JUNTA-ADMINISTRADORA////////
+  {
+    role: 'JfUmNuTnAeAfDmMIN',
+    component: CNavTitle,
+    name: 'panel junta administradora',
+  },
+  {
+    role: 'JfUmNuTnAeAfDmMIN',
+    component: CNavGroup,
+    name: 'Especialistas',
+    icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Nuevo Especialista',
+        to: '/profile',
+      },
+      {
+        component: CNavItem,
+        name: 'Modificar Especialista',
+        to: '/',
+      },
+    ],
+  },
 
   //////////
   // {

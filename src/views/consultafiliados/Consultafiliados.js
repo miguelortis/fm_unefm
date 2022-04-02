@@ -41,6 +41,7 @@ import {
 } from '@coreui/react-pro'
 import axios from 'axios'
 import { Redirect } from 'react-router-dom'
+import Modal from '../modal/Modal'
 
 export default function TableBeneficiaries() {
   const {
@@ -50,6 +51,7 @@ export default function TableBeneficiaries() {
   const [visibleModalEdit, setVisibleModalEdit] = useState(false)
   const [details, setDetails] = useState([])
   const [visible, setVisible] = useState(false)
+  const [visibleModal, setVisibleModal] = useState(false)
 
   if (
     (!!localStorage.getItem('token') && currentUser?.role === 'user') ||
@@ -99,7 +101,7 @@ export default function TableBeneficiaries() {
     { label: 'Estado', key: 'status', _style: { width: '20%' } },
     {
       key: 'show_details',
-      label: 'Detalles',
+      label: 'Accion',
       _style: { width: '1%' },
       filter: false,
       sorter: false,
@@ -158,6 +160,7 @@ export default function TableBeneficiaries() {
       </CNavbar>
 
       <CHeaderDivider></CHeaderDivider>
+      {dataTotal.length}
       <CSmartTable
         activePage={1}
         cleaner
@@ -171,7 +174,7 @@ export default function TableBeneficiaries() {
           name: (item) => (
             <td>
               <CTooltip
-                content={item.relationship ? 'Familiar' : 'Titular'}
+                content={item.relationship ? ` Familiar de ${item.userId.name}` : 'Titular'}
                 placement="top"
                 trigger="hover"
               >
@@ -206,30 +209,55 @@ export default function TableBeneficiaries() {
           show_details: (item) => {
             return (
               <td className="py-2">
-                <CButton
-                  color="info"
-                  //variant="outline"
-                  //shape="square"
-                  size="sm"
-                  onClick={() => {
-                    toggleDetails(item.idCard)
-                  }}
-                >
-                  {details.includes(item.idCard) ? (
-                    <CIcon icon={cilX} size="lg" />
-                  ) : (
-                    <CIcon icon={cilMenu} size="lg" />
-                  )}
-                </CButton>
+                <CRow>
+                  <CCol lg={2} xl={2}>
+                    <CTooltip content="Detalles" placement="top" trigger="hover">
+                      <CButton
+                        color="info"
+                        //variant="outline"
+                        //shape="square"
+                        size="sm"
+                        onClick={() => {
+                          toggleDetails(item._id)
+                        }}
+                      >
+                        {details.includes(item._id) ? (
+                          <CIcon icon={cilX} size="lg" />
+                        ) : (
+                          <CIcon icon={cilMenu} size="lg" />
+                        )}
+                      </CButton>
+                    </CTooltip>
+                  </CCol>
+                  <CCol lg={2} xl={2}>
+                    <CTooltip content="Solicitud" placement="top" trigger="hover">
+                      <CButton
+                        onClick={() => setVisibleModal(!visibleModal)}
+                        color="dark"
+                        //variant="outline"
+                        //shape="square"
+                        size="sm"
+                        // onClick={() => {
+                        //   toggleDetails(item._id)
+                        // }}
+                      >
+                        {details.includes(item._id) ? (
+                          <CIcon icon={cilX} size="lg" />
+                        ) : (
+                          <CIcon icon={cilMenu} size="lg" />
+                        )}
+                      </CButton>
+                    </CTooltip>
+                  </CCol>
+                </CRow>
               </td>
             )
           },
           details: (item) => {
             return (
               <CRow>
-                <CCollapse visible={details.includes(item.idCard)}>
+                <CCollapse visible={details.includes(item._id)}>
                   <CCard>
-                    {/* <CCardHeader component="h5">Header</CCardHeader> */}
                     <CCardBody>
                       <CCardTitle>
                         {item.name.toLowerCase().replace(/\b\w/g, (l) => l.toUpperCase())}{' '}
@@ -396,6 +424,13 @@ export default function TableBeneficiaries() {
       <ModalEditBeneficiary
         setVisibleModalEdit={setVisibleModalEdit}
         visibleModalEdit={visibleModalEdit}
+      />
+      <Modal
+        visibleModal={visibleModal}
+        setVisibleModal={setVisibleModal}
+        //Component1={Component1}
+        //Component2={Component2}
+        //Component3={Component3}
       />
     </>
   )

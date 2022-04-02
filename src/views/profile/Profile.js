@@ -3,6 +3,7 @@ import madre from '../../assets/images/avatars/madre.svg'
 import conyugeF from '../../assets/images/avatars/conyugeF.svg'
 import conyugeM from '../../assets/images/avatars/conyugeM.svg'
 import fondoCard from '../../assets/images/image.jpg'
+
 import * as moment from 'moment'
 import {
   CAvatar,
@@ -15,23 +16,65 @@ import {
   CCardTitle,
   CCol,
   CForm,
-  CFormCheck,
   CFormInput,
   CFormLabel,
-  CFormSelect,
   CListGroup,
   CListGroupItem,
+  CModal,
+  CModalBody,
+  CModalFooter,
+  CModalHeader,
+  CModalTitle,
   CRow,
+  CSpinner,
 } from '@coreui/react-pro'
 
-import React from 'react'
-import { useContext } from 'react'
+import React, { useState, useContext } from 'react'
+
 import { Context } from '../../contexts/Context'
+import axios from 'axios'
 export default function Profile() {
   const {
     state: { currentUser },
+    dispatch,
   } = useContext(Context)
+  const [visible, setVisible] = useState(false)
+  const [updateData, setUpdateData] = useState(null)
+  const [showSpinner, setShowSpinner] = useState(false)
   const fecha = moment(currentUser?.registrationDate).format('DD MMM YYYY')
+
+  const UpdateData = async (e) => {
+    e.preventDefault()
+    setShowSpinner(true)
+
+    //alert('Completa todos los Campos')
+    try {
+      const { data } = await axios.patch(
+        'http://localhost:3100/fmunefm/modify-headline',
+        updateData,
+        {
+          headers: {
+            authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        },
+      )
+      if (data.status === 403) {
+        alert('Este email ya existe')
+        setShowSpinner(false)
+      } else {
+        dispatch({
+          type: 'SET_USER_DATA',
+          payload: updateData,
+        })
+        setShowSpinner(false)
+        setVisible(false)
+      }
+    } catch (error) {
+      if (error) {
+        console.log(error)
+      }
+    }
+  }
 
   const calcularEdad = () => {
     var hoy = new Date()
@@ -95,19 +138,19 @@ export default function Profile() {
               <CCol md={6} xl={6}>
                 <CListGroup flush>
                   <CListGroupItem>
-                    <b>Fecha de Nacimiento:</b> {currentUser?.dateBirth}
+                    <b>Estado Civil:</b> {currentUser?.civilStatus}
                   </CListGroupItem>
                   <CListGroupItem>
-                    <b>Fecha de Registro:</b> {fecha}
+                    <b>Categoria:</b> {currentUser?.category}
                   </CListGroupItem>
                   <CListGroupItem>
-                    <b>Lugar de Nacimiento:</b> {currentUser?.placeBirth}
+                    <b>tipo de Personal:</b> {currentUser?.personalType}
                   </CListGroupItem>
                   <CListGroupItem>
-                    <b>Direccion de Habitacion:</b> {currentUser?.direction}
+                    <b>Genero/Sexo:</b> {currentUser?.sex}
                   </CListGroupItem>
                   <CListGroupItem>
-                    <b>Numero de Telefono:</b> {currentUser?.phone}
+                    <b>Correo:</b> {currentUser?.email}
                   </CListGroupItem>
                 </CListGroup>
               </CCol>
@@ -123,10 +166,10 @@ export default function Profile() {
                     <b>Lugar de Nacimiento:</b> {currentUser?.placeBirth}
                   </CListGroupItem>
                   <CListGroupItem>
-                    <b>Direccion de Habitacion:</b> {currentUser?.direction}
+                    <b>Numero de Telefono:</b> {currentUser?.phone}
                   </CListGroupItem>
                   <CListGroupItem>
-                    <b>Numero de Telefono:</b> {currentUser?.phone}
+                    <b>Direccion de Habitacion:</b> {currentUser?.direction}
                   </CListGroupItem>
                 </CListGroup>
               </CCol>
@@ -139,63 +182,66 @@ export default function Profile() {
         </CCol>
       </CRow>
       {/*/////////////////////////////////////////////////////////////////// */}
-      <CForm className="row g-3">
-        <CCol md={4} lg={6}>
-          <CFormLabel htmlFor="idCard">Cedula</CFormLabel>
-          <CFormInput
-            disabled
-            type="text"
-            id="idCard"
-            defaultValue={currentUser?.documentType + ' ' + currentUser?.idCard}
-          />
-        </CCol>
-        <CCol md={4}>
-          <CFormLabel htmlFor="nameAndLastName">Nombre y Apellido</CFormLabel>
-          <CFormInput
-            disabled
-            type="text"
-            id="nameAndLastName"
-            defaultValue={
-              currentUser?.name.replace(/\b\w/g, (l) => l.toUpperCase()) +
-              ' ' +
-              currentUser?.lastName.replace(/\b\w/g, (l) => l.toUpperCase())
-            }
-          />
-        </CCol>
-        <CCol md={4}>
-          <CFormLabel htmlFor="inputPassword4">Password</CFormLabel>
-          <CFormInput type="password" id="inputPassword4" />
-        </CCol>
-        <CCol xs={12}>
-          <CFormLabel htmlFor="inputAddress">Edad</CFormLabel>
-          <CFormInput defaultValue={calcularEdad()} id="inputAddress" placeholder="" />
-        </CCol>
-        <CCol xs={12}>
-          <CFormLabel htmlFor="inputAddress2">Address 2</CFormLabel>
-          <CFormInput id="inputAddress2" placeholder="Apartment, studio, or floor" />
-        </CCol>
-        <CCol md={6}>
-          <CFormLabel htmlFor="inputCity">City</CFormLabel>
-          <CFormInput id="inputCity" />
-        </CCol>
-        <CCol md={4}>
-          <CFormLabel htmlFor="inputState">State</CFormLabel>
-          <CFormSelect id="inputState">
-            <option>Choose...</option>
-            <option>...</option>
-          </CFormSelect>
-        </CCol>
-        <CCol md={2}>
-          <CFormLabel htmlFor="inputZip">Zip</CFormLabel>
-          <CFormInput id="inputZip" />
-        </CCol>
-        <CCol xs={12}>
-          <CFormCheck type="checkbox" id="gridCheck" label="Check me out" />
-        </CCol>
-        <CCol xs={12}>
-          <CButton type="submit">Sign in</CButton>
-        </CCol>
-      </CForm>
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <CButton onClick={() => setVisible(!visible)}>Actualizar Datos</CButton>
+        <CModal alignment="center" visible={visible} onClose={() => setVisible(false)}>
+          <div
+            hidden={!showSpinner}
+            style={{
+              position: 'absolute',
+              width: '100%',
+              height: '100%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              zIndex: 999,
+              backgroundColor: 'rgba(8, 34, 49, 0.575)',
+            }}
+          >
+            <CSpinner style={{ display: 'block' }} color="info" />
+            <span style={{ display: 'block', color: '#fff' }}>...Cargando</span>
+          </div>
+          <CModalHeader>
+            <CModalTitle>Actualizar Datos</CModalTitle>
+          </CModalHeader>
+          <CModalBody>
+            <CForm className="row g-3">
+              <CCol md={4} lg={6}>
+                <CFormLabel htmlFor="email">Correo</CFormLabel>
+                <CFormInput
+                  //value={updateData?.email}
+                  type="text"
+                  id="email"
+                  defaultValue={currentUser?.email}
+                  onChange={(e) => {
+                    setUpdateData({ ...updateData, email: e.target.value })
+                  }}
+                />
+              </CCol>
+              <CCol md={4}>
+                <CFormLabel htmlFor="phone">Telefono</CFormLabel>
+                <CFormInput
+                  //value={updateData?.phone}
+                  type="text"
+                  id="phone"
+                  defaultValue={currentUser?.phone}
+                  onChange={(e) => {
+                    setUpdateData({ ...updateData, phone: e.target.value })
+                  }}
+                />
+              </CCol>
+
+              <CModalFooter>
+                <CButton color="secondary" onClick={() => setVisible(false)}>
+                  Close
+                </CButton>
+                <CButton onClick={UpdateData}>Sign in</CButton>
+              </CModalFooter>
+            </CForm>
+          </CModalBody>
+        </CModal>
+      </div>
+      {/* /////////////////////////////////////////////////////////// */}
     </>
   )
 }

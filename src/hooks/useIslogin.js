@@ -1,11 +1,12 @@
 import { useEffect } from 'react'
 import { useContext } from 'react'
 import { Context } from '../contexts/Context'
+import { useHistory } from 'react-router-dom'
 import axios from 'axios'
 const CancelToken = axios.CancelToken
 const source = CancelToken.source()
 const useIsLogin = () => {
-  //console.log('se ejecuto')
+  const history = useHistory()
   const {
     state: { currentUser },
     dispatch,
@@ -33,6 +34,7 @@ const useIsLogin = () => {
           dispatch({
             type: 'RESET',
           })
+          history.push('/account')
         }
       }
     }
@@ -41,35 +43,7 @@ const useIsLogin = () => {
     }
 
     return () => !!currentUser && source.cancel()
-  }, [dispatch, currentUser])
-
-  /////////////////SOLICITUD DATOS FAMILIARES///////////////////////
-  // useEffect(() => {
-  //   const BeneficiaryData = async () => {
-  //     try {
-  //       const { data } = await axios.post('https://backend-fmunefm.herokuapp.com/fmunefm/beneficiaries', {
-  //         id: currentUser?._id,
-  //       })
-  //       console.log('data', data)
-  //       dispatch({
-  //         type: 'SET_BENEFICIARIES',
-  //         payload: data,
-  //       })
-  //     } catch (error) {
-  //       //console.log(error)
-  //       if (error?.response?.status === 401) {
-  //         console.log(error)
-  //       }
-  //     }
-  //   }
-  //   console.log('data', currentBeneficiaries)
-  //   if (!!localStorage.getItem('token') && !currentUser) {
-  //     BeneficiaryData()
-  //     console.log('se', currentBeneficiaries)
-  //   }
-  //   console.log('data', currentUser)
-  //   return () => !!currentUser && source.cancel()
-  // }, [dispatch, currentUser, currentBeneficiaries])
+  }, [dispatch, currentUser, history])
 }
 
 export default useIsLogin

@@ -1,7 +1,7 @@
 import React, { lazy } from 'react'
 import { useContext } from 'react'
 import { Context } from '../../contexts/Context'
-
+import Socket from '../../components/Socket'
 import {
   CCard,
   CCardBody,
@@ -23,7 +23,7 @@ const Account = () => {
     state: { currentUser },
   } = useContext(Context)
   console.log(currentUser)
-
+  Socket.emit('connection', 'hola soy pedro')
   const tableExample = [
     {
       notifications: {

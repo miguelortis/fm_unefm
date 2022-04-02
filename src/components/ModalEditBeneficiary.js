@@ -60,9 +60,9 @@ export default function ModalEditBeneficiary({ setVisibleModalEdit, visibleModal
       event.preventDefault()
       try {
         setValidated(true)
-
+        console.log(datosBeneficiary)
         const { data } = await axios.post(
-          'https://backend-fmunefm.herokuapp.com/fmunefm/beneficiary/register',
+          'http://localhost:3100/fmunefm/beneficiary/register',
           datosBeneficiary,
           {
             headers: {
@@ -70,6 +70,7 @@ export default function ModalEditBeneficiary({ setVisibleModalEdit, visibleModal
             },
           },
         )
+
         dispatch({
           type: 'SET_BENEFICIARY',
           payload: data,
