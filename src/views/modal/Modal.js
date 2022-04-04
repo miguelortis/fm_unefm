@@ -1,5 +1,5 @@
-import { CButton, CModal, CModalBody, CModalHeader, CModalTitle } from '@coreui/react-pro'
-import React, { useState } from 'react'
+import { CModal, CModalBody, CModalHeader, CModalTitle } from '@coreui/react-pro'
+import React from 'react'
 import PropTypes from 'prop-types'
 import StepperHorizontal from '../stepper/Stepper'
 export default function Modal({
@@ -11,7 +11,7 @@ export default function Modal({
 }) {
   Modal.propTypes = {
     visibleModal: PropTypes.bool,
-    setVisibleModal: PropTypes.bool,
+    setVisibleModal: PropTypes.func,
     Component1: PropTypes.bool,
     Component2: PropTypes.bool,
     Component3: PropTypes.bool,

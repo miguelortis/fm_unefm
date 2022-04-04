@@ -174,7 +174,13 @@ export default function TableBeneficiaries() {
           name: (item) => (
             <td>
               <CTooltip
-                content={item.relationship ? ` Familiar de ${item.userId.name}` : 'Titular'}
+                content={
+                  item.relationship
+                    ? ` Familiar de ${item?.userId?.name}`
+                    : item?.beneficiaries?.length === 0
+                    ? 'Titular (sin carga familiar)'
+                    : `Titular (carga familiar ${item?.beneficiaries?.length})`
+                }
                 placement="top"
                 trigger="hover"
               >
