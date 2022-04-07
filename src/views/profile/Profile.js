@@ -50,7 +50,7 @@ export default function Profile() {
     //alert('Completa todos los Campos')
     try {
       const { data } = await axios.patch(
-        'http://localhost:3100/fmunefm/modify-headline',
+        'https://backend-fmunefm.herokuapp.com/fmunefm/modify-headline',
         updateData,
         {
           headers: {
