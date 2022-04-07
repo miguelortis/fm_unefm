@@ -183,7 +183,7 @@ export default function TableBeneficiaries() {
                         : ''
                     }
                   />{' '}
-                  {item?.beneficiary?.name.replace(/\b\w/g, (l) => l.toUpperCase())}{' '}
+                  {item?.beneficiary?.name?.toLowerCase().replace(/\b\w/g, (l) => l.toUpperCase())}{' '}
                 </h5>
               </CTooltip>
             </td>
@@ -237,8 +237,12 @@ export default function TableBeneficiaries() {
                     {/* <CCardHeader component="h5">Header</CCardHeader> */}
                     <CCardBody>
                       <CCardTitle>
-                        {item?.beneficiary?.name.replace(/\b\w/g, (l) => l.toUpperCase())}{' '}
-                        {item?.beneficiary?.lastName.replace(/\b\w/g, (l) => l.toUpperCase())}
+                        {item?.beneficiary?.name
+                          ?.toLowerCase()
+                          .replace(/\b\w/g, (l) => l.toUpperCase())}{' '}
+                        {item?.beneficiary?.lastName
+                          ?.toLowerCase()
+                          .replace(/\b\w/g, (l) => l.toUpperCase())}
                       </CCardTitle>
                       <CRow>
                         <CCol xs={12} md={4}>
