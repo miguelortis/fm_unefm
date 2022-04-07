@@ -67,8 +67,8 @@ const _nav = [
   {
     role: 'fRmEuCnEePfCmION',
     component: CNavItem,
-    name: 'Consulta de Afiliados ',
-    to: '/consultafiliados',
+    name: 'Servicios',
+    to: '/typeofservice',
     icon: <CIcon icon={cilPencil} customClassName="nav-icon" />,
   },
   ////////JUNTA-ADMINISTRADORA////////

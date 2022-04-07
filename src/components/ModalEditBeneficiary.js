@@ -34,7 +34,7 @@ import PropTypes from 'prop-types'
 
 export default function ModalEditBeneficiary({ setVisibleModalEdit, visibleModalEdit }) {
   ModalEditBeneficiary.propTypes = {
-    setVisibleModalEdit: PropTypes.bool,
+    setVisibleModalEdit: PropTypes.func,
     visibleModalEdit: PropTypes.bool,
   }
 

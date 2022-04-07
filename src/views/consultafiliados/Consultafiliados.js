@@ -8,10 +8,14 @@ import padre from '../../assets/images/avatars/padre.svg'
 import madre from '../../assets/images/avatars/madre.svg'
 import conyugeF from '../../assets/images/avatars/conyugeF.svg'
 import conyugeM from '../../assets/images/avatars/conyugeM.svg'
-
-import { CButton, CSpinner } from '@coreui/react'
-import CIcon from '@coreui/icons-react'
-import { cilMenu, cilX, cilSettings, cilTrash, cilUserPlus } from '@coreui/icons'
+import {
+  DisplaySettings,
+  LocalHospital,
+  MedicalServices,
+  PersonalVideo,
+  Vaccines,
+} from '@mui/icons-material'
+import { CSpinner } from '@coreui/react'
 import ModalEditBeneficiary from '../../components/ModalEditBeneficiary'
 import {
   CBadge,
@@ -26,9 +30,6 @@ import {
   CImage,
   CNavbar,
   CNavbarBrand,
-  CNavbarNav,
-  CNavbarToggler,
-  CNavItem,
   CRow,
   CSmartTable,
   CTable,
@@ -39,9 +40,9 @@ import {
   CTableRow,
   CTooltip,
 } from '@coreui/react-pro'
-import axios from 'axios'
+// import axios from 'axios'
 import { Redirect } from 'react-router-dom'
-import Modal from '../modal/Modal'
+import { Divider, IconButton, MenuItem, MenuList, Paper, Popover, Typography } from '@mui/material'
 
 export default function TableBeneficiaries() {
   const {
@@ -50,8 +51,7 @@ export default function TableBeneficiaries() {
 
   const [visibleModalEdit, setVisibleModalEdit] = useState(false)
   const [details, setDetails] = useState([])
-  const [visible, setVisible] = useState(false)
-  const [visibleModal, setVisibleModal] = useState(false)
+  const [anchorEl, setAnchorEl] = useState(null)
 
   if (
     (!!localStorage.getItem('token') && currentUser?.role === 'user') ||
@@ -59,33 +59,6 @@ export default function TableBeneficiaries() {
   ) {
     return <Redirect to="/unauthorised" />
   }
-
-  console.log(dataTotal)
-  const handleModalEditBeneficiary = () => {
-    setVisibleModalEdit(!visibleModalEdit)
-  }
-
-  const deleteBeneficiary = async (idCard) => {
-    try {
-      console.log(idCard)
-
-      const res = await axios.delete(
-        `https://backend-fmunefm.herokuapp.com/beneficiary/delete/${idCard}`,
-        {
-          headers: {
-            authorization: `Bearer ${localStorage.getItem('token')}`,
-          },
-        },
-      )
-
-      console.log(res)
-    } catch (error) {
-      if (error) {
-        console.log(error)
-      }
-    }
-  }
-  ///console.log(currentUser)
 
   const columns = [
     {
@@ -130,12 +103,25 @@ export default function TableBeneficiaries() {
     }
     setDetails(newDetails)
   }
+
+  ///////popover/////
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget)
+  }
+
+  const handleClose = () => {
+    setAnchorEl(null)
+  }
+
+  const open = Boolean(anchorEl)
+  const id = open ? 'simple-popover' : undefined
+  ///////popover/////
   return (
     <>
       <CNavbar expand="lg" colorScheme="dark" className="bg-dark">
         <CContainer fluid>
-          <CNavbarBrand>Consulta de Afiliados y Familiares</CNavbarBrand>
-          <CNavbarToggler
+          <CNavbarBrand>Titulares y Familiares</CNavbarBrand>
+          {/* <CNavbarToggler
             aria-label="Toggle navigation"
             aria-expanded={visible}
             onClick={() => setVisible(!visible)}
@@ -155,12 +141,13 @@ export default function TableBeneficiaries() {
                 </CButton>
               </CNavItem>
             </CNavbarNav>
-          </CCollapse>
+          </CCollapse> */}
         </CContainer>
       </CNavbar>
 
       <CHeaderDivider></CHeaderDivider>
-      {dataTotal.length}
+      <div style={{ textAling: 'right' }}>{dataTotal.length}</div>
+
       <CSmartTable
         activePage={1}
         cleaner
@@ -218,7 +205,7 @@ export default function TableBeneficiaries() {
                 <CRow>
                   <CCol lg={2} xl={2}>
                     <CTooltip content="Detalles" placement="top" trigger="hover">
-                      <CButton
+                      <IconButton
                         color="info"
                         //variant="outline"
                         //shape="square"
@@ -227,32 +214,22 @@ export default function TableBeneficiaries() {
                           toggleDetails(item._id)
                         }}
                       >
-                        {details.includes(item._id) ? (
-                          <CIcon icon={cilX} size="lg" />
-                        ) : (
-                          <CIcon icon={cilMenu} size="lg" />
-                        )}
-                      </CButton>
+                        {details.includes(item._id) ? <PersonalVideo /> : <DisplaySettings />}
+                      </IconButton>
                     </CTooltip>
                   </CCol>
                   <CCol lg={2} xl={2}>
-                    <CTooltip content="Solicitud" placement="top" trigger="hover">
-                      <CButton
-                        onClick={() => setVisibleModal(!visibleModal)}
-                        color="dark"
+                    <CTooltip content="Servicios Medicos" placement="top" trigger="hover">
+                      <IconButton
+                        onClick={handleClick}
+                        color="info"
                         //variant="outline"
                         //shape="square"
                         size="sm"
-                        // onClick={() => {
-                        //   toggleDetails(item._id)
-                        // }}
+                        component="span"
                       >
-                        {details.includes(item._id) ? (
-                          <CIcon icon={cilX} size="lg" />
-                        ) : (
-                          <CIcon icon={cilMenu} size="lg" />
-                        )}
-                      </CButton>
+                        <MedicalServices />
+                      </IconButton>
                     </CTooltip>
                   </CCol>
                 </CRow>
@@ -421,7 +398,7 @@ export default function TableBeneficiaries() {
         }}
         tableProps={{
           align: 'middle',
-          responsive: true,
+          responsive: false,
           color: 'light',
           hover: true,
         }}
@@ -431,13 +408,42 @@ export default function TableBeneficiaries() {
         setVisibleModalEdit={setVisibleModalEdit}
         visibleModalEdit={visibleModalEdit}
       />
-      <Modal
+      <Popover
+        id={id}
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'left',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+      >
+        <Typography sx={{ p: 2 }}>Tipo de Servicio</Typography>
+        <Divider />
+        <Paper>
+          <MenuList>
+            <MenuItem>
+              <Vaccines />
+              Consulta General
+            </MenuItem>
+            <MenuItem>
+              <LocalHospital />
+              Consulta Emergencia
+            </MenuItem>
+          </MenuList>
+        </Paper>
+      </Popover>
+      {/* <Modal
         visibleModal={visibleModal}
         setVisibleModal={setVisibleModal}
         //Component1={Component1}
         //Component2={Component2}
         //Component3={Component3}
-      />
+      /> */}
     </>
   )
 }

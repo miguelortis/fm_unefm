@@ -5,7 +5,7 @@ import useIsDataTotal from 'src/hooks/useIsDataTotal'
 
 function PrivateRoute({ ...rest }) {
   useIsLogin()
-  useIsDataTotal()
+  //useIsDataTotal()
   const adminToken = localStorage.getItem('token')
   if (!adminToken) {
     return <Redirect to="/login" />

@@ -11,12 +11,11 @@ const useIsDataTotal = () => {
     dispatch,
   } = useContext(Context)
 
-  /////////////////SOLICITUD DATOS USUARIO /////////////////////////
   useEffect(() => {
     //////////////////SOLICITUD DATOS FAMILIARES///////////////////////
     const DataTotal = async () => {
       try {
-        const { data } = await axios.get('https://backend-fmunefm.herokuapp.com/fmunefm/consult', {
+        const { data } = await axios.get('http://localhost:3100/fmunefm/consult', {
           headers: {
             authorization: `Bearer ${localStorage.getItem('token')}`,
           },
