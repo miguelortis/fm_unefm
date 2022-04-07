@@ -38,85 +38,85 @@ import { IconButton } from '@mui/material'
 import { DisplaySettings, PersonalVideo } from '@mui/icons-material'
 
 export default function TableBeneficiaries() {
-  // const {
-  //   state: { dataTotal, currentUser },
-  // } = useContext(Context)
-  // const Beneficiaries = currentUser?.beneficiaries
+  const {
+    state: { dataTotal, currentUser },
+  } = useContext(Context)
+  const Beneficiaries = currentUser?.beneficiaries
   const [visibleModalEdit, setVisibleModalEdit] = useState(false)
   const [details, setDetails] = useState([])
   const [visible, setVisible] = useState(false)
 
-  // console.log(Beneficiaries)
+  console.log(Beneficiaries)
   const handleModalEditBeneficiary = () => {
     setVisibleModalEdit(!visibleModalEdit)
   }
 
-  // // console.log(dataTotal)
-  // const deleteBeneficiary = async (idCard) => {
-  //   try {
-  //     console.log(idCard)
+  console.log(dataTotal)
+  const deleteBeneficiary = async (idCard) => {
+    try {
+      console.log(idCard)
 
-  //     const res = await axios.delete(
-  //       `https://backend-fmunefm.herokuapp.com/beneficiary/delete/${idCard}`,
-  //       {
-  //         headers: {
-  //           authorization: `Bearer ${localStorage.getItem('token')}`,
-  //         },
-  //       },
-  //     )
+      const res = await axios.delete(
+        `https://backend-fmunefm.herokuapp.com/beneficiary/delete/${idCard}`,
+        {
+          headers: {
+            authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        },
+      )
 
-  //     console.log(res)
-  //   } catch (error) {
-  //     if (error) {
-  //       console.log(error)
-  //     }
-  //   }
-  // }
-  // ///console.log(currentUser)
+      console.log(res)
+    } catch (error) {
+      if (error) {
+        console.log(error)
+      }
+    }
+  }
+  ///console.log(currentUser)
 
-  // const columns = [
-  //   {
-  //     label: 'Nombre',
-  //     key: 'name',
-  //     _style: { width: '40%' },
-  //   },
-  //   {
-  //     label: 'Cedula',
-  //     key: 'idCard',
-  //     _style: { width: '40%' },
-  //   },
-  //   { label: 'Estado', key: 'status', _style: { width: '20%' } },
-  //   {
-  //     key: 'show_details',
-  //     label: 'Opciones',
-  //     _style: { width: '1%' },
-  //     filter: false,
-  //     sorter: false,
-  //   },
-  // ]
+  const columns = [
+    {
+      label: 'Nombre',
+      key: 'name',
+      _style: { width: '40%' },
+    },
+    {
+      label: 'Cedula',
+      key: 'idCard',
+      _style: { width: '40%' },
+    },
+    { label: 'Estado', key: 'status', _style: { width: '20%' } },
+    {
+      key: 'show_details',
+      label: 'Opciones',
+      _style: { width: '1%' },
+      filter: false,
+      sorter: false,
+    },
+  ]
 
-  // const getBadge = (status) => {
-  //   switch (status) {
-  //     case true:
-  //       return <img src={verify} alt="" />
-  //     case false:
-  //       return <CSpinner color="info" />
+  const getBadge = (status) => {
+    switch (status) {
+      case true:
+        return <img src={verify} alt="" />
+      case false:
+        return <CSpinner color="info" />
 
-  //     default:
-  //       return <CSpinner color="info" />
-  //   }
-  // }
+      default:
+        return <CSpinner color="info" />
+    }
+  }
 
-  // const toggleDetails = (index) => {
-  //   const position = details.indexOf(index)
-  //   let newDetails = details.slice()
-  //   if (position !== -1) {
-  //     newDetails.splice(position, 1)
-  //   } else {
-  //     newDetails = [...details, index]
-  //   }
-  //   setDetails(newDetails)
-  // }
+  const toggleDetails = (index) => {
+    const position = details.indexOf(index)
+    let newDetails = details.slice()
+    if (position !== -1) {
+      newDetails.splice(position, 1)
+    } else {
+      newDetails = [...details, index]
+    }
+    setDetails(newDetails)
+  }
   return (
     <>
       <CNavbar expand="lg" colorScheme="dark" className="bg-dark">
@@ -147,11 +147,12 @@ export default function TableBeneficiaries() {
       </CNavbar>
 
       <CHeaderDivider></CHeaderDivider>
-      {/* <CSmartTable
+      <CSmartTable
         activePage={1}
         cleaner
         clickableRows
         columns={columns}
+        items={Beneficiaries}
         itemsPerPageSelect
         itemsPerPage={5}
         pagination
@@ -233,7 +234,7 @@ export default function TableBeneficiaries() {
               <CRow>
                 <CCollapse visible={details.includes(item?.beneficiary?.idCard)}>
                   <CCard>
-                     <CCardHeader component="h5">Header</CCardHeader>
+                    {/* <CCardHeader component="h5">Header</CCardHeader> */}
                     <CCardBody>
                       <CCardTitle>
                         {item?.beneficiary?.name
@@ -333,7 +334,7 @@ export default function TableBeneficiaries() {
           color: 'light',
           hover: true,
         }}
-      /> */}
+      />
 
       <ModalEditBeneficiary
         setVisibleModalEdit={setVisibleModalEdit}
