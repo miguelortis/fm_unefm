@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 const initialState = {
   currentUser: null,
-  dataTotal: {},
+  dataTotal: null,
 }
 
 const reducer = (state, action) => {
@@ -11,7 +11,7 @@ const reducer = (state, action) => {
     case 'SET_USER_DATA':
       return { ...state, currentUser: { ...state.currentUser, ...action.payload } }
     case 'SET_DATA_TOTAL':
-      return { ...state, dataTotal: { ...state.dataTotal, ...action.payload } }
+      return { ...state, dataTotal: action.payload }
     case 'SET_BENEFICIARY':
       return {
         ...state,
@@ -20,8 +20,6 @@ const reducer = (state, action) => {
           beneficiaries: [...state.currentUser.beneficiaries, action.payload],
         },
       }
-    // case 'SET_BENEFICIARIES':
-    //   return { ...state, currentBeneficiaries: [...action.payload] }
     case 'RESET':
       return { ...state, currentUser: null, dataTotal: [] }
     default:

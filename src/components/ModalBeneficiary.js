@@ -32,8 +32,8 @@ import { cilSend } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 import PropTypes from 'prop-types'
 
-export default function ModalEditBeneficiary({ setVisibleModalEdit, visibleModalEdit }) {
-  ModalEditBeneficiary.propTypes = {
+export default function ModalBeneficiary({ setVisibleModalEdit, visibleModalEdit }) {
+  ModalBeneficiary.propTypes = {
     setVisibleModalEdit: PropTypes.func,
     visibleModalEdit: PropTypes.bool,
   }
@@ -75,7 +75,7 @@ export default function ModalEditBeneficiary({ setVisibleModalEdit, visibleModal
           type: 'SET_BENEFICIARY',
           payload: data,
         })
-        //console.log(data)
+        console.log(data)
         setSpinner(true)
         setVisibleModalEdit(false)
       } catch (error) {

@@ -11,7 +11,7 @@ import conyugeM from '../assets/images/avatars/conyugeM.svg'
 import { CButton, CSpinner } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilSettings, cilTrash, cilUserPlus } from '@coreui/icons'
-import ModalEditBeneficiary from './ModalEditBeneficiary'
+import ModalBeneficiary from './ModalBeneficiary'
 import {
   CAvatar,
   CBadge,
@@ -168,17 +168,17 @@ export default function TableBeneficiaries() {
                   <CAvatar
                     size="xl"
                     src={
-                      item.relationship === 'PADRE'
+                      item?.relationship === 'PADRE'
                         ? padre
-                        : item.relationship === 'MADRE'
+                        : item?.relationship === 'MADRE'
                         ? madre
-                        : item.relationship === 'HIJA'
+                        : item?.relationship === 'HIJA'
                         ? hija
-                        : item.relationship === 'HIJO'
+                        : item?.relationship === 'HIJO'
                         ? hijo
-                        : item.relationship === 'CONYUGE' && item.sex === 'FEMENINO'
+                        : item?.relationship === 'CONYUGE' && item?.beneficiary?.sex === 'FEMENINO'
                         ? conyugeF
-                        : item.relationship === 'CONYUGE' && item.sex === 'MASCULINO'
+                        : item?.relationship === 'CONYUGE' && item?.beneficiary?.sex === 'MASCULINO'
                         ? conyugeM
                         : ''
                     }
@@ -336,7 +336,7 @@ export default function TableBeneficiaries() {
         }}
       />
 
-      <ModalEditBeneficiary
+      <ModalBeneficiary
         setVisibleModalEdit={setVisibleModalEdit}
         visibleModalEdit={visibleModalEdit}
       />

@@ -4,7 +4,6 @@ import Stepper from '@mui/material/Stepper'
 import Step from '@mui/material/Step'
 import StepLabel from '@mui/material/StepLabel'
 import Button from '@mui/material/Button'
-import Typography from '@mui/material/Typography'
 //import PropTypes from 'prop-types'
 import { CCol, CContainer, CRow } from '@coreui/react'
 import Visibility from '@mui/icons-material/Visibility'
@@ -159,9 +158,7 @@ const Register = () => {
     setNewUser({ initialValues })
     history.push('/login')
   }
-  const handleReset = () => {
-    setActiveStep(0)
-  }
+
   return (
     <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
       <div
@@ -415,12 +412,14 @@ const Register = () => {
                             </Grid>
                             {/*///////////////DATEBIRTH//////////// */}
                             <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
-                              <FormControl variant="standard">
+                              <FormControl sx={{ width: '30ch' }} variant="standard">
                                 <DesktopDatePicker
                                   id="dateBirth"
                                   label="Fecha de Nacimiento"
                                   inputFormat="DD/MM/YYYY"
-                                  renderInput={(params) => <TextField {...params} />}
+                                  renderInput={(params) => (
+                                    <TextField {...params} variant="standard" />
+                                  )}
                                   name="dateBirth"
                                   value={newUser.dateBirth}
                                   onChange={(e) => {

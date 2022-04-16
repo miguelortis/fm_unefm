@@ -7,7 +7,7 @@ import axios from 'axios'
 const useIsDataTotal = () => {
   //console.log('se ejecuto')
   const {
-    state: { dataTotal, currentUser },
+    state: { currentUser },
     dispatch,
   } = useContext(Context)
 
@@ -15,13 +15,13 @@ const useIsDataTotal = () => {
     //////////////////SOLICITUD DATOS FAMILIARES///////////////////////
     const DataTotal = async () => {
       try {
-        const { data } = await axios.get('https://backend-fmunefm.herokuapp.com/fmunefm/consult', {
+        const { data } = await axios.get('http://localhost:3100/fmunefm/consult', {
           headers: {
             authorization: `Bearer ${localStorage.getItem('token')}`,
           },
           //cancelToken: source.token,
         })
-        console.log(data)
+        //console.log(data)
         dispatch({
           type: 'SET_DATA_TOTAL',
           payload: data,
@@ -32,13 +32,13 @@ const useIsDataTotal = () => {
           console.log(error)
         }
       }
-      console.log(dataTotal)
+      //console.log(dataTotal)
     }
     if (
       (!!localStorage.getItem('token') && currentUser?.role === 'fAmDuMnIeNfm') ||
       currentUser?.role === 'fRmEuCnEePfCmION'
     ) {
-      console.log('se ejecuto')
+      //console.log('se ejecuto')
       DataTotal()
     }
   }, [dispatch, currentUser])

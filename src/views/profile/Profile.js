@@ -3,11 +3,20 @@ import madre from '../../assets/images/avatars/madre.svg'
 import conyugeF from '../../assets/images/avatars/conyugeF.svg'
 import conyugeM from '../../assets/images/avatars/conyugeM.svg'
 import fondoCard from '../../assets/images/image.jpg'
-
+import Button from '@mui/material/Button'
+import Dialog from '@mui/material/Dialog'
+import DialogActions from '@mui/material/DialogActions'
+import DialogContent from '@mui/material/DialogContent'
+import DialogTitle from '@mui/material/DialogTitle'
+import PropTypes from 'prop-types'
+import { useTheme } from '@mui/material/styles'
+import AppBar from '@mui/material/AppBar'
+import Tabs from '@mui/material/Tabs'
+import Tab from '@mui/material/Tab'
+import Box from '@mui/material/Box'
 import * as moment from 'moment'
 import {
   CAvatar,
-  CButton,
   CCard,
   CCardBody,
   CCardImage,
@@ -15,32 +24,67 @@ import {
   CCardText,
   CCardTitle,
   CCol,
-  CForm,
-  CFormInput,
-  CFormLabel,
   CListGroup,
   CListGroupItem,
-  CModal,
-  CModalBody,
-  CModalFooter,
-  CModalHeader,
-  CModalTitle,
   CRow,
   CSpinner,
 } from '@coreui/react-pro'
-
 import React, { useState, useContext } from 'react'
-
 import { Context } from '../../contexts/Context'
 import axios from 'axios'
+import { InputAdornment, TextField } from '@mui/material'
+import { ContactPhone, Phone, Email, AlternateEmail } from '@mui/icons-material'
+function TabPanel(props) {
+  const { children, value, index, ...other } = props
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`full-width-tabpanel-${index}`}
+      aria-labelledby={`full-width-tab-${index}`}
+      {...other}
+    >
+      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+    </div>
+  )
+}
+
+TabPanel.propTypes = {
+  children: PropTypes.node,
+  index: PropTypes.number.isRequired,
+  value: PropTypes.number.isRequired,
+}
+
+function a11yProps(index) {
+  return {
+    id: `full-width-tab-${index}`,
+    'aria-controls': `full-width-tabpanel-${index}`,
+  }
+}
+
 export default function Profile() {
   const {
     state: { currentUser },
     dispatch,
   } = useContext(Context)
-  const [visible, setVisible] = useState(false)
   const [updateData, setUpdateData] = useState(null)
   const [showSpinner, setShowSpinner] = useState(false)
+  const [open, setOpen] = useState(false)
+  const theme = useTheme()
+  const [value, setValue] = React.useState(0)
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue)
+  }
+
+  const handleClickOpen = () => {
+    setOpen(true)
+  }
+
+  const handleClose = () => {
+    setOpen(false)
+  }
   const fecha = moment(currentUser?.registrationDate).format('DD MMM YYYY')
 
   const UpdateData = async (e) => {
@@ -67,7 +111,7 @@ export default function Profile() {
           payload: updateData,
         })
         setShowSpinner(false)
-        setVisible(false)
+        setOpen(false)
       }
     } catch (error) {
       if (error) {
@@ -181,14 +225,23 @@ export default function Profile() {
           </CCard>
         </CCol>
       </CRow>
+
       {/*/////////////////////////////////////////////////////////////////// */}
       <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <CButton onClick={() => setVisible(!visible)}>Actualizar Datos</CButton>
-        <CModal alignment="center" visible={visible} onClose={() => setVisible(false)}>
+        <Button variant="outlined" onClick={handleClickOpen}>
+          Actualizar Datos
+        </Button>
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
           <div
             hidden={!showSpinner}
             style={{
               position: 'absolute',
+              padding: '0',
               width: '100%',
               height: '100%',
               display: 'flex',
@@ -201,47 +254,127 @@ export default function Profile() {
             <CSpinner style={{ display: 'block' }} color="info" />
             <span style={{ display: 'block', color: '#fff' }}>...Cargando</span>
           </div>
-          <CModalHeader>
-            <CModalTitle>Actualizar Datos</CModalTitle>
-          </CModalHeader>
-          <CModalBody>
-            <CForm className="row g-3">
-              <CCol md={4} lg={6}>
-                <CFormLabel htmlFor="email">Correo</CFormLabel>
-                <CFormInput
-                  //value={updateData?.email}
-                  type="text"
-                  id="email"
-                  defaultValue={currentUser?.email}
-                  onChange={(e) => {
-                    setUpdateData({ ...updateData, email: e.target.value })
-                  }}
-                />
-              </CCol>
-              <CCol md={4}>
-                <CFormLabel htmlFor="phone">Telefono</CFormLabel>
-                <CFormInput
-                  //value={updateData?.phone}
-                  type="text"
-                  id="phone"
-                  defaultValue={currentUser?.phone}
-                  onChange={(e) => {
-                    setUpdateData({ ...updateData, phone: e.target.value })
-                  }}
-                />
-              </CCol>
+          <DialogTitle id="alert-dialog-title">{'Actualizar Datos'}</DialogTitle>
+          <DialogContent>
+            <Box sx={{ bgcolor: 'background.paper', width: '100%' }}>
+              <AppBar position="static">
+                <Tabs
+                  value={value}
+                  onChange={handleChange}
+                  indicatorColor="secondary"
+                  textColor="inherit"
+                  variant="fullWidth"
+                  aria-label="full width tabs example"
+                >
+                  <Tab label="Email" {...a11yProps(0)} />
+                  <Tab label="Phone" {...a11yProps(1)} />
+                </Tabs>
+              </AppBar>
 
-              <CModalFooter>
-                <CButton color="secondary" onClick={() => setVisible(false)}>
-                  Close
-                </CButton>
-                <CButton onClick={UpdateData}>Sign in</CButton>
-              </CModalFooter>
-            </CForm>
-          </CModalBody>
-        </CModal>
+              <TabPanel value={value} index={0} dir={theme.direction}>
+                <Box
+                  component="div"
+                  style={{ textAlign: 'center' }}
+                  sx={{
+                    '& > :not(style)': { m: 1, width: { xs: '100%', md: '70%' } },
+                  }}
+                  noValidate
+                  autoComplete="off"
+                >
+                  <TextField
+                    type="email"
+                    id="email"
+                    defaultValue={currentUser?.email}
+                    label="Standard"
+                    variant="standard"
+                    InputProps={{
+                      readOnly: true,
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <Email />
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                  <TextField
+                    value={updateData?.email}
+                    type="email"
+                    id="email"
+                    onChange={(e) => {
+                      setUpdateData({ ...updateData, email: e.target.value.toUpperCase() })
+                      console.log(currentUser?.email)
+                    }}
+                    label="Standard"
+                    variant="standard"
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <AlternateEmail />
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                  <div style={{ color: '#767982', fontSize: '11px', width: '100%' }}>
+                    (Ej. SOPORTEFMUNEFM@GMAIL.COM)
+                  </div>
+                </Box>
+              </TabPanel>
+              <TabPanel value={value} index={1} dir={theme.direction}>
+                <Box
+                  component="div"
+                  style={{ textAlign: 'center' }}
+                  sx={{
+                    '& > :not(style)': { m: 1, width: { xs: '100%', md: '50%' } },
+                  }}
+                  autoComplete="off"
+                >
+                  <TextField
+                    type="text"
+                    id="phone"
+                    defaultValue={currentUser?.phone}
+                    label="Telefono Actual"
+                    variant="standard"
+                    InputProps={{
+                      readOnly: true,
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <ContactPhone />
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                  <TextField
+                    value={updateData?.phone}
+                    type="number"
+                    id="phone"
+                    onChange={(e) => {
+                      setUpdateData({ ...updateData, phone: e.target.value.toUpperCase() })
+                    }}
+                    label="Telefono Nuevo"
+                    variant="standard"
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <Phone />
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                  <div style={{ color: '#767982', fontSize: '11px', width: '100%' }}>
+                    (Ej. 04120788000)
+                  </div>
+                </Box>
+              </TabPanel>
+            </Box>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose}>Cancelar</Button>
+            <Button onClick={UpdateData} autoFocus>
+              Actualizar
+            </Button>
+          </DialogActions>
+        </Dialog>
       </div>
-      {/* /////////////////////////////////////////////////////////// */}
     </>
   )
 }

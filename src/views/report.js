@@ -13,7 +13,7 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilMenu, cilX, cilSettings, cilTrash, cilUserPlus } from '@coreui/icons'
-import ModalEditBeneficiary from '../components/ModalEditBeneficiary'
+import ModalEditBeneficiary from '../components/ModalBeneficiary'
 import {
   CCard,
   CCardBody,

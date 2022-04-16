@@ -2,34 +2,24 @@ import React, { useState } from 'react'
 import verify from '../../assets/icons/usuarioVerificado.png'
 import { useContext } from 'react'
 import { Context } from '../../contexts/Context'
-import hijo from '../../assets/images/avatars/hijo.svg'
-import hija from '../../assets/images/avatars/hija.svg'
-import padre from '../../assets/images/avatars/padre.svg'
-import madre from '../../assets/images/avatars/madre.svg'
-import conyugeF from '../../assets/images/avatars/conyugeF.svg'
-import conyugeM from '../../assets/images/avatars/conyugeM.svg'
+import { Button, ButtonGroup } from '@mui/material'
+
+import MenuIcon from '@mui/icons-material/Menu'
 import {
   DisplaySettings,
-  LocalHospital,
   MedicalServices,
   PersonalVideo,
-  Vaccines,
+  ContactPage,
+  Person,
+  Group,
 } from '@mui/icons-material'
 import { CSpinner } from '@coreui/react'
-import ModalEditBeneficiary from '../../components/ModalEditBeneficiary'
 import {
   CBadge,
   CCard,
   CCardBody,
-  CCardText,
   CCardTitle,
-  CCol,
   CCollapse,
-  CContainer,
-  CHeaderDivider,
-  CImage,
-  CNavbar,
-  CNavbarBrand,
   CRow,
   CSmartTable,
   CTable,
@@ -38,26 +28,58 @@ import {
   CTableHead,
   CTableHeaderCell,
   CTableRow,
-  CTooltip,
 } from '@coreui/react-pro'
 // import axios from 'axios'
 import { Redirect } from 'react-router-dom'
-import { Divider, IconButton, MenuItem, MenuList, Paper, Popover, Typography } from '@mui/material'
+import {
+  AppBar,
+  Box,
+  IconButton,
+  MenuItem,
+  Typography,
+  Toolbar,
+  Tooltip,
+  Zoom,
+  Chip,
+  Avatar,
+  Menu,
+} from '@mui/material'
+import ServiceRequest from '../servicerequest/ServiceRequest'
+import ServicePanel from 'src/components/servicepanel/ServicePanel'
 
-export default function TableBeneficiaries() {
+export default function ConsultaAfiliados() {
   const {
     state: { dataTotal, currentUser },
   } = useContext(Context)
-
-  const [visibleModalEdit, setVisibleModalEdit] = useState(false)
   const [details, setDetails] = useState([])
+  const [data, setData] = useState([])
+  const [showUB, setShowUB] = useState('Titulares y Familiares')
+  const [openService, setOpenService] = useState(false)
+  const [anchorElNav, setAnchorElNav] = useState(null)
   const [anchorEl, setAnchorEl] = useState(null)
-
+  const [component, setComponent] = useState({})
   if (
     (!!localStorage.getItem('token') && currentUser?.role === 'user') ||
     currentUser?.role === ''
   ) {
     return <Redirect to="/unauthorised" />
+  }
+
+  const open = Boolean(anchorEl)
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget)
+  }
+  const handleClose = () => {
+    setAnchorEl(null)
+  }
+
+  const handleBeneficiaries = () => {
+    setData(dataTotal?.Beneficiaries)
+    setShowUB('Familiares')
+  }
+  const handleUsers = () => {
+    setData(dataTotal?.Users)
+    setShowUB('Titulares')
   }
 
   const columns = [
@@ -104,346 +126,372 @@ export default function TableBeneficiaries() {
     setDetails(newDetails)
   }
 
-  ///////popover/////
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget)
+  const handleCloseNavMenu = () => {
+    setAnchorElNav(null)
   }
-
-  const handleClose = () => {
-    setAnchorEl(null)
+  const handleOpenNavMenu = (event) => {
+    setAnchorElNav(event.currentTarget)
   }
-
-  const open = Boolean(anchorEl)
-  const id = open ? 'simple-popover' : undefined
-  ///////popover/////
   return (
     <>
-      <CNavbar expand="lg" colorScheme="dark" className="bg-dark">
-        <CContainer fluid>
-          <CNavbarBrand>Titulares y Familiares</CNavbarBrand>
-          {/* <CNavbarToggler
-            aria-label="Toggle navigation"
-            aria-expanded={visible}
-            onClick={() => setVisible(!visible)}
-          />
-
-          <CCollapse className="navbar-collapse justify-content-end" visible={visible}>
-            <CNavbarNav className="justify-content-end">
-              <CNavItem>
-                <CButton
-                  color="dark"
-                  style={{ cursor: 'pointer' }}
-                  onClick={() => handleModalEditBeneficiary()}
-                  active
+      <Box sx={{ flexGrow: 1 }}>
+        <AppBar position="static" color="info">
+          <Toolbar>
+            <Typography variant="subtitle1" component="div" sx={{ flexGrow: 1 }}>
+              {showUB}
+            </Typography>
+            <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
+              <IconButton
+                size="large"
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleOpenNavMenu}
+                color="inherit"
+              >
+                <MenuIcon />
+              </IconButton>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorElNav}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'left',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'left',
+                }}
+                open={Boolean(anchorElNav)}
+                onClose={handleCloseNavMenu}
+                sx={{
+                  display: { xs: 'block', md: 'none' },
+                }}
+              >
+                <MenuItem
+                  key="1"
+                  onClick={() => {
+                    handleUsers()
+                    handleCloseNavMenu()
+                  }}
                 >
-                  <CIcon size="lg" icon={cilUserPlus} />
-                  Agregar Familiar
-                </CButton>
-              </CNavItem>
-            </CNavbarNav>
-          </CCollapse> */}
-        </CContainer>
-      </CNavbar>
+                  <Person />
+                  <Typography textAlign="center">Titulares</Typography>
+                </MenuItem>
+                <MenuItem
+                  key="2"
+                  onClick={() => {
+                    handleBeneficiaries()
+                    handleCloseNavMenu()
+                  }}
+                >
+                  <Group />
+                  <Typography textAlign="center">Familiares</Typography>
+                </MenuItem>
+              </Menu>
+            </Box>
+            <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+              <Button color="inherit" onClick={handleUsers}>
+                <Chip
+                  style={{ cursor: 'pointer' }}
+                  color="primary"
+                  label="Titulares"
+                  avatar={<Avatar>{dataTotal?.Users?.length}</Avatar>}
+                />
+              </Button>
+              <Button color="inherit" onClick={handleBeneficiaries}>
+                <Chip
+                  style={{ cursor: 'pointer' }}
+                  color="primary"
+                  label="Familiares"
+                  avatar={<Avatar>{dataTotal?.Beneficiaries?.length}</Avatar>}
+                />
+              </Button>
+            </Box>
+          </Toolbar>
+        </AppBar>
+      </Box>
+      <br />
 
-      <CHeaderDivider></CHeaderDivider>
-      <div style={{ textAling: 'right' }}>{dataTotal.length}</div>
-
-      <CSmartTable
-        activePage={1}
-        cleaner
-        clickableRows
-        columns={columns}
-        items={dataTotal}
-        itemsPerPageSelect
-        itemsPerPage={5}
-        pagination
-        scopedColumns={{
-          name: (item) => (
-            <td>
-              <CTooltip
-                content={
-                  item.relationship
-                    ? ` Familiar de ${item?.userId?.name}`
-                    : item?.beneficiaries?.length === 0
-                    ? 'Titular (sin carga familiar)'
-                    : `Titular (carga familiar ${item?.beneficiaries?.length})`
-                }
-                placement="top"
-                trigger="hover"
-              >
-                <h5> {item.name.replace(/\b\w/g, (l) => l.toUpperCase())} </h5>
-              </CTooltip>
-            </td>
-          ),
-          idCard: (item) => (
-            <td>
-              <h6>
-                {item.documentType.toUpperCase()}
-                {'-'}
-                {item.idCard}{' '}
-              </h6>
-            </td>
-          ),
-          status: (item) => (
-            <td>
-              <CTooltip
-                content={
-                  item.status
-                    ? 'Verificado'
-                    : 'En espera. Por favor, llevar documentos a la oficina principal del fondo mutual para su verificacion'
-                }
-                placement="top"
-                trigger="hover"
-              >
-                <CBadge>{getBadge(item.status)}</CBadge>
-              </CTooltip>
-            </td>
-          ),
-          show_details: (item) => {
-            return (
-              <td className="py-2">
-                <CRow>
-                  <CCol lg={2} xl={2}>
-                    <CTooltip content="Detalles" placement="top" trigger="hover">
-                      <IconButton
-                        color="info"
-                        //variant="outline"
-                        //shape="square"
-                        size="sm"
+      {data?.length > 0 && (
+        <CSmartTable
+          activePage={1}
+          cleaner
+          clickableRows
+          columns={columns}
+          items={data}
+          itemsPerPageSelect
+          itemsPerPage={5}
+          pagination
+          scopedColumns={{
+            name: (item) => (
+              <td>
+                <Tooltip
+                  TransitionComponent={Zoom}
+                  title={
+                    item?.userId
+                      ? ` Familiar de ${
+                          item?.userId?.length >= 3
+                            ? `${item?.userId.length} Usuarios`
+                            : item?.userId?.map((el) => el.name)
+                        }`
+                      : item?.beneficiaries?.length === 0
+                      ? 'Titular sin carga familiar'
+                      : `Titular de ${
+                          item?.beneficiaries?.length >= 3
+                            ? `${item?.beneficiaries?.length} Familiares`
+                            : item?.beneficiaries?.map((el) => el?.beneficiary?.name)
+                        }`
+                  }
+                  placement="top"
+                >
+                  <h5> {item?.name?.toLowerCase().replace(/\b\w/g, (l) => l.toUpperCase())} </h5>
+                </Tooltip>
+              </td>
+            ),
+            idCard: (item) => (
+              <td>
+                <h6>
+                  {item?.documentType?.toUpperCase()}
+                  {'-'}
+                  {item?.idCard}{' '}
+                </h6>
+              </td>
+            ),
+            status: (item) => (
+              <td>
+                <Tooltip
+                  TransitionComponent={Zoom}
+                  title={
+                    item?.status
+                      ? 'Verificado'
+                      : 'En espera. Por favor, llevar documentos a la oficina principal del fondo mutual para su verificacion'
+                  }
+                  placement="top"
+                  //trigger="hover"
+                >
+                  <CBadge>{getBadge(item?.status)}</CBadge>
+                </Tooltip>
+              </td>
+            ),
+            show_details: (item) => {
+              return (
+                <td>
+                  <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+                    <ButtonGroup variant="contained" aria-label="outlined primary button group">
+                      <Tooltip title="Historial" placement="top">
+                        <Button
+                          onClick={() => {
+                            toggleDetails(item?._id)
+                          }}
+                        >
+                          {details.includes(item?._id) ? <PersonalVideo /> : <DisplaySettings />}
+                        </Button>
+                      </Tooltip>
+                      <Tooltip title="Informacion del Usuario" placement="top">
+                        <Button
+                          onClick={() => {
+                            toggleDetails(item?._id)
+                          }}
+                        >
+                          <ContactPage />
+                        </Button>
+                      </Tooltip>
+                      <Tooltip title="Servicios" placement="top">
+                        <Button
+                          onClick={() => {
+                            setOpenService(true)
+                            setComponent(<ServicePanel item={item} />)
+                          }}
+                        >
+                          <MedicalServices />
+                        </Button>
+                      </Tooltip>
+                    </ButtonGroup>
+                  </Box>
+                  <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
+                    <ButtonGroup
+                      orientation="vertical"
+                      aria-label="vertical contained button group"
+                      variant="contained"
+                    >
+                      <Tooltip title="Historial" placement="top">
+                        <Button
+                          onClick={() => {
+                            toggleDetails(item?._id)
+                          }}
+                        >
+                          {details.includes(item?._id) ? <PersonalVideo /> : <DisplaySettings />}
+                        </Button>
+                      </Tooltip>
+                      <Button
+                        id="fade-button"
+                        aria-controls={open ? 'fade-menu' : undefined}
+                        aria-haspopup="true"
+                        aria-expanded={open ? 'true' : undefined}
+                        onClick={handleClick}
+                      >
+                        <MenuIcon />
+                      </Button>
+                    </ButtonGroup>
+                    <Menu
+                      id="fade-menu"
+                      MenuListProps={{
+                        'aria-labelledby': 'fade-button',
+                      }}
+                      anchorEl={anchorEl}
+                      open={open}
+                      anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'left',
+                      }}
+                      keepMounted
+                      transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'left',
+                      }}
+                      onClose={handleClose}
+                      sx={{
+                        display: { xs: 'block', md: 'none' },
+                      }}
+                    >
+                      <MenuItem
                         onClick={() => {
-                          toggleDetails(item._id)
+                          handleClose()
                         }}
                       >
-                        {details.includes(item._id) ? <PersonalVideo /> : <DisplaySettings />}
-                      </IconButton>
-                    </CTooltip>
-                  </CCol>
-                  <CCol lg={2} xl={2}>
-                    <CTooltip content="Servicios Medicos" placement="top" trigger="hover">
-                      <IconButton
-                        onClick={handleClick}
-                        color="info"
-                        //variant="outline"
-                        //shape="square"
-                        size="sm"
-                        component="span"
+                        <ContactPage />
+                        <Typography textAlign="center">Informacion de Usuario</Typography>
+                      </MenuItem>
+                      <MenuItem
+                        onClick={() => {
+                          setOpenService(true)
+                          setComponent(
+                            <ServicePanel
+                              item={item}
+                              setOpenService={setOpenService}
+                              openService={openService}
+                            />,
+                          )
+                          handleClose()
+                        }}
                       >
                         <MedicalServices />
-                      </IconButton>
-                    </CTooltip>
-                  </CCol>
-                </CRow>
-              </td>
-            )
-          },
-          details: (item) => {
-            return (
-              <CRow>
-                <CCollapse visible={details.includes(item._id)}>
-                  <CCard>
-                    <CCardBody>
-                      <CCardTitle>
-                        {item.name.toLowerCase().replace(/\b\w/g, (l) => l.toUpperCase())}{' '}
-                        {item.lastName.toLowerCase().replace(/\b\w/g, (l) => l.toUpperCase())}
-                      </CCardTitle>
-                      <CRow>
-                        <CCol xs={12} md={4}>
-                          <CCardText>
-                            {item.documentType}
-                            {item.idCard}
-                          </CCardText>
-                        </CCol>
-                        <br />
-                        <br />
-                        <CCol xs={12} md={4} xxl={4}>
-                          <CImage
-                            rounded
-                            thumbnail
-                            src={
-                              item?.relationship === 'hijo/a' && item?.sex === 'masculino'
-                                ? hijo
-                                : item?.relationship === 'hijo/a' && item?.sex === 'femenino'
-                                ? hija
-                                : item?.relationship === 'madre' && item?.sex === 'femenino'
-                                ? madre
-                                : item?.relationship === 'padre' && item?.sex === 'masculino'
-                                ? padre
-                                : item.relationship === 'conyuge' && item.sex === 'femenino'
-                                ? conyugeF
-                                : item.relationship === 'conyuge' && item.sex === 'femenino'
-                                ? conyugeM
-                                : hijo
-                            }
-                            width={150}
-                            height={150}
-                          />
-                        </CCol>
-                        <CCol xs={12} md={4} xxl={4}>
-                          <CCardText className="text-muted">
-                            Parentesco: {item?.relationship?.toUpperCase()}
-                          </CCardText>
-                          <CCardText className="text-muted">
-                            Sexo: {item?.sex?.toUpperCase()}
-                          </CCardText>
-                          <CCardText className="text-muted">
-                            Fecha Nacimiento: {item?.dateBirth}
-                          </CCardText>
-                          <CCardText className="text-muted">
-                            Fecha Registro: {item?.registrationDate}
-                          </CCardText>
-                        </CCol>
-                      </CRow>
-                      <br />
-                      {/* <CButton
-                        onClick={() => handleModalEditBeneficiary(item)}
-                        size="lg"
-                        color="light"
-                        shape="rounded-pill"
-                      >
-                        <CIcon icon={cilSettings} size="xxl" />
-                      </CButton>
-                      <CButton
-                        onClick={() => deleteBeneficiary(item.idCard)}
-                        size="lg"
-                        color="light"
-                        shape="rounded-pill"
-                      >
-                        <CIcon icon={cilTrash} size="xxl" />
-                      </CButton> */}
-                      {item.relationship ? (
-                        <h5
+                        <Typography textAlign="center">Servicios</Typography>
+                      </MenuItem>
+                    </Menu>
+                  </Box>
+                </td>
+              )
+            },
+            details: (item) => {
+              return (
+                <CRow>
+                  <CCollapse visible={details.includes(item?._id)}>
+                    <CCard>
+                      <CCardBody>
+                        <CCardTitle
                           style={{
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
                           }}
                         >
-                          Es{' '}
-                          {item.relationship.toLowerCase().replace(/\b\w/g, (l) => l.toUpperCase())}{' '}
-                          del Titular:
-                        </h5>
-                      ) : (
-                        <h5
-                          style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                          }}
-                        >
-                          {item.beneficiaries.length === 0
+                          <br />
+                          {item?.userId
+                            ? 'Pertenece a la carga familiar de:'
+                            : item?.beneficiaries?.length === 0
                             ? 'No posee Carga Familiar'
                             : 'Carga Familiar'}
-                        </h5>
-                      )}
-
-                      <CTable
-                        hidden={
-                          item.beneficiaries
-                            ? item.beneficiaries.length === 0
+                        </CCardTitle>
+                        <CTable
+                          hidden={
+                            item?.beneficiaries
+                              ? item?.beneficiaries.length === 0
+                                ? true
+                                : false
+                              : item?.userId.length === 0
                               ? true
                               : false
-                            : false
-                        }
-                        hover
-                      >
-                        <CTableHead>
-                          <CTableRow>
-                            <CTableHeaderCell scope="col">Nº</CTableHeaderCell>
-                            <CTableHeaderCell scope="col">Cedula</CTableHeaderCell>
-                            <CTableHeaderCell scope="col">Nombre</CTableHeaderCell>
-                            <CTableHeaderCell scope="col">Parentesco</CTableHeaderCell>
-                          </CTableRow>
-                        </CTableHead>
-                        <CTableBody>
-                          {item.relationship ? (
+                          }
+                          hover
+                        >
+                          <CTableHead>
                             <CTableRow>
-                              <CTableHeaderCell scope="row">1</CTableHeaderCell>
-                              <CTableDataCell>
-                                {item.userId.documentType}
-                                {item.userId.idCard}
-                              </CTableDataCell>
-                              <CTableDataCell>{item.userId.name}</CTableDataCell>
-                              <CTableDataCell>{item.userId.dateBirth}</CTableDataCell>
-                              <CTableDataCell>{item.userId.relationship}</CTableDataCell>
+                              <CTableHeaderCell scope="col">Nº</CTableHeaderCell>
+                              <CTableHeaderCell scope="col">Cedula</CTableHeaderCell>
+                              <CTableHeaderCell scope="col">Nombre</CTableHeaderCell>
+                              <CTableHeaderCell scope="col">Apellido</CTableHeaderCell>
+                              <CTableHeaderCell scope="col">Parentesco</CTableHeaderCell>
                             </CTableRow>
-                          ) : (
-                            item?.beneficiaries?.map((el, index) => (
-                              <CTableRow key={index}>
-                                <CTableHeaderCell scope="row">{index + 1}</CTableHeaderCell>
-                                <CTableDataCell>
-                                  {el.documentType}
-                                  {el.idCard}
-                                </CTableDataCell>
-                                <CTableDataCell>{el.name}</CTableDataCell>
-                                <CTableDataCell>{el.dateBirth}</CTableDataCell>
-                                <CTableDataCell>{el.relationship}</CTableDataCell>
-                              </CTableRow>
-                            ))
-                          )}
-                        </CTableBody>
-                      </CTable>
-                    </CCardBody>
-                  </CCard>
-                </CCollapse>
-              </CRow>
-            )
-          },
-        }}
-        sorterValue={{ column: 'name', state: 'asc' }}
-        tableFilter
-        tableFilterPlaceholder="Buscar"
-        tableFilterLabel=""
-        tableHeadProps={{
-          color: 'info',
-        }}
-        tableProps={{
-          align: 'middle',
-          responsive: false,
-          color: 'light',
-          hover: true,
-        }}
+                          </CTableHead>
+                          <CTableBody>
+                            {/* ////////////Beneficiariy///////////// */}
+                            {item?.userId &&
+                              item?.userId?.map((el, index) => (
+                                <CTableRow key={index}>
+                                  <CTableHeaderCell scope="row">{index + 1}</CTableHeaderCell>
+                                  <CTableDataCell>
+                                    {el?.user?.documentType}
+                                    {el?.user?.idCard}
+                                  </CTableDataCell>
+                                  <CTableDataCell>{el?.user?.name}</CTableDataCell>
+                                  <CTableDataCell>{el?.user?.lastName}</CTableDataCell>
+                                  <CTableDataCell>
+                                    {el?.relationship === 'HIJO' && el?.user?.sex === 'MASCULINO'
+                                      ? 'Padre'
+                                      : el?.relationship === 'HIJO' && el?.user?.sex === 'FEMENINO'
+                                      ? 'Madre'
+                                      : el?.relationship === 'PADRE' || el?.relationship === 'MADRE'
+                                      ? 'Hijo'
+                                      : 'Conyuge'}
+                                  </CTableDataCell>
+                                </CTableRow>
+                              ))}
+                            {/*///////////////User /////////////// */}
+                            {item?.beneficiaries &&
+                              item?.beneficiaries?.map((el, index) => (
+                                <CTableRow key={index}>
+                                  <CTableHeaderCell scope="row">{index + 1}</CTableHeaderCell>
+                                  <CTableDataCell>
+                                    {el?.beneficiary?.documentType}
+                                    {el?.beneficiary?.idCard}
+                                  </CTableDataCell>
+                                  <CTableDataCell>{el?.beneficiary?.name}</CTableDataCell>
+                                  <CTableDataCell>{el?.beneficiary?.lastName}</CTableDataCell>
+                                  <CTableDataCell>{el?.relationship}</CTableDataCell>
+                                </CTableRow>
+                              ))}
+                          </CTableBody>
+                        </CTable>
+                      </CCardBody>
+                    </CCard>
+                  </CCollapse>
+                </CRow>
+              )
+            },
+          }}
+          sorterValue={{ column: 'name', state: 'asc' }}
+          tableFilter
+          tableFilterPlaceholder="Buscar"
+          tableFilterLabel=""
+          tableHeadProps={{
+            color: 'info',
+          }}
+          tableProps={{
+            align: 'middle',
+            responsive: false,
+            color: 'light',
+            hover: true,
+          }}
+        />
+      )}
+      <ServiceRequest
+        openService={openService}
+        setOpenService={setOpenService}
+        component={component}
       />
-
-      <ModalEditBeneficiary
-        setVisibleModalEdit={setVisibleModalEdit}
-        visibleModalEdit={visibleModalEdit}
-      />
-      <Popover
-        id={id}
-        open={open}
-        anchorEl={anchorEl}
-        onClose={handleClose}
-        anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'left',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
-        }}
-      >
-        <Typography sx={{ p: 2 }}>Tipo de Servicio</Typography>
-        <Divider />
-        <Paper>
-          <MenuList>
-            <MenuItem>
-              <Vaccines />
-              Consulta General
-            </MenuItem>
-            <MenuItem>
-              <LocalHospital />
-              Consulta Emergencia
-            </MenuItem>
-          </MenuList>
-        </Paper>
-      </Popover>
-      {/* <Modal
-        visibleModal={visibleModal}
-        setVisibleModal={setVisibleModal}
-        //Component1={Component1}
-        //Component2={Component2}
-        //Component3={Component3}
-      /> */}
     </>
   )
 }

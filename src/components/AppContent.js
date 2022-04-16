@@ -8,7 +8,22 @@ import routes from '../routes'
 const AppContent = () => {
   return (
     <CContainer lg>
-      <Suspense fallback={<CSpinner color="primary" />}>
+      <Suspense
+        fallback={
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              zIndex: 999,
+              backgroundColor: 'rgba(8, 34, 49, 0.575)',
+            }}
+          >
+            <CSpinner style={{ display: 'block' }} color="info" />
+            <span style={{ display: 'block', color: '#fff' }}>...Cargando</span>
+          </div>
+        }
+      >
         <Switch>
           {routes.map((route, idx) => {
             return (
