@@ -3,7 +3,16 @@ import Card from '@mui/material/Card'
 import Autocomplete from '@mui/material/Autocomplete'
 import CardContent from '@mui/material/CardContent'
 import Typography from '@mui/material/Typography'
-import { Button, CardHeader, Divider, Grid, MenuItem, Select, TextField } from '@mui/material'
+import {
+  Button,
+  CardActions,
+  CardHeader,
+  Divider,
+  Grid,
+  MenuItem,
+  Select,
+  TextField,
+} from '@mui/material'
 import PropTypes from 'prop-types'
 import { Box } from '@mui/system'
 
@@ -80,7 +89,7 @@ export default function ServicePanel({ item }) {
                     </Box>
                   )}
                   renderInput={(params) => (
-                    <Typography sx={{ fontSize: 18 }} color="text.secondary" gutterBottom>
+                    <div style={{ fontSize: 18 }}>
                       Cedula:{' '}
                       <TextField
                         variant="standard"
@@ -91,29 +100,41 @@ export default function ServicePanel({ item }) {
                           autoComplete: 'off',
                         }}
                       />
-                    </Typography>
+                    </div>
                   )}
                 />
-                <Typography sx={{ fontSize: 18 }} color="text.secondary" gutterBottom>
-                  Nombre:{' '}
-                  {dataUser?.user?.name?.toLowerCase().replace(/\b\w/g, (l) => l.toUpperCase())}
-                </Typography>
-                <Typography sx={{ fontSize: 18 }} color="text.secondary" gutterBottom>
-                  Apellido:{' '}
-                  {dataUser?.user?.lastName?.toLowerCase().replace(/\b\w/g, (l) => l.toUpperCase())}
-                </Typography>
-                <Typography sx={{ fontSize: 18 }} color="text.secondary" gutterBottom>
-                  Parentesco:{' '}
-                  {dataUser?.relationship === 'PADRE' || dataUser?.relationship === 'MADRE'
-                    ? 'Hijo/a'
-                    : dataUser?.relationship === 'HIJO' && dataUser?.sex === 'MASCULINO'
-                    ? 'Padre'
-                    : dataUser?.relationship === 'HIJO' && dataUser?.sex === 'FEMENINO'
-                    ? 'Madre'
-                    : dataUser?.relationship === 'HIJO' && dataUser?.sex === 'FEMENINO'
-                    ? 'Madre'
-                    : 'Conyuge'}
-                </Typography>
+                {dataUser && (
+                  <>
+                    <Typography sx={{ fontSize: 18 }} color="text.secondary" gutterBottom>
+                      Nombre:{' '}
+                      {dataUser?.user?.name?.toLowerCase().replace(/\b\w/g, (l) => l.toUpperCase())}
+                    </Typography>
+                    <Typography sx={{ fontSize: 18 }} color="text.secondary" gutterBottom>
+                      Apellido:{' '}
+                      {dataUser?.user?.lastName
+                        ?.toLowerCase()
+                        .replace(/\b\w/g, (l) => l.toUpperCase())}
+                    </Typography>
+                    <Typography sx={{ fontSize: 18 }} color="text.secondary" gutterBottom>
+                      Parentesco:{' '}
+                      {(dataUser?.relationship === 'PADRE' && dataUser?.user?.sex === 'FEMENINO') ||
+                      (dataUser?.relationship === 'MADRE' && dataUser?.user?.sex === 'FEMENINO')
+                        ? 'Hija'
+                        : (dataUser?.relationship === 'PADRE' &&
+                            dataUser?.user?.sex === 'MASCULINO') ||
+                          (dataUser?.relationship === 'MADRE' &&
+                            dataUser?.user?.sex === 'MASCULINO')
+                        ? 'Hijo'
+                        : dataUser?.relationship === 'HIJO' && dataUser?.user?.sex === 'MASCULINO'
+                        ? 'Padre'
+                        : dataUser?.relationship === 'HIJO' && dataUser?.user?.sex === 'FEMENINO'
+                        ? 'Madre'
+                        : dataUser?.relationship === 'HIJO' && dataUser?.user?.sex === 'FEMENINO'
+                        ? 'Madre'
+                        : 'Conyuge'}
+                    </Typography>
+                  </>
+                )}
               </Card>
             </Grid>
           )}
@@ -140,7 +161,7 @@ export default function ServicePanel({ item }) {
           />
           <Divider sx={{ mb: 2 }} />
           <Select
-            sx={{ width: { xs: '100%', md: '50%' } }}
+            sx={{ width: { xs: '100%', md: '50%' }, backgroundColor: '#EDF0F7' }}
             //value={age}
             label="Tipo de Consulta"
             onChange={(e) => console.log(e.target.value)}
@@ -152,7 +173,11 @@ export default function ServicePanel({ item }) {
           </Select>
         </Card>
       </CardContent>
-      <Button autoFocus>Aceptar</Button>
+      <CardActions sx={{ justifyContent: 'right' }}>
+        <Button variant="contained" autoFocus>
+          Aceptar
+        </Button>
+      </CardActions>
     </Card>
   )
 }

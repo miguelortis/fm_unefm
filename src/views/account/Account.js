@@ -1,4 +1,4 @@
-import React, { lazy } from 'react'
+import React, { lazy, useEffect } from 'react'
 import { useContext } from 'react'
 import { Context } from '../../contexts/Context'
 import Socket from '../../components/Socket'
@@ -23,7 +23,12 @@ const Account = () => {
     state: { currentUser },
   } = useContext(Context)
   console.log(currentUser)
-  Socket.emit('connection', 'hola soy pedro')
+  useEffect(() => {
+    Socket.emit('connected', 'este mensaje es de prueba')
+  }, [])
+  // Socket.on('connect', () => {
+  //   console.log(Socket.connected) // true
+  // })
   const tableExample = [
     {
       notifications: {
