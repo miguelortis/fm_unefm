@@ -59,11 +59,11 @@ export default function ServicePanel({ item, setOpenService }) {
 
     console.log(newService)
     Socket.emit('service', newService)
-  }
-  if (error) {
-    console.log(error)
-  } else {
-    setOpenService(false)
+    if (error) {
+      console.log(error)
+    } else {
+      setOpenService(false)
+    }
   }
   //console.log(item)
   //console.log(dataUser)
