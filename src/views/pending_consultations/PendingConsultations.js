@@ -84,8 +84,6 @@ export default function PendingConsultations() {
     state: { consultations, currentUser },
     dispatch,
   } = useContext(Context)
-  const [visibleModal, setVisibleModal] = useState(false)
-  const [component, setComponent] = useState()
   const [search, setSearch] = useState('')
   const [resultSearch, setResultSearch] = useState([])
 
@@ -111,7 +109,7 @@ export default function PendingConsultations() {
     if (search === '') {
       setResultSearch(consultations)
     }
-  }, [search])
+  }, [search, consultations])
 
   const filtrarElementos = () => {
     var res = consultations.filter((item) => {
@@ -122,16 +120,6 @@ export default function PendingConsultations() {
     setResultSearch(res)
   }
 
-  const handleModal = (component) => {
-    if (component === 'Personal-U') {
-      setComponent(<Consultafiliados />)
-      setVisibleModal(!visibleModal)
-    }
-    if (component === 'Cliente-E') {
-      setComponent(<span>hola</span>)
-      setVisibleModal(!visibleModal)
-    }
-  }
   return (
     <Card style={{ textAlign: 'center' }} sx={{ minWidth: 275 }}>
       <Divider />

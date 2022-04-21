@@ -303,7 +303,13 @@ export default function ConsultaAfiliados() {
                         <Button
                           onClick={() => {
                             setOpenService(true)
-                            setComponent(<ServicePanel item={item} />)
+                            setComponent(
+                              <ServicePanel
+                                item={item}
+                                setOpenService={setOpenService}
+                                openService={openService}
+                              />,
+                            )
                           }}
                         >
                           <MedicalServices />

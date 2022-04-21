@@ -17,9 +17,10 @@ import PropTypes from 'prop-types'
 import { Box } from '@mui/system'
 import Socket from '../../components/Socket'
 
-export default function ServicePanel({ item }) {
+export default function ServicePanel({ item, setOpenService }) {
   ServicePanel.propTypes = {
     item: PropTypes.object,
+    setOpenService: PropTypes.func,
   }
   const [dataUser, setDataUser] = useState(null)
   const [newService, setNewService] = useState([])
@@ -58,10 +59,11 @@ export default function ServicePanel({ item }) {
 
     console.log(newService)
     Socket.emit('service', newService)
-    //setMensaje('')
-    // Socket.on('connect', () => {
-    //   console.log(Socket.connected) // true
-    // })
+  }
+  if (error) {
+    console.log(error)
+  } else {
+    setOpenService(false)
   }
   //console.log(item)
   //console.log(dataUser)
