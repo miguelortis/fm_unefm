@@ -79,9 +79,9 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   },
 }))
 
-export default function TypeOfService() {
+export default function PendingConsultations() {
   const {
-    state: { consultations },
+    state: { consultations, currentUser },
     dispatch,
   } = useContext(Context)
   const [visibleModal, setVisibleModal] = useState(false)
@@ -91,8 +91,9 @@ export default function TypeOfService() {
 
   //const [consultations, setConsultations] = useState([])
   console.log(consultations)
+  let role = currentUser.role
   useEffect(() => {
-    Socket.on('services', (Consultations) => {
+    Socket.on(role, (Consultations) => {
       console.log(Consultations)
       dispatch({
         type: 'SET_CONSULTATIONS',
@@ -104,7 +105,7 @@ export default function TypeOfService() {
     return () => {
       Socket.off()
     }
-  }, [consultations])
+  }, [dispatch])
 
   useEffect(() => {
     if (search === '') {
@@ -116,8 +117,6 @@ export default function TypeOfService() {
     var res = consultations.filter((item) => {
       if (item?.idCardPatient?.includes(search)) {
         return item
-      } else {
-        return 'no se encontraron resultados'
       }
     })
     setResultSearch(res)
@@ -135,17 +134,6 @@ export default function TypeOfService() {
   }
   return (
     <Card style={{ textAlign: 'center' }} sx={{ minWidth: 275 }}>
-      <CardHeader title="Tipo de Servicio" />
-      <CardContent style={{ textAlign: 'center', display: 'flex', justifyContent: 'center' }}>
-        <Stack direction="row" spacing={1}>
-          <Button onClick={() => handleModal('Personal-U')} variant="contained">
-            Personal Unefm
-          </Button>
-          <Button disabled onClick={() => handleModal('Cliente-E')} variant="contained">
-            Clientes Externos
-          </Button>
-        </Stack>
-      </CardContent>
       <Divider />
       <Card>
         <Box sx={{ flexGrow: 1 }}>
@@ -218,8 +206,6 @@ export default function TypeOfService() {
           </List>
         </CardContent>
       </Card>
-
-      <Modal setVisibleModal={setVisibleModal} visibleModal={visibleModal} component={component} />
     </Card>
   )
 }

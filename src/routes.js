@@ -3,8 +3,11 @@ import React, { lazy } from 'react'
 const Account = lazy(() => import('./views/account/Account'))
 const Profile = lazy(() => import('./views/profile/Profile'))
 const Beneficiaries = lazy(() => import('./views/beneficiaries/Beneficiaries'))
-const TypeOfService = lazy(() => import('./views/typeofservice/TypeOfService'))
+const TypeOfConsultations = lazy(() => import('./views/type_of_consultation/TypeOfConsultations'))
 const Consultafiliados = lazy(() => import('./views/consultafiliados/Consultafiliados'))
+const PendingConsultations = lazy(() =>
+  import('./views/pending_consultations/PendingConsultations'),
+)
 const Report = lazy(() => import('./views/report'))
 const Colors = lazy(() => import('./views/theme/colors/Colors'))
 const Typography = lazy(() => import('./views/theme/typography/Typography'))
@@ -60,8 +63,9 @@ const routes = [
   { path: '/profile', name: 'Profile', component: Profile },
   { path: '/account', name: 'Account', component: Account },
   { path: '/beneficiaries', name: 'Beneficiaries', component: Beneficiaries },
-  { path: '/typeofservice', name: 'TypeOfService', component: TypeOfService },
+  { path: '/typeofconsultations', name: 'TypeOfConsultations', component: TypeOfConsultations },
   { path: '/consultafiliados', name: 'Consultafiliados', component: Consultafiliados },
+  { path: '/pendingconsultations', name: 'PendingConsultations', component: PendingConsultations },
   { path: '/report', name: 'Reporte', component: Report },
   { path: '/theme', name: 'Theme', component: Colors, exact: true },
   { path: '/theme/colors', name: 'Colors', component: Colors },

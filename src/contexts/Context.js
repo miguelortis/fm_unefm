@@ -5,6 +5,7 @@ const initialState = {
   currentUser: null,
   dataTotal: null,
   consultations: [],
+  generalConsultations: [],
 }
 
 const reducer = (state, action) => {
@@ -25,6 +26,11 @@ const reducer = (state, action) => {
       return {
         ...state,
         consultations: action.payload,
+      }
+    case 'SET_GENERAL_CONSULTATIONS':
+      return {
+        ...state,
+        generalConsultations: action.payload,
       }
     case 'RESET':
       return { ...state, currentUser: null, dataTotal: [] }

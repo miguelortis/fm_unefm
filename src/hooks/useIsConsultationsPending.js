@@ -18,6 +18,7 @@ const useIsConsultationsPending = () => {
         const { data } = await axios.get('http://localhost:3100/fmunefm/consultationspending', {
           headers: {
             authorization: `Bearer ${localStorage.getItem('token')}`,
+            role: currentUser.role,
           },
           //cancelToken: source.token,
         })
@@ -34,7 +35,10 @@ const useIsConsultationsPending = () => {
       }
       //console.log(dataTotal)
     }
-    if (!!localStorage.getItem('token') && currentUser?.role === 'fRmEuCnEePfCmION') {
+    if (
+      (!!localStorage.getItem('token') && currentUser?.role === 'fRmEuCnEePfCmION') ||
+      (!!localStorage.getItem('token') && currentUser?.role === 'MEfDImCOuGEnNEeRfAmL')
+    ) {
       console.log('se ejecuto')
       ConsultationsPending()
     }

@@ -62,20 +62,33 @@ const _nav = [
   {
     role: 'fRmEuCnEePfCmION',
     component: CNavTitle,
-    name: 'panel recepcion',
+    name: 'panel administrativo',
   },
   {
     role: 'fRmEuCnEePfCmION',
     component: CNavItem,
     name: 'Servicios',
-    to: '/typeofservice',
+    to: '/typeofconsultations',
+    icon: <CIcon icon={cilPencil} customClassName="nav-icon" />,
+  },
+  ////////MEDICO GENERAL////////
+  {
+    role: 'MEfDImCOuGEnNEeRfAmL',
+    component: CNavTitle,
+    name: 'panel administrativo',
+  },
+  {
+    role: 'MEfDImCOuGEnNEeRfAmL',
+    component: CNavItem,
+    name: 'Consultas G. Pendientes',
+    to: '/pendingconsultations',
     icon: <CIcon icon={cilPencil} customClassName="nav-icon" />,
   },
   ////////JUNTA-ADMINISTRADORA////////
   {
     role: 'JfUmNuTnAeAfDmMIN',
     component: CNavTitle,
-    name: 'panel junta administradora',
+    name: 'panel administrativo',
   },
   {
     role: 'JfUmNuTnAeAfDmMIN',
