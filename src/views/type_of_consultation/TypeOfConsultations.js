@@ -81,7 +81,7 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
 
 export default function TypeOfConsultations() {
   const {
-    state: { consultations },
+    state: { consultations, currentUser },
     dispatch,
   } = useContext(Context)
   const [visibleModal, setVisibleModal] = useState(false)
@@ -91,8 +91,9 @@ export default function TypeOfConsultations() {
 
   //const [consultations, setConsultations] = useState([])
   console.log(consultations)
+  let id = currentUser._id
   useEffect(() => {
-    Socket.on('services', (Consultations) => {
+    Socket.on(id, (Consultations) => {
       console.log(Consultations)
       dispatch({
         type: 'SET_CONSULTATIONS',

@@ -16,12 +16,17 @@ import {
 import PropTypes from 'prop-types'
 import { Box } from '@mui/system'
 import Socket from '../../components/Socket'
+import { useContext } from 'react'
+import { Context } from '../../contexts/Context'
 
 export default function ServicePanel({ item, setOpenService }) {
   ServicePanel.propTypes = {
     item: PropTypes.object,
     setOpenService: PropTypes.func,
   }
+  const {
+    state: { currentUser },
+  } = useContext(Context)
   const [dataUser, setDataUser] = useState(null)
   const [newService, setNewService] = useState([])
   const [error, setError] = useState('')
@@ -58,7 +63,7 @@ export default function ServicePanel({ item, setOpenService }) {
     e.preventDefault()
 
     console.log(newService)
-    Socket.emit('service', newService)
+    Socket.emit('service', newService, currentUser._id)
     if (error) {
       console.log(error)
     } else {
