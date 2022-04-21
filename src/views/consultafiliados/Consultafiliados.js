@@ -65,6 +65,7 @@ export default function ConsultaAfiliados() {
     return <Redirect to="/unauthorised" />
   }
 
+  //console.log(dataTotal)
   const open = Boolean(anchorEl)
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget)

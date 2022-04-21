@@ -17,18 +17,17 @@ import {
 } from '@coreui/react'
 
 const WidgetsBrand = lazy(() => import('../widgets/WidgetsBrand.js'))
-
 const Account = () => {
   const {
     state: { currentUser },
   } = useContext(Context)
-  console.log(currentUser)
+
+  // console.log(currentUser)
   useEffect(() => {
     Socket.emit('connected', 'este mensaje es de prueba')
   }, [])
-  // Socket.on('connect', () => {
-  //   console.log(Socket.connected) // true
-  // })
+
+  // Socket.on('disconnect', () => {
   const tableExample = [
     {
       notifications: {

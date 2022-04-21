@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Card from '@mui/material/Card'
 import Autocomplete from '@mui/material/Autocomplete'
 import CardContent from '@mui/material/CardContent'
@@ -15,15 +15,56 @@ import {
 } from '@mui/material'
 import PropTypes from 'prop-types'
 import { Box } from '@mui/system'
+import Socket from '../../components/Socket'
 
 export default function ServicePanel({ item }) {
   ServicePanel.propTypes = {
     item: PropTypes.object,
   }
   const [dataUser, setDataUser] = useState(null)
+  const [newService, setNewService] = useState([])
+  const [error, setError] = useState('')
+  useEffect(() => {
+    Socket.on('error', (error) => {
+      console.log(error)
+      setError(error)
+    })
 
-  console.log(item)
-  console.log(dataUser)
+    return () => {
+      Socket.off()
+    }
+  }, [])
+
+  useEffect(() => {
+    if (item?.userId) {
+      setNewService({
+        ...newService,
+        patientIdCard: item?.idCard,
+        user: dataUser?.user?._id,
+        patientType: 'Beneficiario',
+      })
+    } else {
+      setNewService({
+        ...newService,
+        patientIdCard: item?.idCard,
+        user: null,
+        patientType: 'Titular',
+      })
+    }
+  }, [item, dataUser])
+
+  const handleSubmitService = (e) => {
+    e.preventDefault()
+
+    console.log(newService)
+    Socket.emit('service', newService)
+    //setMensaje('')
+    // Socket.on('connect', () => {
+    //   console.log(Socket.connected) // true
+    // })
+  }
+  //console.log(item)
+  //console.log(dataUser)
   return (
     <Card sx={{ minWidth: 275, backgroundColor: '#EDF0F7' }}>
       <CardHeader sx={{ pt: 0, backgroundColor: '#fff' }} title="Solicitud de Servicio" />
@@ -35,6 +76,7 @@ export default function ServicePanel({ item }) {
           sx={{ flexGrow: 1, backgroundColor: '#EDF0F7' }}
           //columnSpacing={{ xs: 1, sm: 2, md: 1 }}
         >
+          {/* /////////////PACIENTE///////////// */}
           <Grid item xs={12} sm={6} md={6} sx={{ backgroundColor: '#EDF0F7' }}>
             <Card sx={{ p: 2, pt: 0, height: '100%' }}>
               <CardHeader
@@ -59,7 +101,7 @@ export default function ServicePanel({ item }) {
             </Card>
           </Grid>
 
-          {/* ///////////////// */}
+          {/* ///////////// TITULAR///////// */}
           {item.userId && (
             <Grid item xs={12} sm={6} md={6} sx={{ backgroundColor: '#EDF0F7' }}>
               <Card sx={{ p: 2, pt: 0, height: '100%' }}>
@@ -139,7 +181,7 @@ export default function ServicePanel({ item }) {
             </Grid>
           )}
         </Grid>
-
+        {/* ///// TIPO CONSULTA/////// */}
         <Card
           sx={{
             p: 2,
@@ -162,9 +204,10 @@ export default function ServicePanel({ item }) {
           <Divider sx={{ mb: 2 }} />
           <Select
             sx={{ width: { xs: '100%', md: '50%' }, backgroundColor: '#EDF0F7' }}
+            name="queryType"
             //value={age}
             label="Tipo de Consulta"
-            onChange={(e) => console.log(e.target.value)}
+            onChange={(e) => setNewService({ ...newService, queryType: e.target.value })}
             variant="standard"
           >
             <MenuItem selected></MenuItem>
@@ -174,7 +217,7 @@ export default function ServicePanel({ item }) {
         </Card>
       </CardContent>
       <CardActions sx={{ justifyContent: 'right' }}>
-        <Button variant="contained" autoFocus>
+        <Button onClick={handleSubmitService} variant="contained" autoFocus>
           Aceptar
         </Button>
       </CardActions>

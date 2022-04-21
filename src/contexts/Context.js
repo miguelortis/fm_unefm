@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 const initialState = {
   currentUser: null,
   dataTotal: null,
+  consultations: [],
 }
 
 const reducer = (state, action) => {
@@ -19,6 +20,11 @@ const reducer = (state, action) => {
           ...state.currentUser,
           beneficiaries: [...state.currentUser.beneficiaries, action.payload],
         },
+      }
+    case 'SET_CONSULTATIONS':
+      return {
+        ...state,
+        consultations: action.payload,
       }
     case 'RESET':
       return { ...state, currentUser: null, dataTotal: [] }
