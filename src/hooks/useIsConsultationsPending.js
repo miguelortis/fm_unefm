@@ -1,8 +1,7 @@
 import { useEffect } from 'react'
 import { useContext } from 'react'
 import { Context } from '../contexts/Context'
-import io from 'socket.io-client'
-let Socket = io()
+import Socket from '../components/Socket'
 //const CancelToken = axios.CancelToken
 //const source = CancelToken.source()
 const useIsConsultationsPending = () => {
@@ -15,12 +14,6 @@ const useIsConsultationsPending = () => {
   let role = currentUser?.role
   //////////////////////////////////////////////////
   useEffect(() => {
-    Socket = io('https://backend-fmunefm.vercel.app', {
-      transports: ['websocket', 'polling', 'flashsocket'],
-      reconnect: true,
-      'reconnection delay': 500,
-      'max reconnection attempts': 10,
-    })
     Socket.on(role, (pendingConsultations) => {
       console.log(pendingConsultations)
       // setOnlineUsers(

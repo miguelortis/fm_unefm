@@ -17,8 +17,7 @@ import { useContext } from 'react'
 import { Context } from '../../contexts/Context'
 import { styled, alpha } from '@mui/material/styles'
 import SearchIcon from '@mui/icons-material/Search'
-import io from 'socket.io-client'
-let Socket = io()
+import Socket from '../../components/Socket'
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -102,12 +101,6 @@ export default function PendingConsultations() {
   // }, [dispatch])
 
   useEffect(() => {
-    Socket = io('https://backend-fmunefm.vercel.app', {
-      transports: ['websocket', 'polling', 'flashsocket'],
-      reconnect: true,
-      'reconnection delay': 500,
-      'max reconnection attempts': 10,
-    })
     Socket.on('consultations', (Consultations) => {
       console.log(Consultations)
       dispatch({

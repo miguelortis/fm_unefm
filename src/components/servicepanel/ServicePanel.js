@@ -19,8 +19,7 @@ import { Box } from '@mui/system'
 import { useContext } from 'react'
 import { Context } from '../../contexts/Context'
 import { CSpinner } from '@coreui/react-pro'
-import io from 'socket.io-client'
-let Socket = io()
+import Socket from '../../components/Socket'
 
 export default function ServicePanel({ item, setOpenService }) {
   ServicePanel.propTypes = {
@@ -43,12 +42,6 @@ export default function ServicePanel({ item, setOpenService }) {
   const { vertical, horizontal, open } = showSnackbar
 
   useEffect(() => {
-    Socket = io('https://backend-fmunefm.vercel.app', {
-      transports: ['websocket', 'polling', 'flashsocket'],
-      reconnect: true,
-      'reconnection delay': 500,
-      'max reconnection attempts': 10,
-    })
     Socket.on('error', (error) => {
       console.log(error)
       setMessage({ ...message, error: error })

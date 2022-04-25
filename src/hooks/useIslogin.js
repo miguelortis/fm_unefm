@@ -3,9 +3,7 @@ import { useContext } from 'react'
 import { Context } from '../contexts/Context'
 import { useHistory } from 'react-router-dom'
 import axios from 'axios'
-import io from 'socket.io-client'
-
-let Socket = io()
+import Socket from '../components/Socket'
 
 const CancelToken = axios.CancelToken
 const source = CancelToken.source()
@@ -50,12 +48,6 @@ const useIsLogin = () => {
   }, [dispatch, currentUser, history])
   //////////////////////////////////////////////////
   useEffect(() => {
-    Socket = io('https://backend-fmunefm.vercel.app', {
-      transports: ['websocket', 'polling', 'flashsocket'],
-      reconnect: true,
-      'reconnection delay': 500,
-      'max reconnection attempts': 10,
-    })
     Socket.emit('addUser', currentUser?._id, currentUser?.role)
     Socket.on('getUsers', (users) => {
       console.log(users)
