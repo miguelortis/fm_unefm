@@ -1,7 +1,8 @@
 import { useEffect } from 'react'
 import { useContext } from 'react'
 import { Context } from '../contexts/Context'
-import axios from 'axios'
+import io from 'socket.io-client'
+let Socket = io()
 //const CancelToken = axios.CancelToken
 //const source = CancelToken.source()
 const useIsConsultationsPending = () => {
@@ -11,38 +12,26 @@ const useIsConsultationsPending = () => {
     dispatch,
   } = useContext(Context)
 
+  let role = currentUser?.role
+  //////////////////////////////////////////////////
   useEffect(() => {
-    //////////////////SOLICITUD CONSULTAS EN ESPERA///////////////////////
-    const ConsultationsPending = async () => {
-      try {
-        const { data } = await axios.get('http://localhost:3100/fmunefm/consultationspending', {
-          headers: {
-            authorization: `Bearer ${localStorage.getItem('token')}`,
-            role: currentUser.role,
-          },
-          //cancelToken: source.token,
-        })
-        console.log(data)
-        dispatch({
-          type: 'SET_CONSULTATIONS',
-          payload: [...data],
-        })
-      } catch (error) {
-        //console.log(error)
-        if (error?.response?.status === 401) {
-          console.log(error)
-        }
-      }
-      //console.log(dataTotal)
-    }
-    if (
-      (!!localStorage.getItem('token') && currentUser?.role === 'fRmEuCnEePfCmION') ||
-      (!!localStorage.getItem('token') && currentUser?.role === 'MEfDImCOuGEnNEeRfAmL')
-    ) {
-      console.log('se ejecuto')
-      ConsultationsPending()
-    }
-  }, [dispatch, currentUser])
+    Socket = io('http://localhost:3100', {
+      transports: ['websocket', 'polling', 'flashsocket'],
+      reconnect: true,
+      'reconnection delay': 500,
+      'max reconnection attempts': 10,
+    })
+    Socket.on(role, (pendingConsultations) => {
+      console.log(pendingConsultations)
+      // setOnlineUsers(
+      //   user.followings.filter((f) => users.some((u) => u.userId === f))
+      // );
+      dispatch({
+        type: 'SET_CONSULTATIONS',
+        payload: [...pendingConsultations],
+      })
+    })
+  }, [role, dispatch])
+  ///////////////////////////////////////////////////////////////////
 }
-
 export default useIsConsultationsPending

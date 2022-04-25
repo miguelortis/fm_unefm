@@ -46,7 +46,6 @@ import {
 } from '@mui/material'
 import ServiceRequest from '../servicerequest/ServiceRequest'
 import ServicePanel from 'src/components/servicepanel/ServicePanel'
-
 export default function ConsultaAfiliados() {
   const {
     state: { dataTotal, currentUser },
@@ -58,6 +57,7 @@ export default function ConsultaAfiliados() {
   const [anchorElNav, setAnchorElNav] = useState(null)
   const [anchorEl, setAnchorEl] = useState(null)
   const [component, setComponent] = useState({})
+
   if (
     (!!localStorage.getItem('token') && currentUser?.role === 'user') ||
     currentUser?.role === ''

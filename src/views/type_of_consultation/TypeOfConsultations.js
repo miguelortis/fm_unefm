@@ -17,9 +17,7 @@ import {
   Box,
   AppBar,
 } from '@mui/material'
-import Socket from '../../components/Socket'
 import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress'
-import useIsConsultationsPending from '../../hooks/useIsConsultationsPending'
 import { useContext } from 'react'
 import { Context } from '../../contexts/Context'
 import { styled, alpha } from '@mui/material/styles'
@@ -81,8 +79,7 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
 
 export default function TypeOfConsultations() {
   const {
-    state: { consultations, currentUser },
-    dispatch,
+    state: { consultations },
   } = useContext(Context)
   const [visibleModal, setVisibleModal] = useState(false)
   const [component, setComponent] = useState()
@@ -91,21 +88,6 @@ export default function TypeOfConsultations() {
 
   //const [consultations, setConsultations] = useState([])
   console.log(consultations)
-  let id = currentUser._id
-  useEffect(() => {
-    Socket.on(id, (Consultations) => {
-      console.log(Consultations)
-      dispatch({
-        type: 'SET_CONSULTATIONS',
-        payload: [...Consultations],
-      })
-      //setConsultations([...consultations])
-    })
-
-    return () => {
-      Socket.off()
-    }
-  }, [consultations])
 
   useEffect(() => {
     if (search === '') {

@@ -1,7 +1,6 @@
 import React, { lazy, useEffect } from 'react'
 import { useContext } from 'react'
 import { Context } from '../../contexts/Context'
-import Socket from '../../components/Socket'
 import {
   CCard,
   CCardBody,
@@ -23,11 +22,7 @@ const Account = () => {
   } = useContext(Context)
 
   // console.log(currentUser)
-  useEffect(() => {
-    Socket.emit('connected', 'este mensaje es de prueba')
-  }, [])
 
-  // Socket.on('disconnect', () => {
   const tableExample = [
     {
       notifications: {

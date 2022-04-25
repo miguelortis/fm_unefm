@@ -1,12 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import Modal from '../modal/Modal'
-import Consultafiliados from '../consultafiliados/Consultafiliados'
 import {
   Card,
   CardContent,
-  CardHeader,
-  Button,
-  Stack,
   InputBase,
   Typography,
   ListItemText,
@@ -17,13 +12,12 @@ import {
   Box,
   AppBar,
 } from '@mui/material'
-import Socket from '../../components/Socket'
 import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress'
-import useIsConsultationsPending from '../../hooks/useIsConsultationsPending'
 import { useContext } from 'react'
 import { Context } from '../../contexts/Context'
 import { styled, alpha } from '@mui/material/styles'
 import SearchIcon from '@mui/icons-material/Search'
+import Socket from '../../components/Socket'
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -81,7 +75,7 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
 
 export default function PendingConsultations() {
   const {
-    state: { consultations, currentUser },
+    state: { consultations },
     dispatch,
   } = useContext(Context)
   const [search, setSearch] = useState('')
@@ -89,20 +83,36 @@ export default function PendingConsultations() {
 
   //const [consultations, setConsultations] = useState([])
   console.log(consultations)
-  let role = currentUser.role
+  console.log('resultSearch', resultSearch)
+
+  // useEffect(() => {
+  //   Socket.on('services', (Consultations) => {
+  //     console.log(Consultations)
+  //     dispatch({
+  //       type: 'SET_CONSULTATIONS',
+  //       payload: [...Consultations],
+  //     })
+  //     //setConsultations([...consultations])
+  //   })
+
+  //   return () => {
+  //     Socket.off()
+  //   }
+  // }, [dispatch])
+
   useEffect(() => {
-    Socket.on(role, (Consultations) => {
+    Socket.on('consultations', (Consultations) => {
       console.log(Consultations)
       dispatch({
         type: 'SET_CONSULTATIONS',
         payload: [...Consultations],
       })
-      //setConsultations([...consultations])
+      // setArrivalMessage({
+      //   sender: data.senderId,
+      //   text: data.text,
+      //   createdAt: Date.now(),
+      // })
     })
-
-    return () => {
-      Socket.off()
-    }
   }, [dispatch])
 
   useEffect(() => {

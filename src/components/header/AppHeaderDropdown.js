@@ -28,7 +28,9 @@ import conyugeF from '../../assets/images/avatars/conyugeF.svg'
 import conyugeM from '../../assets/images/avatars/conyugeM.svg'
 import { useContext } from 'react'
 import { Context } from '../../contexts/Context'
+import io from 'socket.io-client'
 
+let Socket = io('http://localhost:3100', { transports: ['websocket', 'polling', 'flashsocket'] })
 const AppHeaderDropdown = () => {
   const {
     state: { currentUser },
@@ -38,6 +40,8 @@ const AppHeaderDropdown = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('token')
+    Socket.disconnect()
+    Socket.socket = null
     dispatch({
       type: 'RESET',
     })

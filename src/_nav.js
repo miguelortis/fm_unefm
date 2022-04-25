@@ -84,6 +84,19 @@ const _nav = [
     to: '/pendingconsultations',
     icon: <CIcon icon={cilPencil} customClassName="nav-icon" />,
   },
+  ////////MEDICO EMERGENCIA////////
+  {
+    role: 'MEfDImCOuEMnEReGEfNCmIA',
+    component: CNavTitle,
+    name: 'panel administrativo',
+  },
+  {
+    role: 'MEfDImCOuEMnEReGEfNCmIA',
+    component: CNavItem,
+    name: 'Consultas G. Pendientes',
+    to: '/pendingconsultations',
+    icon: <CIcon icon={cilPencil} customClassName="nav-icon" />,
+  },
   ////////JUNTA-ADMINISTRADORA////////
   {
     role: 'JfUmNuTnAeAfDmMIN',
