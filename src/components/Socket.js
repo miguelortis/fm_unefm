@@ -1,10 +1,5 @@
 import io from 'socket.io-client'
 
-let socket = io('https://backend-fmunefm.vercel.app/', {
-  transports: ['websocket', 'polling', 'flashsocket'],
-  reconnect: true,
-  'reconnection delay': 500,
-  'max reconnection attempts': 10,
-})
+let socket = io()
 
 export default socket
