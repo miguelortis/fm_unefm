@@ -103,7 +103,7 @@ const Register = () => {
         // console.log(newUser)
 
         axios
-          .post('http://localhost:3100/fmunefm/register', newUser)
+          .post('https://backend-fmunefm.vercel.app/fmunefm/register', newUser)
           .then((res) => {
             console.log(res)
             console.log(res.data.messaje)

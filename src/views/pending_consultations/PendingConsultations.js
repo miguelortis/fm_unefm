@@ -102,7 +102,7 @@ export default function PendingConsultations() {
   // }, [dispatch])
 
   useEffect(() => {
-    Socket = io('https://backend-fmunefm.herokuapp.com', {
+    Socket = io('https://backend-fmunefm.vercel.app', {
       transports: ['websocket', 'polling', 'flashsocket'],
       reconnect: true,
       'reconnection delay': 500,

@@ -94,7 +94,7 @@ export default function Profile() {
     //alert('Completa todos los Campos')
     try {
       const { data } = await axios.patch(
-        'https://backend-fmunefm.herokuapp.com/fmunefm/modify-headline',
+        'https://backend-fmunefm.vercel.app/fmunefm/modify-headline',
         updateData,
         {
           headers: {

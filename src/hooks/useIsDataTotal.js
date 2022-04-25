@@ -15,7 +15,7 @@ const useIsDataTotal = () => {
     //////////////////SOLICITUD DATOS FAMILIARES///////////////////////
     const DataTotal = async () => {
       try {
-        const { data } = await axios.get('http://localhost:3100/fmunefm/consult', {
+        const { data } = await axios.get('https://backend-fmunefm.vercel.app/fmunefm/consult', {
           headers: {
             authorization: `Bearer ${localStorage.getItem('token')}`,
           },
