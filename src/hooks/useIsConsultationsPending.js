@@ -15,7 +15,7 @@ const useIsConsultationsPending = () => {
   let role = currentUser?.role
   //////////////////////////////////////////////////
   useEffect(() => {
-    Socket = io('http://localhost:3100', {
+    Socket = io('https://backend-fmunefm.herokuapp.com', {
       transports: ['websocket', 'polling', 'flashsocket'],
       reconnect: true,
       'reconnection delay': 500,
