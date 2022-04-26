@@ -31,7 +31,7 @@ const Login = () => {
     const idCard = document.getElementById('idCard').value
     const password = document.getElementById('password').value
     try {
-      const result = await fetch('https://backend-fmunefm.vercel.app/fmunefm/login', {
+      const result = await fetch('https://fmunefm-backend.herokuapp.com/fmunefm/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

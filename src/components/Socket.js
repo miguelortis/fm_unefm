@@ -1,6 +1,6 @@
 import io from 'socket.io-client'
 
-let socket = io('http://localhost:3100/', {
+let socket = io('https://fmunefm-backend.herokuapp.com/', {
   forceNew: true,
   transports: ['websocket', 'polling'],
 })
