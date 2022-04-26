@@ -1,8 +1,8 @@
 import io from 'socket.io-client'
 
-let socket = io('ws://backend-fmunefm.vercel.app', {
+let socket = io('http://backend-fmunefm.vercel.app', {
   forceNew: true,
-  transports: ['polling', 'flashsocket'],
+  transports: ['websocket', 'polling'],
 })
 
 export default socket
