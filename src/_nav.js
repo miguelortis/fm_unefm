@@ -121,6 +121,24 @@ const _nav = [
       },
     ],
   },
+  {
+    role: 'JfUmNuTnAeAfDmMIN',
+    component: CNavGroup,
+    name: 'Clasificacion de Planes',
+    icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Planes',
+        to: '/plans',
+      },
+      {
+        component: CNavItem,
+        name: 'Valor de Tasas (divisas)',
+        to: '/',
+      },
+    ],
+  },
 
   //////////
   // {

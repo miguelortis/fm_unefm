@@ -8,6 +8,7 @@ const Consultafiliados = lazy(() => import('./views/consultafiliados/Consultafil
 const PendingConsultations = lazy(() =>
   import('./views/pending_consultations/PendingConsultations'),
 )
+const Plans = lazy(() => import('./views/plans/Plans'))
 const Report = lazy(() => import('./views/report'))
 const Colors = lazy(() => import('./views/theme/colors/Colors'))
 const Typography = lazy(() => import('./views/theme/typography/Typography'))
@@ -66,6 +67,7 @@ const routes = [
   { path: '/typeofconsultations', name: 'TypeOfConsultations', component: TypeOfConsultations },
   { path: '/consultafiliados', name: 'Consultafiliados', component: Consultafiliados },
   { path: '/pendingconsultations', name: 'PendingConsultations', component: PendingConsultations },
+  { path: '/plans', name: 'Plans', component: Plans },
   { path: '/report', name: 'Reporte', component: Report },
   { path: '/theme', name: 'Theme', component: Colors, exact: true },
   { path: '/theme/colors', name: 'Colors', component: Colors },
