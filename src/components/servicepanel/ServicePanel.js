@@ -50,7 +50,7 @@ export default function ServicePanel({ item, setOpenService }) {
     return () => {
       Socket.off()
     }
-  }, [])
+  }, [message])
 
   useEffect(() => {
     if (item?.userId) {
