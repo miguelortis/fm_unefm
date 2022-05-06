@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React, { useState } from 'react'
 import verify from '../assets/icons/usuarioVerificado.png'
 import { useContext } from 'react'
@@ -182,6 +183,7 @@ export default function TableBeneficiaries() {
                                   ? conyugeM
                                   : ''
                     }
+
                   />{' '}
                   {item?.beneficiary?.name?.toLowerCase().replace(/\b\w/g, (l) => l.toUpperCase())}{' '}
                 </h5>

@@ -150,7 +150,7 @@ const _nav = [
       {
         component: CNavItem,
         name: 'Valor de Tasas (divisas)',
-        to: '/noexist',
+        to: '/noexis',
       },
     ],
   },

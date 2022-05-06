@@ -23,7 +23,7 @@ const Login = () => {
   const history = useHistory()
   const [spinner, setSpinner] = useState(true)
   const [data, setData] = useState({})
-  
+
   if (!!localStorage.getItem('token')) {
     return <Redirect to="/account" />
   }
