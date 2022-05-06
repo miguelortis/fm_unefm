@@ -5,8 +5,8 @@ import { useHistory } from 'react-router-dom'
 import axios from 'axios'
 import Socket from '../components/Socket'
 
-const CancelToken = axios.CancelToken
-const source = CancelToken.source()
+// const CancelToken = axios.CancelToken
+// const source = CancelToken.source()
 const useIsLogin = () => {
   const history = useHistory()
   const {
@@ -18,7 +18,7 @@ const useIsLogin = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { data } = await axios.get('https://fmunefm-backend.herokuapp.com/profile', {
+        const { data } = await axios.get('https://servidor-fmunefm.herokuapp.com/profile', {
           headers: {
             authorization: `Bearer ${localStorage.getItem('token')}`,
           },
@@ -43,8 +43,6 @@ const useIsLogin = () => {
     if (!!localStorage.getItem('token') && currentUser === null) {
       fetchData()
     }
-
-    return () => !!currentUser && source.cancel()
   }, [dispatch, currentUser, history])
   //////////////////////////////////////////////////
   useEffect(() => {

@@ -29,7 +29,6 @@ import {
   CTableHeaderCell,
   CTableRow,
 } from '@coreui/react-pro'
-// import axios from 'axios'
 import { Redirect } from 'react-router-dom'
 import {
   AppBar,

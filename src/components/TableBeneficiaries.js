@@ -57,7 +57,7 @@ export default function TableBeneficiaries() {
       console.log(idCard)
 
       const res = await axios.delete(
-        `https://backend-fmunefm.herokuapp.com/beneficiary/delete/${idCard}`,
+        `https://servidor-fmunefm.herokuapp.com/beneficiary_delete/${idCard}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -171,16 +171,16 @@ export default function TableBeneficiaries() {
                       item?.relationship === 'PADRE'
                         ? padre
                         : item?.relationship === 'MADRE'
-                        ? madre
-                        : item?.relationship === 'HIJA'
-                        ? hija
-                        : item?.relationship === 'HIJO'
-                        ? hijo
-                        : item?.relationship === 'CONYUGE' && item?.beneficiary?.sex === 'FEMENINO'
-                        ? conyugeF
-                        : item?.relationship === 'CONYUGE' && item?.beneficiary?.sex === 'MASCULINO'
-                        ? conyugeM
-                        : ''
+                          ? madre
+                          : item?.relationship === 'HIJA'
+                            ? hija
+                            : item?.relationship === 'HIJO'
+                              ? hijo
+                              : item?.relationship === 'CONYUGE' && item?.beneficiary?.sex === 'FEMENINO'
+                                ? conyugeF
+                                : item?.relationship === 'CONYUGE' && item?.beneficiary?.sex === 'MASCULINO'
+                                  ? conyugeM
+                                  : ''
                     }
                   />{' '}
                   {item?.beneficiary?.name?.toLowerCase().replace(/\b\w/g, (l) => l.toUpperCase())}{' '}
@@ -259,24 +259,24 @@ export default function TableBeneficiaries() {
                             thumbnail
                             src={
                               item?.relationship === 'HIJO' &&
-                              item?.beneficiary?.sex === 'MASCULINO'
+                                item?.beneficiary?.sex === 'MASCULINO'
                                 ? hijo
                                 : item?.relationship === 'HIJO' &&
                                   item?.beneficiary?.sex === 'FEMENINO'
-                                ? hija
-                                : item?.relationship === 'MADRE' &&
-                                  item?.beneficiary?.sex === 'FEMENINO'
-                                ? madre
-                                : item?.relationship === 'PADRE' &&
-                                  item?.beneficiary?.sex === 'MASCULINO'
-                                ? padre
-                                : item?.relationship === 'CONYUGE' &&
-                                  item?.beneficiary?.sex === 'FEMENINO'
-                                ? conyugeF
-                                : item?.relationship === 'CONYUGE' &&
-                                  item?.beneficiary?.sex === 'MASCULINO'
-                                ? conyugeM
-                                : hijo
+                                  ? hija
+                                  : item?.relationship === 'MADRE' &&
+                                    item?.beneficiary?.sex === 'FEMENINO'
+                                    ? madre
+                                    : item?.relationship === 'PADRE' &&
+                                      item?.beneficiary?.sex === 'MASCULINO'
+                                      ? padre
+                                      : item?.relationship === 'CONYUGE' &&
+                                        item?.beneficiary?.sex === 'FEMENINO'
+                                        ? conyugeF
+                                        : item?.relationship === 'CONYUGE' &&
+                                          item?.beneficiary?.sex === 'MASCULINO'
+                                          ? conyugeM
+                                          : hijo
                             }
                             width={150}
                             height={150}

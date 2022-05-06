@@ -103,7 +103,7 @@ const Register = () => {
         // console.log(newUser)
 
         axios
-          .post('https://fmunefm-backend.herokuapp.com/fmunefm/register', newUser)
+          .post('https://servidor-fmunefm.herokuapp.com/fmunefm/register', newUser)
           .then((res) => {
             console.log(res)
             console.log(res.data.messaje)

@@ -18,8 +18,13 @@ const _nav = [
   },
   {
     role: 'user',
-    component: CNavGroup,
+    component: CNavTitle,
     name: 'Perfil',
+  },
+  {
+    role: 'user',
+    component: CNavGroup,
+    name: 'Datos Personales',
     icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
     items: [
       {
@@ -27,11 +32,16 @@ const _nav = [
         name: 'Actualizar mis Datos',
         to: '/profile',
       },
-      // {
-      //   component: CNavItem,
-      //   name: 'No Definido',
-      //   to: '/',
-      // },
+      {
+        component: CNavItem,
+        name: 'Cambiar Contraseña',
+        to: '/noexist',
+      },
+      {
+        component: CNavItem,
+        name: 'Plan de Cobertura',
+        to: '/noexist',
+      },
     ],
   },
   {
@@ -112,21 +122,26 @@ const _nav = [
       {
         component: CNavItem,
         name: 'Nuevo Especialista',
-        to: '/profile',
+        to: '/noexist',
       },
       {
         component: CNavItem,
         name: 'Modificar Especialista',
-        to: '/',
+        to: '/noexist',
       },
     ],
   },
   {
     role: 'JfUmNuTnAeAfDmMIN',
     component: CNavGroup,
-    name: 'Clasificacion de Planes',
+    name: 'Administrar Servicios',
     icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
     items: [
+      {
+        component: CNavItem,
+        name: 'Servicios',
+        to: '/services',
+      },
       {
         component: CNavItem,
         name: 'Planes',
@@ -135,7 +150,7 @@ const _nav = [
       {
         component: CNavItem,
         name: 'Valor de Tasas (divisas)',
-        to: '/',
+        to: '/noexist',
       },
     ],
   },
@@ -305,33 +320,33 @@ const _nav = [
   //   to: '/charts',
   //   icon: <CIcon icon={cilChartPie} customClassName="nav-icon" />,
   /// },
-  {
-    role: 'gzsdg',
-    component: CNavGroup,
-    name: 'Icons',
-    icon: <CIcon icon={cilStar} customClassName="nav-icon" />,
-    items: [
-      {
-        component: CNavItem,
-        name: 'CoreUI Free',
-        to: '/icons/coreui-icons',
-        badge: {
-          color: 'success',
-          text: 'NEW',
-        },
-      },
-      //     {
-      //       component: CNavItem,
-      //       name: 'CoreUI Flags',
-      //       to: '/icons/flags',
-      //     },
-      //     {
-      //       component: CNavItem,
-      //       name: 'CoreUI Brands',
-      //       to: '/icons/brands',
-      //     },
-    ],
-  },
+  // {
+  //   role: 'JfUmNuTnAeAfDmMIN',
+  //   component: CNavGroup,
+  //   name: 'Icons',
+  //   icon: <CIcon icon={cilStar} customClassName="nav-icon" />,
+  //   items: [
+  //     {
+  //       component: CNavItem,
+  //       name: 'CoreUI Free',
+  //       to: '/icons/coreui-icons',
+  //       badge: {
+  //         color: 'success',
+  //         text: 'NEW',
+  //       },
+  //     },
+  //     {
+  //       component: CNavItem,
+  //       name: 'CoreUI Flags',
+  //       to: '/icons/flags',
+  //     },
+  //     {
+  //       component: CNavItem,
+  //       name: 'CoreUI Brands',
+  //       to: '/icons/brands',
+  //     },
+  //   ],
+  // },
   // {
   //   component: CNavGroup,
   //   name: 'Notifications',

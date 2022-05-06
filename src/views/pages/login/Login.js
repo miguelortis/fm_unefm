@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link, Redirect, useHistory } from 'react-router-dom'
 
 import {
@@ -17,10 +17,13 @@ import {
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
 import { CSpinner } from '@coreui/react-pro'
+import axios from 'axios'
 
 const Login = () => {
   const history = useHistory()
   const [spinner, setSpinner] = useState(true)
+  const [data, setData] = useState({})
+  
   if (!!localStorage.getItem('token')) {
     return <Redirect to="/account" />
   }
@@ -31,7 +34,7 @@ const Login = () => {
     const idCard = document.getElementById('idCard').value
     const password = document.getElementById('password').value
     try {
-      const result = await fetch('https://fmunefm-backend.herokuapp.com/fmunefm/login', {
+      const result = await fetch('https://servidor-fmunefm.herokuapp.com/fmunefm/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -80,6 +83,7 @@ const Login = () => {
         <span style={{ display: 'block', color: '#fff' }}>...Cargando</span>
       </div>
       <CContainer>
+        <div></div>
         <CRow className="justify-content-center">
           <CCol md={8}>
             <CCardGroup>

@@ -11,10 +11,11 @@ import {
   TableHead,
   TableRow,
   Paper,
+  FormControl,
+  InputLabel,
+  Input,
   InputAdornment,
   CircularProgress,
-  TextField,
-  Select
 } from '@mui/material'
 import * as moment from 'moment'
 import { styled } from '@mui/material/styles'
@@ -45,8 +46,25 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   },
 }))
 
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  '&:nth-of-type(odd)': {
+    backgroundColor: theme.palette.action.hover,
+  },
+  // hide last border
+  '&:last-child td, &:last-child th': {
+    border: 0,
+  },
+}))
 
+function createData(nº, name, calories, fat) {
+  return { nº, name, calories, fat }
+}
 
+const rows = [
+  createData(1, 'Laboratorio', "10$", "03/05/2022"),
+  createData(2, 'Cardiologia', "15$", "03/05/2022"),
+  createData(3, 'Ginecologia', "15$", "03/05/2022"),
+]
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
     padding: theme.spacing(2),
@@ -85,16 +103,15 @@ BootstrapDialogTitle.propTypes = {
 };
 export default function Services() {
   const {
-    state: { plans, services },
+    state: { currentUser, services },
     dispatch,
   } = useContext(Context)
   const [anchorEl, setAnchorEl] = useState(null)
   const [open, setOpen] = useState(false);
-  const [newPlan, setNewPlan] = useState({ name: "", price: "", services: [] });
-  const [service, setService] = useState({})
+  const [newService, setNewService] = useState({ name: "", price: "" });
   const [showSpinner, setShowSpinner] = useState(false)
 
-  console.log(new Date())
+
   useEffect(() => {
     const handleServices = async () => {
       try {
@@ -121,34 +138,7 @@ export default function Services() {
       handleServices()
     }
 
-  }, [dispatch, services])
-  useEffect(() => {
-    const handlePlans = async () => {
-      try {
-        const { data } = await axios.get('https://servidor-fmunefm.herokuapp.com/packages', {
-          headers: {
-            authorization: `Bearer ${localStorage.getItem('token')}`,
-          },
-          //cancelToken: source.token,
-        })
-        dispatch({
-          type: 'SET_ PLANS',
-          payload: data,
-        })
-      } catch (error) {
-        //console.log(error)
-        if (error?.response?.status === 401) {
-          console.log(error)
-        }
-      }
-      //console.log(dataTotal)
-    }
-    if (!!localStorage.getItem('token') && plans.length === 0) {
-      //console.log('se ejecuto')
-      handlePlans()
-    }
-
-  }, [dispatch, plans])
+  }, [])
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -157,7 +147,7 @@ export default function Services() {
   const handleClose = () => {
     setOpen(false);
     setAnchorEl(null)
-    setNewPlan({ name: "", price: "" })
+    setNewService({ name: "", price: "" })
   };
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget)
@@ -166,30 +156,30 @@ export default function Services() {
   const handleSubmit = async () => {
     setShowSpinner(true)
 
-    if (newPlan.name === "" || newPlan.price === "") {
+    if (newService.name === "" || newService.price === "") {
       alert('Por favor, complete todos los campos')
       setShowSpinner(false)
       return
     } else {
-      console.log(newPlan)
+      console.log(newService)
       try {
         const { data } = await axios.post(
-          'https://servidor-fmunefm.herokuapp.com/register_package',
-          newPlan,
+          'https://servidor-fmunefm.herokuapp.com/register_services',
+          newService,
           {
             headers: {
               authorization: `Bearer ${localStorage.getItem('token')}`,
             },
           },
         )
-        console.log(data)
+
         dispatch({
-          type: 'SET_ PLANS',
-          payload: [data.plan],
+          type: 'SET_ SERVICES',
+          payload: [data.service],
         })
         setShowSpinner(false)
         setOpen(false)
-        setNewPlan({ name: "", price: "" })
+        setNewService({ name: "", price: "" })
       } catch (error) {
         if (error) {
           console.log(error)
@@ -233,33 +223,33 @@ export default function Services() {
                   open={Boolean(anchorEl)}
                   onClose={handleClose}
                 >
-                  <MenuItem onClick={handleClickOpen}>Agregar Plan</MenuItem>
+                  <MenuItem onClick={handleClickOpen}>Agregar Servicio</MenuItem>
                 </Menu>
               </div>
             </Toolbar>
           </AppBar>
         </Box>
         <CardContent>
-          <TableContainer component={Paper} sx={{ maxHeight: 440 }}>
-            <Table stickyHeader sx={{ minWidth: 700 }} aria-label="customized table">
+          <TableContainer component={Paper}>
+            <Table sx={{ minWidth: 700 }} aria-label="customized table">
               <TableHead>
                 <TableRow>
                   <StyledTableCell>Nº</StyledTableCell>
-                  <StyledTableCell>Nombre del Plan</StyledTableCell>
+                  <StyledTableCell>Nombre del Servicio</StyledTableCell>
                   <StyledTableCell >Precio</StyledTableCell>
                   <StyledTableCell align="right">Fecha de Creacion</StyledTableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {plans?.map((plan) => (
-                  <TableRow hover sx={{ cursor: "pointer" }} onClick={() => alert(plan.name)} key={plan?.code}>
-                    <TableCell component="th" scope="row">
-                      {plan?.code}
-                    </TableCell>
-                    <TableCell>{plan?.name}</TableCell>
-                    <TableCell>{plan?.price}</TableCell>
-                    <TableCell align="right">{moment(plan?.creationDate).format('DD MMM YYYY')}</TableCell>
-                  </TableRow>
+                {services?.map((service) => (
+                  <StyledTableRow key={service?.code}>
+                    <StyledTableCell component="th" scope="row">
+                      {service?.code}
+                    </StyledTableCell>
+                    <StyledTableCell>{service?.name}</StyledTableCell>
+                    <StyledTableCell>{service?.price}</StyledTableCell>
+                    <StyledTableCell align="right">{moment(services?.creationDate).format('DD MMM YYYY')}</StyledTableCell>
+                  </StyledTableRow>
                 ))}
               </TableBody>
             </Table>
@@ -288,63 +278,34 @@ export default function Services() {
           <span style={{ display: 'block', color: '#fff' }}>...Cargando</span>
         </div>
         <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClose}>
-          Nuevo Plan
+          Nuevo Servicio
         </BootstrapDialogTitle>
         <DialogContent dividers>
-          <TextField
-            variant="standard"
-            label="Nombre del Plan"
-            autoFocus
-            id="name"
-            value={newPlan.name}
-            onChange={(e) => {
-              setNewPlan({ ...newPlan, name: e.target.value.toUpperCase() })
-            }}
-          />
-          <TextField
-            variant="standard"
-            label="Precio"
-            id="price"
-            type="number"
-            value={newPlan.price}
-            onChange={(e) => {
-              setNewPlan({
-                ...newPlan, price: parseFloat(e.target.value)
-              })
-            }}
-            startAdornment={<InputAdornment position="start">$</InputAdornment>}
-          />
-          <Select
-            variant="standard"
-            id="demo-simple-select-standard"
-            value={service.name}
-            onChange={(e) => {
-              console.log(e.target.value)
-              setService({ ...service, name: e.target.value })
-
-            }}
-            label="Seleccione un servicio"
-          >
-            <MenuItem value="">
-              <em></em>
-            </MenuItem>
-            {services?.map((service, index) => (
-              <MenuItem key={index} value={service._id}>{service.name}</MenuItem>
-            ))}
-          </Select>
-
-          <TextField
-            variant="standard"
-            id="frequency"
-            type="number"
-            value={service.frequency}
-            onChange={(e) => {
-              setNewPlan({
-                ...service, frequency: e.target.value
-              })
-            }}
-            startAdornment={<InputAdornment position="start">$</InputAdornment>}
-          />
+          <FormControl fullWidth sx={{ m: 1, width: "90%" }} variant="standard">
+            <InputLabel htmlFor="name">Nombre del Servicio</InputLabel>
+            <Input
+              autoFocus
+              id="name"
+              value={newService.name}
+              onChange={(e) => {
+                setNewService({ ...newService, name: e.target.value.toUpperCase() })
+              }}
+            />
+          </FormControl>
+          <FormControl fullWidth sx={{ m: 1, width: "90%" }} variant="standard">
+            <InputLabel htmlFor="price">Precio</InputLabel>
+            <Input
+              id="price"
+              type="number"
+              value={newService.price}
+              onChange={(e) => {
+                setNewService({
+                  ...newService, price: parseFloat(e.target.value)
+                })
+              }}
+              startAdornment={<InputAdornment position="start">$</InputAdornment>}
+            />
+          </FormControl>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleSubmit}>

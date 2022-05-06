@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React, { useReducer, useEffect, createContext } from 'react'
 import PropTypes from 'prop-types'
 
@@ -6,6 +7,8 @@ const initialState = {
   dataTotal: null,
   consultations: [],
   generalConsultations: [],
+  services: [],
+  plans: [],
 }
 
 const reducer = (state, action) => {
@@ -21,6 +24,16 @@ const reducer = (state, action) => {
           ...state.currentUser,
           beneficiaries: [...state.currentUser.beneficiaries, action.payload],
         },
+      }
+    case 'SET_ SERVICES':
+      return {
+        ...state,
+        services: [...state.services, ...action.payload],
+      }
+    case 'SET_ PLANS':
+      return {
+        ...state,
+        plans: [...state.plans, ...action.payload],
       }
     case 'SET_CONSULTATIONS':
       return {
@@ -50,7 +63,7 @@ const ContextProvider = ({ children }) => {
     history.push('/')
   } */
 
-  useEffect(() => {}, [dispatch, currentUser])
+  useEffect(() => { }, [dispatch, currentUser])
 
   return <Context.Provider value={{ state, dispatch }}>{children}</Context.Provider>
 }
