@@ -162,11 +162,12 @@ export default function Services() {
       setShowSpinner(false)
       return
     } else {
-      console.log(newService)
+      const serviceData = { name: newService.name, price: parseFloat(newService.price) }
+      console.log(serviceData)
       try {
         const { data } = await axios.post(
           'https://servidor-fmunefm.herokuapp.com/register_services',
-          newService,
+          serviceData,
           {
             headers: {
               authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -175,7 +176,7 @@ export default function Services() {
         )
 
         dispatch({
-          type: 'SET_ SERVICES',
+          type: 'SET_ SERVICE',
           payload: [data.service],
         })
         setShowSpinner(false)
@@ -232,7 +233,7 @@ export default function Services() {
         </Box>
         <CardContent>
           <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 700 }} aria-label="customized table">
+            <Table stickyHeader>
               <TableHead>
                 <TableRow>
                   <StyledTableCell>Nº</StyledTableCell>
@@ -242,15 +243,15 @@ export default function Services() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {services?.map((service) => (
-                  <StyledTableRow key={service?.code}>
-                    <StyledTableCell component="th" scope="row">
-                      {service?.code}
-                    </StyledTableCell>
-                    <StyledTableCell>{service?.name}</StyledTableCell>
-                    <StyledTableCell>{service?.price}</StyledTableCell>
-                    <StyledTableCell align="right">{moment(services?.creationDate).format('DD MMM YYYY')}</StyledTableCell>
-                  </StyledTableRow>
+                {services?.map((service, index) => (
+                  <TableRow key={index}>
+                    <TableCell component="th" scope="row">
+                      {index + 1}
+                    </TableCell>
+                    <TableCell>{service?.name}</TableCell>
+                    <TableCell>{service?.price}</TableCell>
+                    <TableCell align="right">{moment(services?.creationDate).format('DD MMM YYYY')}</TableCell>
+                  </TableRow>
                 ))}
               </TableBody>
             </Table>
@@ -301,7 +302,7 @@ export default function Services() {
               value={newService.price}
               onChange={(e) => {
                 setNewService({
-                  ...newService, price: parseFloat(e.target.value)
+                  ...newService, price: e.target.value,
                 })
               }}
               startAdornment={<InputAdornment position="start">$</InputAdornment>}

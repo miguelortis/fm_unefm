@@ -14,8 +14,13 @@ import {
   InputAdornment,
   CircularProgress,
   TextField,
-  Select
+  Select,
+  InputLabel,
+  FormControl,
+  Divider,
+  Badge
 } from '@mui/material'
+import { AddCircleOutline, Delete, Close, Save, Edit } from '@mui/icons-material';
 import * as moment from 'moment'
 import { styled } from '@mui/material/styles'
 import TableCell, { tableCellClasses } from '@mui/material/TableCell'
@@ -85,16 +90,21 @@ BootstrapDialogTitle.propTypes = {
 };
 export default function Services() {
   const {
-    state: { plans, services },
+    state: { packages, services },
     dispatch,
   } = useContext(Context)
   const [anchorEl, setAnchorEl] = useState(null)
   const [open, setOpen] = useState(false);
-  const [newPlan, setNewPlan] = useState({ name: "", price: "", services: [] });
-  const [service, setService] = useState({})
+  const [newPackage, setnewPackage] = useState({ name: "", price: "" });
+  const [allServices, setAllServices] = useState([]);
+  const [service, setService] = useState({ name: "", frequency: "" });
   const [showSpinner, setShowSpinner] = useState(false)
-
-  console.log(new Date())
+  const [openInfo, setOpenInfo] = useState(false);
+  const [info, setInfo] = useState([]);
+  const [showEdit, setShowEdit] = useState(false);
+  const [editServices, setEditServices] = useState({});
+  const [editEnable, setEditEnable] = useState(null);
+  console.log(packages)
   useEffect(() => {
     const handleServices = async () => {
       try {
@@ -116,14 +126,13 @@ export default function Services() {
       }
       //console.log(dataTotal)
     }
-    if (!!localStorage.getItem('token') && services.length === 0) {
-      //console.log('se ejecuto')
-      handleServices()
-    }
 
-  }, [dispatch, services])
+    handleServices()
+
+
+  }, [dispatch])
   useEffect(() => {
-    const handlePlans = async () => {
+    const handlePackages = async () => {
       try {
         const { data } = await axios.get('https://servidor-fmunefm.herokuapp.com/packages', {
           headers: {
@@ -131,34 +140,128 @@ export default function Services() {
           },
           //cancelToken: source.token,
         })
+        console.log(data)
         dispatch({
-          type: 'SET_ PLANS',
+          type: 'SET_ PACKAGES',
           payload: data,
         })
       } catch (error) {
-        //console.log(error)
         if (error?.response?.status === 401) {
           console.log(error)
         }
       }
-      //console.log(dataTotal)
-    }
-    if (!!localStorage.getItem('token') && plans.length === 0) {
-      //console.log('se ejecuto')
-      handlePlans()
+      console.log(packages)
     }
 
-  }, [dispatch, plans])
+    handlePackages()
 
+
+  }, [])
+
+  useEffect(() => {
+
+    setnewPackage({
+      ...newPackage, services: allServices?.map((item) => {
+        return {
+          service: item?._id, frequency: item?.frequency
+        }
+      })
+    })
+
+
+  }, [allServices])
+
+  const handleInfo = (item) => {
+    setInfo({ ...item })
+    setOpenInfo(true)
+  };
   const handleClickOpen = () => {
-    setOpen(true);
+    setOpen(true)
     setAnchorEl(null)
   };
+
+  const updatePackage = async () => {
+    setShowSpinner(true)
+    let updatePackage = info;
+    if (newPackage.name === '') {
+      updatePackage = { ...updatePackage, name: info?.name }
+    }
+    if (newPackage.price === '') {
+      updatePackage = { ...updatePackage, price: info?.price }
+    }
+
+    console.log(updatePackage)
+    console.log(info?.name)
+
+    updatePackage = {
+      ...updatePackage, services: info?.services?.map((item) => {
+        return { service: item?.service?._id, frequency: item?.frequency }
+      })
+    }
+    console.log(updatePackage)
+    try {
+      const { data } = await axios.put(
+        'http://localhost:3100/package_update',
+        updatePackage,
+        {
+          headers: {
+            authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        },
+      )
+      console.log(data.status)
+      if (data.status === 201) {
+        console.log('actualizado')
+        dispatch({
+          type: 'SET_ PACKAGES',
+          payload: data.packages,
+        })
+        setOpenInfo(false)
+        setShowEdit(false);
+        setShowSpinner(false)
+      }
+    } catch (error) {
+      if (error) {
+        console.log(error)
+      }
+    }
+
+  }
   const handleClose = () => {
-    setOpen(false);
+    setOpen(false)
     setAnchorEl(null)
-    setNewPlan({ name: "", price: "" })
+    setnewPackage({ name: "", price: "" })
+    setAllServices([])
+    setService({ name: "", frequency: "" })
+    setOpenInfo(false);
+    setShowEdit(false);
+    setEditServices([])
+    setEditEnable(null)
   };
+  const updateService = (index) => {
+    console.log(info)
+    console.log(editServices)
+    info?.services.splice(index, 1, editServices);
+    console.log(info)
+    // setInfo({ ...info, services: [...newArray, editServices] })
+  }
+  const handleService = () => {
+    if (!!service.name && !!service.frequency) {
+      setAllServices([...allServices, service]);
+      setService({ name: "", frequency: "" })
+    } else {
+      alert('Por favor llene todos los campos')
+    }
+  };
+  const deleteService = (id) => {
+    const newArray = allServices?.filter((item) => item?._id !== id);
+    setAllServices(newArray);
+
+    const newArray1 = info?.services?.filter((item) => item?._id !== id);
+    setInfo({ ...info, services: newArray1 });
+    console.log(newArray1)
+  };
+
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget)
   }
@@ -166,16 +269,17 @@ export default function Services() {
   const handleSubmit = async () => {
     setShowSpinner(true)
 
-    if (newPlan.name === "" || newPlan.price === "") {
+    if (newPackage?.name === "" || newPackage?.price === "" || allServices?.length === 0) {
       alert('Por favor, complete todos los campos')
       setShowSpinner(false)
       return
     } else {
-      console.log(newPlan)
+      console.log(newPackage)
+      setShowSpinner(false)
       try {
         const { data } = await axios.post(
-          'https://servidor-fmunefm.herokuapp.com/register_package',
-          newPlan,
+          'http://localhost:3100/register_package',
+          newPackage,
           {
             headers: {
               authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -184,12 +288,14 @@ export default function Services() {
         )
         console.log(data)
         dispatch({
-          type: 'SET_ PLANS',
-          payload: [data.plan],
+          type: 'SET_ PACKAGE',
+          payload: [...data.package],
         })
         setShowSpinner(false)
         setOpen(false)
-        setNewPlan({ name: "", price: "" })
+        setnewPackage({ name: "", price: "" })
+        setAllServices([])
+        setService({ name: "", frequency: "" })
       } catch (error) {
         if (error) {
           console.log(error)
@@ -205,7 +311,7 @@ export default function Services() {
           <AppBar position="static">
             <Toolbar>
               <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                Servicios
+                Planes de Cobertura
               </Typography>
               <div>
                 <IconButton
@@ -240,8 +346,8 @@ export default function Services() {
           </AppBar>
         </Box>
         <CardContent>
-          <TableContainer component={Paper} sx={{ maxHeight: 440 }}>
-            <Table stickyHeader sx={{ minWidth: 700 }} aria-label="customized table">
+          <TableContainer component={Paper}>
+            <Table stickyHeader>
               <TableHead>
                 <TableRow>
                   <StyledTableCell>Nº</StyledTableCell>
@@ -251,14 +357,14 @@ export default function Services() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {plans?.map((plan) => (
-                  <TableRow hover sx={{ cursor: "pointer" }} onClick={() => alert(plan.name)} key={plan?.code}>
+                {packages?.map((item, index) => (
+                  <TableRow hover sx={{ cursor: "pointer" }} onClick={() => handleInfo(item)} key={index}>
                     <TableCell component="th" scope="row">
-                      {plan?.code}
+                      {index + 1}
                     </TableCell>
-                    <TableCell>{plan?.name}</TableCell>
-                    <TableCell>{plan?.price}</TableCell>
-                    <TableCell align="right">{moment(plan?.creationDate).format('DD MMM YYYY')}</TableCell>
+                    <TableCell>{item?.name}</TableCell>
+                    <TableCell>{item?.price}</TableCell>
+                    <TableCell align="right">{moment(item?.creationDate).format('DD MMM YYYY')}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -266,7 +372,141 @@ export default function Services() {
           </TableContainer>
         </CardContent>
       </Card>
-      {/*//////////////////////////MODAL//////////////////*/}
+      {/*//////////////////////////MODAL info plan//////////////////*/}
+      <Dialog
+        open={openInfo}
+        onClose={handleClose}
+      >
+        <div
+          hidden={!showSpinner}
+          style={{
+            position: 'absolute',
+            width: '100%',
+            height: '100%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 999,
+            backgroundColor: 'rgba(8, 34, 49, 0.575)',
+          }}
+        >
+          <CircularProgress />
+          <span style={{ display: 'block', color: '#fff' }}>...Cargando</span>
+        </div>
+        <DialogTitle id="alert-dialog-title">
+          {"Editar Plan " + info?.name}
+        </DialogTitle>
+        <DialogContent>
+          <div hidden={!showEdit}>
+            <TextField
+              variant="standard"
+              type="text"
+              name='name'
+              label="Nombre del Plan"
+              value={info?.name}
+              onChange={(e) => setInfo({ ...info, name: e.target.value })}
+            />
+            <TextField
+              variant="standard"
+              type="number"
+              name='price'
+              label="Precio"
+              value={info?.price}
+              onChange={(e) => setInfo({ ...info, price: parseInt(e.target.value) })}
+            />
+            <TableContainer component={Paper}>
+              <Table stickyHeader aria-label="customized table">
+                <TableHead>
+                  <TableRow>
+                    <StyledTableCell>Nombre del servicio</StyledTableCell>
+                    <StyledTableCell align="center">Frecuencia de Uso</StyledTableCell>
+                    <StyledTableCell align="center">Accion</StyledTableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {info?.services?.map((item, index) => (
+                    <TableRow hover key={index}>
+
+                      <TableCell>{item?.service?.name}</TableCell>
+                      <TableCell align="center">
+                        <TextField
+                          sx={{ width: "50%" }}
+                          disabled={editEnable === index ? false : true}
+                          variant="standard"
+                          type="number"
+                          name='frequency'
+                          label="cantidad"
+                          defaultValue={item?.frequency}
+                          onChange={(e) => {
+                            setEditServices({ ...item, frequency: parseInt(e.target.value) })
+                            console.log(editServices);
+                          }}
+                        />
+                      </TableCell>
+                      <TableCell align="center" >
+                        <IconButton hidden={editEnable === null ? false : true} onClick={() => setEditEnable(index)} aria-label="delete" size="small">
+                          <Edit fontSize="small" />
+                        </IconButton>
+                        <IconButton hidden={editEnable === index ? false : true} onClick={() => {
+                          deleteService(item?._id)
+                          setEditEnable(null)
+                        }} aria-label="delete" size="small">
+                          <Delete fontSize="small" />
+                        </IconButton>
+                        <IconButton hidden={editEnable === index ? false : true} onClick={() => {
+                          updateService(index)
+                          setEditEnable(null)
+                        }} aria-label="delete" size="small">
+                          <Save fontSize="small" />
+                        </IconButton>
+                        <IconButton hidden={editEnable === index ? false : true} onClick={() => {
+                          setEditEnable(null)
+                        }} aria-label="delete" size="small">
+                          <Close fontSize="small" />
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </div>
+          <div hidden={showEdit}>
+            <TableContainer component={Paper}>
+              <Table stickyHeader aria-label="customized table">
+                <TableHead>
+                  <TableRow>
+                    <StyledTableCell>Nombre del servicio</StyledTableCell>
+                    <StyledTableCell align="center">Frecuencia de Uso</StyledTableCell>
+                    <StyledTableCell align="center">Estado</StyledTableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {info?.services?.map((item, index) => (
+                    <TableRow hover key={index}>
+
+                      <TableCell>{item?.service?.name}</TableCell>
+                      <TableCell align="center">{item?.frequency}</TableCell>
+                      <TableCell align="center"><Badge color="success" badgeContent={item?.service?.status ? "Activo" : "Inactivo"} /></TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </div>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Cerrar</Button>
+          <Button hidden={!showEdit} onClick={updatePackage} autoFocus>
+            Guardar
+          </Button>
+          <Button hidden={showEdit} onClick={() => setShowEdit(true)}
+            autoFocus>
+            Editar
+          </Button>
+        </DialogActions>
+      </Dialog>
+      {/*//////////////////////////MODAL nuevo plan//////////////////*/}
       <BootstrapDialog
         aria-labelledby="customized-dialog-title"
         open={open}
@@ -292,59 +532,105 @@ export default function Services() {
         </BootstrapDialogTitle>
         <DialogContent dividers>
           <TextField
+            sx={{ width: '50%', m: 2 }}
             variant="standard"
             label="Nombre del Plan"
             autoFocus
             id="name"
-            value={newPlan.name}
+            value={newPackage.name}
             onChange={(e) => {
-              setNewPlan({ ...newPlan, name: e.target.value.toUpperCase() })
+              setnewPackage({ ...newPackage, name: e.target.value.toUpperCase() })
             }}
           />
           <TextField
+            sx={{ width: '20%', m: 2 }}
             variant="standard"
             label="Precio"
             id="price"
             type="number"
-            value={newPlan.price}
+            value={newPackage.price}
             onChange={(e) => {
-              setNewPlan({
-                ...newPlan, price: parseFloat(e.target.value)
+              setnewPackage({
+                ...newPackage, price: parseInt(e.target.value)
               })
             }}
-            startAdornment={<InputAdornment position="start">$</InputAdornment>}
-          />
-          <Select
-            variant="standard"
-            id="demo-simple-select-standard"
-            value={service.name}
-            onChange={(e) => {
-              console.log(e.target.value)
-              setService({ ...service, name: e.target.value })
-
+            InputProps={{
+              startAdornment: <InputAdornment position="start">$</InputAdornment>,
             }}
-            label="Seleccione un servicio"
-          >
-            <MenuItem value="">
-              <em></em>
-            </MenuItem>
-            {services?.map((service, index) => (
-              <MenuItem key={index} value={service._id}>{service.name}</MenuItem>
-            ))}
-          </Select>
-
-          <TextField
-            variant="standard"
-            id="frequency"
-            type="number"
-            value={service.frequency}
-            onChange={(e) => {
-              setNewPlan({
-                ...service, frequency: e.target.value
-              })
-            }}
-            startAdornment={<InputAdornment position="start">$</InputAdornment>}
           />
+          <Divider sx={{ mt: 2, mb: 2 }}>Servicios del plan de cobertura</Divider>
+          {allServices.length > 0 && <TableContainer component={Paper}>
+            <Table size="small" aria-label="a dense table">
+              <TableHead>
+                <TableRow>
+                  <TableCell>N°</TableCell>
+                  <TableCell >Servicio</TableCell>
+                  <TableCell align="center">Cantidad</TableCell>
+                  <TableCell align="center">Accion</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {allServices?.map((service, i) => (
+                  <TableRow
+                    key={i}
+                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                  >
+                    <TableCell component="th" scope="row">
+                      {i + 1}
+                    </TableCell>
+                    <TableCell >{service.name}</TableCell>
+                    <TableCell align="center" >{service.frequency}</TableCell>
+                    <TableCell align="center" >
+                      <IconButton onClick={() => deleteService(service._id)} aria-label="delete" size="small">
+                        <Delete fontSize="small" />
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>}
+          <FormControl variant="filled" sx={{ width: '50%', mr: 2, mt: 1 }}>
+            <InputLabel id='service'>Servicio</InputLabel>
+            <Select
+              variant="standard"
+              id="service"
+              vale={service}
+              onChange={(e) => {
+                setService({ ...service, ...e.target.value })
+
+                console.log(service)
+              }}
+            >
+              <MenuItem>
+                <em>Seleccione un servicio</em>
+              </MenuItem>
+              {services?.map((service, index) => (
+                <MenuItem key={index} value={service}>{service.name}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <FormControl variant="filled" sx={{ width: '30%', mr: 2, mt: 1 }}>
+            <TextField
+              label="Cantidad"
+              variant="standard"
+              id="frequency"
+              type="number"
+              value={service.frequency}
+              onChange={(e) => {
+                setService({
+                  ...service, frequency: parseInt(e.target.value)
+                })
+                console.log(service)
+              }}
+              startAdornment={<InputAdornment position="start">$</InputAdornment>}
+            />
+          </FormControl>
+          <FormControl variant="filled" sx={{ width: '5%', mt: 3 }}>
+            <IconButton onClick={handleService} color="primary">
+              <AddCircleOutline />
+            </IconButton>
+          </FormControl>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleSubmit}>

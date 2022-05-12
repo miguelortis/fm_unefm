@@ -8,7 +8,7 @@ const initialState = {
   consultations: [],
   generalConsultations: [],
   services: [],
-  plans: [],
+  packages: [],
 }
 
 const reducer = (state, action) => {
@@ -25,15 +25,25 @@ const reducer = (state, action) => {
           beneficiaries: [...state.currentUser.beneficiaries, action.payload],
         },
       }
-    case 'SET_ SERVICES':
+    case 'SET_ SERVICE':
       return {
         ...state,
         services: [...state.services, ...action.payload],
       }
-    case 'SET_ PLANS':
+    case 'SET_ SERVICES':
       return {
         ...state,
-        plans: [...state.plans, ...action.payload],
+        services: [...action.payload],
+      }
+    case 'SET_ PACKAGE':
+      return {
+        ...state,
+        packages: [...state.packages, ...action.payload],
+      }
+    case 'SET_ PACKAGES':
+      return {
+        ...state,
+        packages: [...action.payload],
       }
     case 'SET_CONSULTATIONS':
       return {
