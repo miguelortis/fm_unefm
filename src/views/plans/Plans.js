@@ -39,6 +39,8 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import CloseIcon from '@mui/icons-material/Close';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Switch from '@mui/material/Switch';
 import axios from 'axios'
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -50,7 +52,14 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   },
 }))
 
-
+const StyledBadge = styled(Badge)(({ theme }) => ({
+  '& .MuiBadge-badge': {
+    right: -15,
+    top: -5,
+    border: `2px solid ${theme.palette.background.paper}`,
+    padding: '0 4px',
+  },
+}));
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -97,14 +106,14 @@ export default function Services() {
   const [open, setOpen] = useState(false);
   const [newPackage, setnewPackage] = useState({ name: "", price: "" });
   const [allServices, setAllServices] = useState([]);
-  const [service, setService] = useState({ name: "", frequency: "" });
+  const [service, setService] = useState({ frequency: "" });
   const [showSpinner, setShowSpinner] = useState(false)
   const [openInfo, setOpenInfo] = useState(false);
-  const [info, setInfo] = useState([]);
+  const [info, setInfo] = useState({});
   const [showEdit, setShowEdit] = useState(false);
   const [editServices, setEditServices] = useState({});
   const [editEnable, setEditEnable] = useState(null);
-  console.log(packages)
+
   useEffect(() => {
     const handleServices = async () => {
       try {
@@ -119,12 +128,10 @@ export default function Services() {
           payload: data,
         })
       } catch (error) {
-        //console.log(error)
         if (error?.response?.status === 401) {
           console.log(error)
         }
       }
-      //console.log(dataTotal)
     }
 
     handleServices()
@@ -140,7 +147,6 @@ export default function Services() {
           },
           //cancelToken: source.token,
         })
-        console.log(data)
         dispatch({
           type: 'SET_ PACKAGES',
           payload: data,
@@ -150,7 +156,6 @@ export default function Services() {
           console.log(error)
         }
       }
-      console.log(packages)
     }
 
     handlePackages()
@@ -190,15 +195,11 @@ export default function Services() {
       updatePackage = { ...updatePackage, price: info?.price }
     }
 
-    console.log(updatePackage)
-    console.log(info?.name)
-
     updatePackage = {
       ...updatePackage, services: info?.services?.map((item) => {
         return { service: item?.service?._id, frequency: item?.frequency }
       })
     }
-    console.log(updatePackage)
     try {
       const { data } = await axios.put(
         'http://localhost:3100/package_update',
@@ -209,9 +210,9 @@ export default function Services() {
           },
         },
       )
-      console.log(data.status)
+      //console.log(data.status)
       if (data.status === 201) {
-        console.log('actualizado')
+        console.log(data.message)
         dispatch({
           type: 'SET_ PACKAGES',
           payload: data.packages,
@@ -237,29 +238,29 @@ export default function Services() {
     setShowEdit(false);
     setEditServices([])
     setEditEnable(null)
+    setInfo({ name: "", price: "", status: "", services: [] })
   };
   const updateService = (index) => {
-    console.log(info)
-    console.log(editServices)
     info?.services.splice(index, 1, editServices);
-    console.log(info)
-    // setInfo({ ...info, services: [...newArray, editServices] })
+
   }
   const handleService = () => {
-    if (!!service.name && !!service.frequency) {
+    if (!!service?.name && !!service?.frequency || !!service?.service?.name && !!service?.frequency) {
       setAllServices([...allServices, service]);
+      setInfo({ ...info, services: [...info.services, service] })
+      console.log(service)
+      console.log(info.services)
       setService({ name: "", frequency: "" })
     } else {
       alert('Por favor llene todos los campos')
     }
   };
-  const deleteService = (id) => {
-    const newArray = allServices?.filter((item) => item?._id !== id);
-    setAllServices(newArray);
+  const deleteService = (index) => {
+    // const newArray = allServices?.filter((item) => item?._id !== id);
+    // setAllServices(newArray);
+    allServices?.splice(index, 1);
 
-    const newArray1 = info?.services?.filter((item) => item?._id !== id);
-    setInfo({ ...info, services: newArray1 });
-    console.log(newArray1)
+    info?.services?.splice(index, 1);
   };
 
   const handleMenu = (event) => {
@@ -274,7 +275,6 @@ export default function Services() {
       setShowSpinner(false)
       return
     } else {
-      console.log(newPackage)
       setShowSpinner(false)
       try {
         const { data } = await axios.post(
@@ -286,7 +286,6 @@ export default function Services() {
             },
           },
         )
-        console.log(data)
         dispatch({
           type: 'SET_ PACKAGE',
           payload: [...data.package],
@@ -352,7 +351,8 @@ export default function Services() {
                 <TableRow>
                   <StyledTableCell>Nº</StyledTableCell>
                   <StyledTableCell>Nombre del Plan</StyledTableCell>
-                  <StyledTableCell >Precio</StyledTableCell>
+                  <StyledTableCell align="center">Precio $</StyledTableCell>
+                  <StyledTableCell align="center">Fecha Modificacion</StyledTableCell>
                   <StyledTableCell align="right">Fecha de Creacion</StyledTableCell>
                 </TableRow>
               </TableHead>
@@ -362,8 +362,13 @@ export default function Services() {
                     <TableCell component="th" scope="row">
                       {index + 1}
                     </TableCell>
-                    <TableCell>{item?.name}</TableCell>
-                    <TableCell>{item?.price}</TableCell>
+                    <TableCell>
+                      <StyledBadge color={item?.status ? 'success' : 'error'} badgeContent={item?.status ? 'Activo' : 'Inactivo'}>
+                        {item?.name}
+                      </StyledBadge>
+                    </TableCell>
+                    <TableCell align="center">{item?.price + "$"}</TableCell>
+                    <TableCell align="center">{moment(item?.ModificationDate).format('DD MMM YYYY')}</TableCell>
                     <TableCell align="right">{moment(item?.creationDate).format('DD MMM YYYY')}</TableCell>
                   </TableRow>
                 ))}
@@ -394,11 +399,14 @@ export default function Services() {
           <span style={{ display: 'block', color: '#fff' }}>...Cargando</span>
         </div>
         <DialogTitle id="alert-dialog-title">
-          {"Editar Plan " + info?.name}
+          <StyledBadge color={info.status ? 'success' : 'error'} badgeContent={info.status ? 'Activo' : 'Inactivo'}>
+            <span>{showEdit ? "Editar Plan " + " " + info?.name : "Informacion del Plan" + " " + info?.name}</span>
+          </StyledBadge >
         </DialogTitle>
         <DialogContent>
           <div hidden={!showEdit}>
             <TextField
+              sx={{ mr: 2 }}
               variant="standard"
               type="text"
               name='name'
@@ -407,6 +415,7 @@ export default function Services() {
               onChange={(e) => setInfo({ ...info, name: e.target.value })}
             />
             <TextField
+              sx={{ width: '20%' }}
               variant="standard"
               type="number"
               name='price'
@@ -414,16 +423,26 @@ export default function Services() {
               value={info?.price}
               onChange={(e) => setInfo({ ...info, price: parseInt(e.target.value) })}
             />
+            <FormControlLabel
+              value="top"
+              control={<Switch color="primary" checked={info.status || false}
+                onChange={(e) => {
+                  setInfo({ ...info, status: e.target.checked })
+                }} />}
+              label="Estado"
+              labelPlacement="top"
+            />
+            <Divider />
             <TableContainer component={Paper}>
               <Table stickyHeader aria-label="customized table">
                 <TableHead>
                   <TableRow>
                     <StyledTableCell>Nombre del servicio</StyledTableCell>
                     <StyledTableCell align="center">Frecuencia de Uso</StyledTableCell>
-                    <StyledTableCell align="center">Accion</StyledTableCell>
+                    <StyledTableCell align="right">Accion</StyledTableCell>
                   </TableRow>
                 </TableHead>
-                <TableBody>
+                <TableBody sx={{ display: "table-caption", maxHeight: "160px" }}>
                   {info?.services?.map((item, index) => (
                     <TableRow hover key={index}>
 
@@ -439,16 +458,15 @@ export default function Services() {
                           defaultValue={item?.frequency}
                           onChange={(e) => {
                             setEditServices({ ...item, frequency: parseInt(e.target.value) })
-                            console.log(editServices);
                           }}
                         />
                       </TableCell>
-                      <TableCell align="center" >
+                      <TableCell align="right" >
                         <IconButton hidden={editEnable === null ? false : true} onClick={() => setEditEnable(index)} aria-label="delete" size="small">
-                          <Edit fontSize="small" />
+                          <Edit />
                         </IconButton>
                         <IconButton hidden={editEnable === index ? false : true} onClick={() => {
-                          deleteService(item?._id)
+                          deleteService(index)
                           setEditEnable(null)
                         }} aria-label="delete" size="small">
                           <Delete fontSize="small" />
@@ -470,6 +488,45 @@ export default function Services() {
                 </TableBody>
               </Table>
             </TableContainer>
+            <br />
+            <span >  </span>
+            <Divider>Agregar Servicio </Divider>
+            <FormControl variant="filled" sx={{ width: '50%', mr: 2, mt: 1 }}>
+              <InputLabel id='service'>Servicio</InputLabel>
+              <Select
+                variant="standard"
+                id="service"
+                vale={service}
+                onChange={(e) => {
+                  setService({ ...service, service: { ...e.target.value } })
+                }}
+              >
+                <MenuItem>
+                </MenuItem>
+                {services?.map((service, index) => (
+                  <MenuItem disabled={!service.status} key={index} value={service}>{service.name}{!service.status ? <em>(Inactivo)</em> : ""}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <FormControl variant="filled" sx={{ width: '30%', mr: 2, mt: 1 }}>
+              <TextField
+                label="Cantidad"
+                variant="standard"
+                id="frequency"
+                type="number"
+                value={service.frequency}
+                onChange={(e) => {
+                  setService({
+                    ...service, frequency: parseInt(e.target.value)
+                  })
+                }}
+              />
+            </FormControl>
+            <FormControl variant="filled" sx={{ width: '5%', mt: 3 }}>
+              <IconButton onClick={handleService} color="primary">
+                <AddCircleOutline />
+              </IconButton>
+            </FormControl>
           </div>
           <div hidden={showEdit}>
             <TableContainer component={Paper}>
@@ -487,7 +544,7 @@ export default function Services() {
 
                       <TableCell>{item?.service?.name}</TableCell>
                       <TableCell align="center">{item?.frequency}</TableCell>
-                      <TableCell align="center"><Badge color="success" badgeContent={item?.service?.status ? "Activo" : "Inactivo"} /></TableCell>
+                      <TableCell align="center"><Badge color={item?.service?.status ? "success" : "error"} badgeContent={item?.service?.status ? "Activo" : "Inactivo"} /></TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -554,9 +611,6 @@ export default function Services() {
                 ...newPackage, price: parseInt(e.target.value)
               })
             }}
-            InputProps={{
-              startAdornment: <InputAdornment position="start">$</InputAdornment>,
-            }}
           />
           <Divider sx={{ mt: 2, mb: 2 }}>Servicios del plan de cobertura</Divider>
           {allServices.length > 0 && <TableContainer component={Paper}>
@@ -570,18 +624,18 @@ export default function Services() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {allServices?.map((service, i) => (
+                {allServices?.map((item, index) => (
                   <TableRow
-                    key={i}
+                    key={index}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                   >
                     <TableCell component="th" scope="row">
-                      {i + 1}
+                      {index + 1}
                     </TableCell>
-                    <TableCell >{service.name}</TableCell>
-                    <TableCell align="center" >{service.frequency}</TableCell>
+                    <TableCell >{item.name}</TableCell>
+                    <TableCell align="center" >{item.frequency}</TableCell>
                     <TableCell align="center" >
-                      <IconButton onClick={() => deleteService(service._id)} aria-label="delete" size="small">
+                      <IconButton onClick={() => deleteService(index)} aria-label="delete" size="small">
                         <Delete fontSize="small" />
                       </IconButton>
                     </TableCell>
@@ -598,8 +652,6 @@ export default function Services() {
               vale={service}
               onChange={(e) => {
                 setService({ ...service, ...e.target.value })
-
-                console.log(service)
               }}
             >
               <MenuItem>
@@ -621,9 +673,7 @@ export default function Services() {
                 setService({
                   ...service, frequency: parseInt(e.target.value)
                 })
-                console.log(service)
               }}
-              startAdornment={<InputAdornment position="start">$</InputAdornment>}
             />
           </FormControl>
           <FormControl variant="filled" sx={{ width: '5%', mt: 3 }}>

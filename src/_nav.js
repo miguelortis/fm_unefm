@@ -4,8 +4,9 @@ import { cilStar, cilUser, cilHome, cilGroup, cilPencil } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
 const _nav = [
+  ////////HOME/////
   {
-    role: 'user',
+    code: '1',
     component: CNavItem,
     name: 'Inicio',
     to: '/account',
@@ -16,13 +17,14 @@ const _nav = [
     //   text: 'NEW',
     // },
   },
+  ////////PERFIL/////
   {
-    role: 'user',
+    code: '2',
     component: CNavTitle,
     name: 'Perfil',
   },
   {
-    role: 'user',
+    code: '3',
     component: CNavGroup,
     name: 'Datos Personales',
     icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
@@ -44,20 +46,21 @@ const _nav = [
       },
     ],
   },
+  ////////FAMILIARES/////
   {
-    role: 'user',
+    code: '4',
     component: CNavTitle,
     name: 'Beneficiarios',
   },
   {
-    role: 'user',
+    code: '5',
     component: CNavItem,
     name: 'Familiares',
     to: '/beneficiaries',
     icon: <CIcon icon={cilGroup} customClassName="nav-icon" />,
   },
   // {
-  //   role: 'fAmDuMnIeNfm',
+  //   code: '6',
   //   component: CNavItem,
   //   name: 'Reporte',
   //   to: '/report',
@@ -68,14 +71,15 @@ const _nav = [
   //   // },
   // },
 
-  ////////RECEPCION////////
+  ////// titulo de panel administrativo
   {
-    role: 'fRmEuCnEePfCmION',
+    code: '7',
     component: CNavTitle,
     name: 'panel administrativo',
   },
+  ////////RECEPCION////////
   {
-    role: 'fRmEuCnEePfCmION',
+    code: '8',
     component: CNavItem,
     name: 'Servicios',
     to: '/typeofconsultations',
@@ -83,56 +87,56 @@ const _nav = [
   },
   ////////MEDICO GENERAL////////
   {
-    role: 'MEfDImCOuGEnNEeRfAmL',
-    component: CNavTitle,
-    name: 'panel administrativo',
-  },
-  {
-    role: 'MEfDImCOuGEnNEeRfAmL',
+    code: '9',
     component: CNavItem,
-    name: 'Consultas G. Pendientes',
+    name: 'Consultas Pendientes',
     to: '/pendingconsultations',
     icon: <CIcon icon={cilPencil} customClassName="nav-icon" />,
+    badge: {
+      color: 'success',
+      text: 'M. General',
+    },
   },
+
   ////////MEDICO EMERGENCIA////////
   {
-    role: 'MEfDImCOuEMnEReGEfNCmIA',
-    component: CNavTitle,
-    name: 'panel administrativo',
-  },
-  {
-    role: 'MEfDImCOuEMnEReGEfNCmIA',
+    code: '10',
     component: CNavItem,
-    name: 'Consultas G. Pendientes',
+    name: 'Consultas Pendientes',
     to: '/pendingconsultations',
     icon: <CIcon icon={cilPencil} customClassName="nav-icon" />,
+    badge: {
+      color: 'success',
+      text: 'M. Emergencia',
+    },
   },
-  ////////JUNTA-ADMINISTRADORA////////
+  ////////ADMINISTRAR USUARIOS////////
   {
-    role: 'JfUmNuTnAeAfDmMIN',
-    component: CNavTitle,
-    name: 'panel administrativo',
-  },
-  {
-    role: 'JfUmNuTnAeAfDmMIN',
+    code: '11',
     component: CNavGroup,
-    name: 'Especialistas',
+    name: 'Administrar Usuarios',
     icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
     items: [
       {
         component: CNavItem,
-        name: 'Nuevo Especialista',
+        name: 'Titulares',
+        to: '/titulares',
+      },
+      {
+        component: CNavItem,
+        name: 'Familiares',
         to: '/noexist',
       },
       {
         component: CNavItem,
-        name: 'Modificar Especialista',
+        name: 'Especialistas Externos',
         to: '/noexist',
       },
     ],
   },
+  ////////ADMINISTRAR SERVICIOS////////
   {
-    role: 'JfUmNuTnAeAfDmMIN',
+    code: '12',
     component: CNavGroup,
     name: 'Administrar Servicios',
     icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
@@ -150,11 +154,10 @@ const _nav = [
       {
         component: CNavItem,
         name: 'Valor de Tasas (divisas)',
-        to: '/noexis',
+        to: '/exchange_rates',
       },
     ],
   },
-
   //////////
   // {
   //   component: CNavItem,
@@ -321,7 +324,7 @@ const _nav = [
   //   icon: <CIcon icon={cilChartPie} customClassName="nav-icon" />,
   /// },
   // {
-  //   role: 'JfUmNuTnAeAfDmMIN',
+  //   code: 'JfUmNuTnAeAfDmMIN',
   //   component: CNavGroup,
   //   name: 'Icons',
   //   icon: <CIcon icon={cilStar} customClassName="nav-icon" />,

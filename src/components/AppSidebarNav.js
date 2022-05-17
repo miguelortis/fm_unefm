@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
 import { useContext } from 'react'
@@ -32,9 +33,9 @@ export const AppSidebarNav = ({ items }) => {
       <Component
         {...(rest.to &&
           !rest.items && {
-            component: NavLink,
-            activeClassName: 'active',
-          })}
+          component: NavLink,
+          activeClassName: 'active',
+        })}
         key={index}
         {...rest}
       >
@@ -64,13 +65,19 @@ export const AppSidebarNav = ({ items }) => {
     <React.Fragment>
       {items &&
         items.map((item, index) =>
-          item?.role === currentUser?.role || item?.role === 'user'
-            ? item.items
-              ? navGroup(item, index)
-              : navItem(item, index)
-            : '',
+          currentUser?.code?.includes(item.code) ? item.items ? navGroup(item, index) : navItem(item, index) : '',
         )}
     </React.Fragment>
+    // <React.Fragment>
+    //   {items &&
+    //     items.map((item, index) =>
+    //       item?.role === currentUser?.role || item?.role === 'user'
+    //         ? item.items
+    //           ? navGroup(item, index)
+    //           : navItem(item, index)
+    //         : '',
+    //     )}
+    // </React.Fragment>
   )
 }
 

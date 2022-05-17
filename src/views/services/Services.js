@@ -14,10 +14,15 @@ import {
   Paper,
   FormControl,
   InputLabel,
+  TextField,
   Input,
   InputAdornment,
+  FormControlLabel,
+  Switch,
+  Badge,
   CircularProgress,
 } from '@mui/material'
+// import { AddCircleOutline, Delete, Close, Save, Edit } from '@mui/icons-material';
 import * as moment from 'moment'
 import { styled } from '@mui/material/styles'
 import TableCell, { tableCellClasses } from '@mui/material/TableCell'
@@ -37,6 +42,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import CloseIcon from '@mui/icons-material/Close';
 import axios from 'axios'
+
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.common.black,
@@ -46,26 +52,20 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
     fontSize: 14,
   },
 }))
+const StyledBadge = styled(Badge)(({ theme }) => ({
+  '& .MuiBadge-badge': {
+    right: -15,
+    top: -5,
+    border: `2px solid ${theme.palette.background.paper}`,
+    padding: '0 4px',
+  },
+}));
 
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  '&:nth-of-type(odd)': {
-    backgroundColor: theme.palette.action.hover,
-  },
-  // hide last border
-  '&:last-child td, &:last-child th': {
-    border: 0,
-  },
-}))
 
 function createData(nº, name, calories, fat) {
   return { nº, name, calories, fat }
 }
 
-const rows = [
-  createData(1, 'Laboratorio', "10$", "03/05/2022"),
-  createData(2, 'Cardiologia', "15$", "03/05/2022"),
-  createData(3, 'Ginecologia', "15$", "03/05/2022"),
-]
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
     padding: theme.spacing(2),
@@ -104,14 +104,16 @@ BootstrapDialogTitle.propTypes = {
 };
 export default function Services() {
   const {
-    state: { currentUser, services },
+    state: { services },
     dispatch,
   } = useContext(Context)
   const [anchorEl, setAnchorEl] = useState(null)
   const [open, setOpen] = useState(false);
   const [newService, setNewService] = useState({ name: "", price: "" });
   const [showSpinner, setShowSpinner] = useState(false)
-
+  const [openInfo, setOpenInfo] = useState(false);
+  const [info, setInfo] = useState({});
+  const [showEdit, setEnableEdit] = useState(false);
 
   useEffect(() => {
     const handleServices = async () => {
@@ -134,13 +136,55 @@ export default function Services() {
       }
       //console.log(dataTotal)
     }
-    if (!!localStorage.getItem('token') && services.length === 0) {
-      //console.log('se ejecuto')
-      handleServices()
-    }
+    handleServices()
+
 
   }, [])
 
+  const handleInfo = (item) => {
+    setInfo({ ...item })
+    setOpenInfo(true)
+  };
+  const updateService = async () => {
+    setShowSpinner(true)
+    if (info.name === '' || info.price === '') {
+      return alert('No puede dejar campos vacios')
+    }
+    const updateService = { ...info, price: parseInt(info.price) }
+    console.log(updateService)
+
+    try {
+      const { data } = await axios.put(
+        'http://localhost:3100/service_update',
+        updateService,
+        {
+          headers: {
+            authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        },
+      )
+      //console.log(data.status)
+      if (data.status === 201) {
+        console.log(data.message)
+        dispatch({
+          type: 'SET_ SERVICES',
+          payload: data.services,
+        })
+        handleClose()
+        setShowSpinner(false)
+      }
+      if (data.status === 400) {
+        console.log(data.error)
+        setShowSpinner(false)
+      }
+    } catch (error) {
+      if (error) {
+        console.log(error)
+        setShowSpinner(false)
+      }
+    }
+
+  }
   const handleClickOpen = () => {
     setOpen(true);
     setAnchorEl(null)
@@ -149,6 +193,10 @@ export default function Services() {
     setOpen(false);
     setAnchorEl(null)
     setNewService({ name: "", price: "" })
+
+    setOpenInfo(false);
+    setEnableEdit(false);
+    setInfo({ name: "", price: "", status: "", services: [] })
   };
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget)
@@ -238,19 +286,25 @@ export default function Services() {
                 <TableRow>
                   <StyledTableCell>Nº</StyledTableCell>
                   <StyledTableCell>Nombre del Servicio</StyledTableCell>
-                  <StyledTableCell >Precio</StyledTableCell>
+                  <StyledTableCell align="center">Precio $</StyledTableCell>
+                  <StyledTableCell align="center">Fecha Modificacion</StyledTableCell>
                   <StyledTableCell align="right">Fecha de Creacion</StyledTableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {services?.map((service, index) => (
-                  <TableRow key={index}>
+                {services?.map((item, index) => (
+                  <TableRow hover sx={{ cursor: "pointer" }} onClick={() => handleInfo(item)} key={index}>
                     <TableCell component="th" scope="row">
                       {index + 1}
                     </TableCell>
-                    <TableCell>{service?.name}</TableCell>
-                    <TableCell>{service?.price}</TableCell>
-                    <TableCell align="right">{moment(services?.creationDate).format('DD MMM YYYY')}</TableCell>
+                    <TableCell>
+                      <StyledBadge color={item?.status ? 'success' : 'error'} badgeContent={item?.status ? 'Activo' : 'Inactivo'}>
+                        {item?.name}
+                      </StyledBadge>
+                    </TableCell>
+                    <TableCell align="center">{item?.price + "$"}</TableCell>
+                    <TableCell align="center">{moment(item?.ModificationDate).format('DD MMM YYYY')}</TableCell>
+                    <TableCell align="right">{moment(item?.creationDate).format('DD MMM YYYY')}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -258,7 +312,78 @@ export default function Services() {
           </TableContainer>
         </CardContent>
       </Card>
-      {/*//////////////////////////MODAL//////////////////*/}
+      {/*//////////////////////////MODAL info plan//////////////////*/}
+      <Dialog
+        open={openInfo}
+        onClose={handleClose}
+      >
+        <div
+          hidden={!showSpinner}
+          style={{
+            position: 'absolute',
+            width: '100%',
+            height: '100%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 999,
+            backgroundColor: 'rgba(8, 34, 49, 0.575)',
+          }}
+        >
+          <CircularProgress />
+          <span style={{ display: 'block', color: '#fff' }}>...Cargando</span>
+        </div>
+        <DialogTitle id="alert-dialog-title">
+          <StyledBadge color={info.status ? 'success' : 'error'} badgeContent={info.status ? 'Activo' : 'Inactivo'}>
+            <span>{showEdit ? "Editar Plan " + " " + info?.name : "Informacion del Plan" + " " + info?.name}</span>
+          </StyledBadge >
+        </DialogTitle>
+        <DialogContent>
+          <TextField
+            disabled={!showEdit}
+            sx={{ mr: 2 }}
+            variant="standard"
+            type="text"
+            name='name'
+            label="Nombre del Plan"
+            value={info?.name}
+            onChange={(e) => setInfo({ ...info, name: e.target.value.toUpperCase() })}
+          />
+          <TextField
+            disabled={!showEdit}
+            sx={{ width: '20%' }}
+            variant="standard"
+            type="number"
+            name='price'
+            label="Precio"
+            value={info?.price}
+            onChange={(e) => setInfo({ ...info, price: e.target.value })}
+          />
+          <FormControlLabel
+            disabled={!showEdit}
+            value="top"
+            control={<Switch color="primary" checked={info.status || false}
+              onChange={(e) => {
+                setInfo({ ...info, status: e.target.checked })
+              }} />}
+            label="Estado"
+            labelPlacement="top"
+          />
+
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Cerrar</Button>
+          <Button hidden={!showEdit} onClick={updateService} >
+            Guardar
+          </Button>
+          <Button hidden={showEdit} onClick={() => setEnableEdit(true)}
+            autoFocus>
+            Editar
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/*//////////////////////////Nuevo servicio//////////////////*/}
       <BootstrapDialog
         aria-labelledby="customized-dialog-title"
         open={open}

@@ -19,6 +19,17 @@ import { useContext } from 'react'
 import { Context } from '../contexts/Context'
 import { AppHeaderDropdown } from './header/index'
 import logoFM from 'src/assets/images/logoFMB.png'
+import { Badge } from '@mui/material'
+import { styled } from '@mui/material/styles'
+
+const StyledBadge = styled(Badge)(({ theme }) => ({
+  '& .MuiBadge-badge': {
+    right: 70,
+    top: 40,
+    border: `2px solid ${theme.palette.background.paper}`,
+    padding: '0 4px',
+  },
+}))
 
 const AppHeader = () => {
   const {
@@ -72,8 +83,9 @@ const AppHeader = () => {
         </CHeaderNav>
 
         <CHeaderNav className="ms-3">
-          <h4> {currentUser?.name?.toLowerCase().replace(/\b\w/g, (l) => l.toUpperCase())}</h4>
-
+          <StyledBadge color="primary" badgeContent={currentUser?.role?.toUpperCase()}>
+            <h4> {currentUser?.name?.toLowerCase().replace(/\b\w/g, (l) => l.toUpperCase())}</h4>
+          </StyledBadge>
           <AppHeaderDropdown />
         </CHeaderNav>
       </CContainer>

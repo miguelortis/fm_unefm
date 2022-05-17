@@ -10,6 +10,8 @@ const PendingConsultations = lazy(() =>
 )
 const Services = lazy(() => import('./views/services/Services'))
 const Plans = lazy(() => import('./views/plans/Plans'))
+const ExchangeRates = lazy(() => import('./views/exchange_rates/ExchangeRates'))
+const Titulares = lazy(() => import('./views/admin_titulares/AdminTitulares'))
 const Report = lazy(() => import('./views/report'))
 const Colors = lazy(() => import('./views/theme/colors/Colors'))
 const Typography = lazy(() => import('./views/theme/typography/Typography'))
@@ -70,6 +72,8 @@ const routes = [
   { path: '/pendingconsultations', name: 'PendingConsultations', component: PendingConsultations },
   { path: '/services', name: 'Services', component: Services },
   { path: '/plans', name: 'Plans', component: Plans },
+  { path: '/exchange_rates', name: 'ExchangeRates', component: ExchangeRates },
+  { path: '/titulares', name: 'Titulares', component: Titulares },
   { path: '/report', name: 'Reporte', component: Report },
   { path: '/theme', name: 'Theme', component: Colors, exact: true },
   { path: '/theme/colors', name: 'Colors', component: Colors },

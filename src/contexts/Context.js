@@ -9,6 +9,8 @@ const initialState = {
   generalConsultations: [],
   services: [],
   packages: [],
+  exchangeRate: [],
+  titulares: [],
 }
 
 const reducer = (state, action) => {
@@ -45,6 +47,11 @@ const reducer = (state, action) => {
         ...state,
         packages: [...action.payload],
       }
+    case 'SET_ EXCHANGE-RATE':
+      return {
+        ...state,
+        exchangeRate: [...action.payload],
+      }
     case 'SET_CONSULTATIONS':
       return {
         ...state,
@@ -54,6 +61,11 @@ const reducer = (state, action) => {
       return {
         ...state,
         generalConsultations: action.payload,
+      }
+    case 'SET_TITULARES':
+      return {
+        ...state,
+        titulares: [...action.payload],
       }
     case 'RESET':
       return { ...state, currentUser: null, dataTotal: [] }
