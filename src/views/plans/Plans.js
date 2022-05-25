@@ -496,7 +496,7 @@ export default function Services() {
               <Select
                 variant="standard"
                 id="service"
-                vale={service}
+                value={service}
                 onChange={(e) => {
                   setService({ ...service, service: { ...e.target.value } })
                 }}
@@ -649,7 +649,7 @@ export default function Services() {
             <Select
               variant="standard"
               id="service"
-              vale={service}
+              value={service}
               onChange={(e) => {
                 setService({ ...service, ...e.target.value })
               }}

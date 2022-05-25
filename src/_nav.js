@@ -24,7 +24,7 @@ const _nav = [
     name: 'Perfil',
   },
   {
-    code: '3',
+    code: '2',
     component: CNavGroup,
     name: 'Datos Personales',
     icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
@@ -48,12 +48,12 @@ const _nav = [
   },
   ////////FAMILIARES/////
   {
-    code: '4',
+    code: '3',
     component: CNavTitle,
     name: 'Beneficiarios',
   },
   {
-    code: '5',
+    code: '3',
     component: CNavItem,
     name: 'Familiares',
     to: '/beneficiaries',
@@ -73,13 +73,13 @@ const _nav = [
 
   ////// titulo de panel administrativo
   {
-    code: '7',
+    code: '4',
     component: CNavTitle,
     name: 'panel administrativo',
   },
   ////////RECEPCION////////
   {
-    code: '8',
+    code: '5',
     component: CNavItem,
     name: 'Servicios',
     to: '/typeofconsultations',
@@ -87,7 +87,7 @@ const _nav = [
   },
   ////////MEDICO GENERAL////////
   {
-    code: '9',
+    code: '6',
     component: CNavItem,
     name: 'Consultas Pendientes',
     to: '/pendingconsultations',
@@ -100,7 +100,7 @@ const _nav = [
 
   ////////MEDICO EMERGENCIA////////
   {
-    code: '10',
+    code: '7',
     component: CNavItem,
     name: 'Consultas Pendientes',
     to: '/pendingconsultations',

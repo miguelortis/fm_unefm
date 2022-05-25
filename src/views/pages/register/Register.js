@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React, { Fragment, useState } from 'react'
 import Box from '@mui/material/Box'
 import Stepper from '@mui/material/Stepper'
@@ -121,7 +122,7 @@ const Register = () => {
               setShowSpinner(false)
             }
           })
-          .catch((err) => {})
+          .catch((err) => { })
       }
     }
   }
@@ -182,8 +183,8 @@ const Register = () => {
           anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
           open={showError}
           onClose={handleCloseError}
-          //message={error}
-          //key={'topcenter'}
+        //message={error}
+        //key={'topcenter'}
         >
           <Alert severity="error" sx={{ width: '100%' }}>
             {error}
@@ -256,8 +257,8 @@ const Register = () => {
                                     setNewUser({ ...newUser, documentType: e.target.value })
                                   }}
                                   aria-label="Default select example"
-                                  // value={age}
-                                  // onChange={handleChange}
+                                // value={age}
+                                // onChange={handleChange}
                                 >
                                   <MenuItem value=""></MenuItem>
                                   <MenuItem value="V">V</MenuItem>
@@ -275,7 +276,7 @@ const Register = () => {
                                   onChange={(e) => {
                                     setNewUser({
                                       ...newUser,
-                                      idCard: e.target.value,
+                                      idCard: e.target.value.replace(/\./g, ''),
                                     })
                                   }}
                                 />
@@ -529,14 +530,14 @@ const Register = () => {
                                     })
                                   }}
                                   aria-label="Default select example"
-                                  // value={age}
-                                  // onChange={handleChange}
+                                // value={age}
+                                // onChange={handleChange}
                                 >
                                   <MenuItem value=""></MenuItem>
-                                  <MenuItem value="SOLTERO/A">Soltero/a</MenuItem>
-                                  <MenuItem value="CASADO/A">Casado/a</MenuItem>
-                                  <MenuItem value="DIVORCIADO/A">Divorciado/a</MenuItem>
-                                  <MenuItem value="VIUDO/A">Viudo/a</MenuItem>
+                                  <MenuItem value="SOLTERO">Soltero/a</MenuItem>
+                                  <MenuItem value="CASADO">Casado/a</MenuItem>
+                                  <MenuItem value="DIVORCIADO">Divorciado/a</MenuItem>
+                                  <MenuItem value="VIUDO">Viudo/a</MenuItem>
                                   <MenuItem value="OTRO">Otro</MenuItem>
                                 </Select>
                               </FormControl>
@@ -557,8 +558,8 @@ const Register = () => {
                                     })
                                   }}
                                   aria-label="Default select example"
-                                  // value={age}
-                                  // onChange={handleChange}
+                                // value={age}
+                                // onChange={handleChange}
                                 >
                                   <MenuItem value=""></MenuItem>
                                   <MenuItem value="DOCENTE">Docente</MenuItem>
@@ -583,8 +584,8 @@ const Register = () => {
                                     })
                                   }}
                                   aria-label="Default select example"
-                                  // value={age}
-                                  // onChange={handleChange}
+                                // value={age}
+                                // onChange={handleChange}
                                 >
                                   <MenuItem value=""></MenuItem>
                                   <MenuItem value="FIJO">Fijo</MenuItem>
@@ -634,20 +635,20 @@ const Register = () => {
                                   ? false
                                   : true
                                 : activeStep === 1
-                                ? newUser.name &&
-                                  newUser.lastName &&
-                                  newUser.email &&
-                                  newUser.dateBirth &&
-                                  newUser.placeBirth &&
-                                  newUser.direction &&
-                                  newUser.phone &&
-                                  newUser.sex &&
-                                  newUser.civilStatus &&
-                                  newUser.category &&
-                                  newUser.personalType
-                                  ? false
+                                  ? newUser.name &&
+                                    newUser.lastName &&
+                                    newUser.email &&
+                                    newUser.dateBirth &&
+                                    newUser.placeBirth &&
+                                    newUser.direction &&
+                                    newUser.phone &&
+                                    newUser.sex &&
+                                    newUser.civilStatus &&
+                                    newUser.category &&
+                                    newUser.personalType
+                                    ? false
+                                    : true
                                   : true
-                                : true
                             }
                             onClick={handleNext}
                           >

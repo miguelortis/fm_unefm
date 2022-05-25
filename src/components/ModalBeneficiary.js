@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React, { useState } from 'react'
 import hijo from '../assets/images/avatars/hijo.png'
 import hija from '../assets/images/avatars/hija.png'
@@ -252,7 +253,7 @@ export default function ModalBeneficiary({ setVisibleModalEdit, visibleModalEdit
                   <CFormInput
                     value={datosBeneficiary?.idCard}
                     onChange={(e) => {
-                      setDatosBeneficiary({ ...datosBeneficiary, idCard: e.target.value })
+                      setDatosBeneficiary({ ...datosBeneficiary, idCard: e.target.value.replace(/\./g, '') })
                     }}
                     type="text"
                     id="Cedula"
