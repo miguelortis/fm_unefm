@@ -84,7 +84,8 @@ const option = [
       { title: 'Inicio', code: 1 },
       { title: 'Perfil', code: 2 },
       { title: 'Familiares', code: 3 },
-      { title: 'Administrar de Usuarios', code: 11 },
+      { title: 'Administrar Usuarios', code: 11 },
+      { title: 'Administrar Servicios', code: 12 },
     ],
   },
 
