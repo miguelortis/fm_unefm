@@ -1,4 +1,4 @@
-/* eslint-disable prettier/prettier */
+
 import React, { useState } from 'react'
 import hijo from '../assets/images/avatars/hijo.png'
 import hija from '../assets/images/avatars/hija.png'

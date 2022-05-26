@@ -1,5 +1,4 @@
-/* eslint-disable prettier/prettier */
-//
+
 import React, { useState, useEffect } from 'react'
 import { useContext } from 'react'
 import { Context } from '../../contexts/Context'
@@ -155,7 +154,7 @@ export default function Services() {
 
     try {
       const { data } = await axios.put(
-        'http://localhost:3100/service_update',
+        'https://servidor-fmunefm.herokuapp.com/service_update',
         updateService,
         {
           headers: {

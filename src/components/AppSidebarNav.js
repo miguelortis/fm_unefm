@@ -1,4 +1,4 @@
-/* eslint-disable prettier/prettier */
+
 import React from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
 import { useContext } from 'react'
@@ -65,9 +65,15 @@ export const AppSidebarNav = ({ items }) => {
     <React.Fragment>
       {items &&
         items.map((item, index) =>
-          currentUser?.code?.includes(item.code) ? item.items ? navGroup(item, index) : navItem(item, index) : '',
+          currentUser?.role.options?.find(role => role.code === item.code) ? item.items ? navGroup(item, index) : navItem(item, index) : '',
         )}
     </React.Fragment>
+    // <React.Fragment>
+    //   {items &&
+    //     items.map((item, index) =>
+    //       currentUser?.code?.includes(item.code) ? item.items ? navGroup(item, index) : navItem(item, index) : '',
+    //     )}
+    // </React.Fragment>
     // <React.Fragment>
     //   {items &&
     //     items.map((item, index) =>

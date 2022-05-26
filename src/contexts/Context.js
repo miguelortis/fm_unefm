@@ -1,4 +1,4 @@
-/* eslint-disable prettier/prettier */
+
 import React, { useReducer, useEffect, createContext } from 'react'
 import PropTypes from 'prop-types'
 

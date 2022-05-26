@@ -1,4 +1,4 @@
-/* eslint-disable prettier/prettier */
+
 import React, { useState, useEffect } from 'react'
 import { useContext } from 'react'
 import { Context } from '../../contexts/Context'
@@ -77,7 +77,17 @@ const option = [
       { title: 'Panel Administrativo (titulo)', code: 4 },
       { title: 'Consultas Pendientes', code: 7 },
     ],
-  }
+  },
+  {
+    label: 'Master',
+    options: [
+      { title: 'Inicio', code: 1 },
+      { title: 'Perfil', code: 2 },
+      { title: 'Familiares', code: 3 },
+      { title: 'Administrar de Usuarios', code: 11 },
+    ],
+  },
+
 ];
 
 
@@ -165,10 +175,9 @@ const columns = [
   },
 ];
 export default function AdminTitulares() {
-  const {
-    state: { },
-    dispatch,
-  } = useContext(Context)
+  // const {
+  //   dispatch,
+  // } = useContext(Context)
   const [titulares, setTitulares] = useState([])
   const [search, setSearch] = useState([])
   const [page, setPage] = useState(0);
@@ -213,8 +222,63 @@ export default function AdminTitulares() {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
-  const handleDataChange = (index) => {
-    console.log(index)
+  const updateData = async () => {
+    setShowSpinner(true)
+    if (Object.entries(saveData).length === 0 ||
+      saveData.idCard === "" ||
+      saveData.name === "" ||
+      saveData.lastName === "" ||
+      saveData.sex === "" ||
+      saveData.civilStatus === "" ||
+      saveData.email === "" ||
+      saveData.phone === "" ||
+      saveData.personalType === "" ||
+      saveData.dateBirth === "" ||
+      saveData.role === "" ||
+      saveData.category === "") {
+
+      alert("debe llenar el campo")
+      setShowSpinner(false)
+    } else {
+      const updateUser = { data: saveData, id: dataEdit._id }
+      try {
+        const { data } = await axios.put(
+          'https://servidor-fmunefm.herokuapp.com/user_update',
+          updateUser,
+          {
+            headers: {
+              authorization: `Bearer ${localStorage.getItem('token')}`,
+            },
+          },
+        )
+        //console.log(data.status)
+        if (data.status === 201) {
+          console.log(data.message)
+          console.log(data.res)
+          setEditEnable(null)
+          setRole(0)
+          setSaveData({})
+          setTitulares(titulares.map(titular => titular._id === data.res._id ? data.res : titular))
+          setSearch(titulares.map(titular => titular._id === data.res._id ? data.res : titular))
+          setDataEdit(data.res)
+          // dispatch({
+          //   type: 'SET_ EXCHANGE-RATE',
+          //   payload: data.exchangeRates,
+          // })
+          setShowSpinner(false)
+        }
+        if (data.status === 400) {
+          console.log(data.error)
+          setShowSpinner(false)
+        }
+      } catch (error) {
+        if (error) {
+          console.log(error)
+          setShowSpinner(false)
+        }
+      }
+
+    }
   }
   const handleEdit = (row) => {
     setOpen(true)
@@ -337,7 +401,7 @@ export default function AdminTitulares() {
           </div>
           <DialogTitle id="alert-dialog-title">
             <StyledBadge color={dataEdit.status === 3 ? 'info' : dataEdit.status === 2 ? 'warning' : 'success'} badgeContent={dataEdit.status === 3 ? 'No Verificado' : dataEdit.status === 2 ? 'Suspendido' : 'Activo'}>
-              <span>{"Modificar Titular" + " " + dataEdit?.name}</span>
+              <span>{`Modificar Titular ${dataEdit?.name}`}</span>
             </StyledBadge >
           </DialogTitle>
           <DialogContent sx={{ pb: 0 }}>
@@ -362,12 +426,12 @@ export default function AdminTitulares() {
                           variant="standard"
                           id="idCard"
                           type="number"
-                          defaultValue={dataEdit.idCard}
+                          defaultValue={!saveData.idCard ? dataEdit.idCard : saveData.idCard}
                           onChange={(e) => {
                             setSaveData({
                               ...saveData, idCard: e.target.value.replace(/\./g, '')
                             })
-                            console.log(saveData)
+                            console.log(saveData, "cedula")
                           }}
                         />
                       </TableCell>
@@ -375,10 +439,14 @@ export default function AdminTitulares() {
                         <IconButton color="primary" hidden={editEnable === null ? false : true} onClick={() => setEditEnable(1)} size="small">
                           <Edit fontSize="small" />
                         </IconButton>
-                        <IconButton color="primary" hidden={editEnable === 1 ? false : true} size="small">
+                        <IconButton color="primary" hidden={editEnable === 1 ? false : true} size="small" onClick={updateData}>
                           <Save fontSize="small" />
                         </IconButton>
-                        <IconButton color="primary" hidden={editEnable === 1 ? false : true} onClick={() => setEditEnable(null)} size="small">
+                        <IconButton color="primary" hidden={editEnable === 1 ? false : true} onClick={() => {
+                          setEditEnable(null)
+                          setRole(0)
+                          setSaveData({})
+                        }} size="small">
                           <Close fontSize="small" />
                         </IconButton>
                       </TableCell>
@@ -393,7 +461,7 @@ export default function AdminTitulares() {
                           variant="standard"
                           id="name"
                           type="text"
-                          value={!saveData.name ? dataEdit.name : saveData.name}
+                          defaultValue={!saveData.name ? dataEdit.name : saveData.name}
                           onChange={(e) => {
                             setSaveData({
                               ...saveData, name: e.target.value.toUpperCase()
@@ -406,10 +474,14 @@ export default function AdminTitulares() {
                         <IconButton color="primary" hidden={editEnable === null ? false : true} onClick={() => setEditEnable(2)} size="small">
                           <Edit fontSize="small" />
                         </IconButton>
-                        <IconButton color="primary" hidden={editEnable === 2 ? false : true} size="small">
+                        <IconButton color="primary" hidden={editEnable === 2 ? false : true} size="small" onClick={updateData}>
                           <Save fontSize="small" />
                         </IconButton>
-                        <IconButton color="primary" hidden={editEnable === 2 ? false : true} onClick={() => setEditEnable(null)} size="small">
+                        <IconButton color="primary" hidden={editEnable === 2 ? false : true} onClick={() => {
+                          setEditEnable(null)
+                          setRole(0)
+                          setSaveData({})
+                        }} size="small">
                           <Close fontSize="small" />
                         </IconButton>
                       </TableCell>
@@ -424,23 +496,27 @@ export default function AdminTitulares() {
                           variant="standard"
                           id="lastName"
                           type="text"
-                          defaultValue={dataEdit.lastName}
-                        // value={service.frequency}
-                        // onChange={(e) => {
-                        //   setService({
-                        //     ...service, frequency: parseInt(e.target.value)
-                        //   })
-                        // }}
+                          defaultValue={!saveData.lastName ? dataEdit.lastName : saveData.lastName}
+                          onChange={(e) => {
+                            setSaveData({
+                              ...saveData, lastName: e.target.value.toUpperCase()
+                            })
+                            console.log(saveData)
+                          }}
                         />
                       </TableCell>
                       <TableCell align="center">
                         <IconButton color="primary" hidden={editEnable === null ? false : true} onClick={() => setEditEnable(3)} size="small">
                           <Edit fontSize="small" />
                         </IconButton>
-                        <IconButton color="primary" hidden={editEnable === 3 ? false : true} size="small">
+                        <IconButton color="primary" hidden={editEnable === 3 ? false : true} size="small" onClick={updateData}>
                           <Save fontSize="small" />
                         </IconButton>
-                        <IconButton color="primary" hidden={editEnable === 3 ? false : true} onClick={() => setEditEnable(null)} size="small">
+                        <IconButton color="primary" hidden={editEnable === 3 ? false : true} onClick={() => {
+                          setEditEnable(null)
+                          setRole(0)
+                          setSaveData({})
+                        }} size="small">
                           <Close fontSize="small" />
                         </IconButton>
                       </TableCell>
@@ -453,10 +529,13 @@ export default function AdminTitulares() {
                           hidden={editEnable === 4 ? false : true}
                           variant="standard"
                           id="sex"
-                          defaultValue={dataEdit.sex}
-                        // onChange={(e) => {
-                        //   setService({ ...service, service: { ...e.target.value } })
-                        // }}
+                          defaultValue={!saveData.sex ? dataEdit.sex : saveData.sex}
+                          onChange={(e) => {
+                            setSaveData({
+                              ...saveData, sex: e.target.value
+                            })
+                            console.log(saveData)
+                          }}
                         >
                           <MenuItem value="MASCULINO">
                             Masculino
@@ -471,10 +550,14 @@ export default function AdminTitulares() {
                         <IconButton color="primary" hidden={editEnable === null ? false : true} onClick={() => setEditEnable(4)} size="small">
                           <Edit fontSize="small" />
                         </IconButton>
-                        <IconButton color="primary" hidden={editEnable === 4 ? false : true} size="small">
+                        <IconButton color="primary" hidden={editEnable === 4 ? false : true} size="small" onClick={updateData}>
                           <Save fontSize="small" />
                         </IconButton>
-                        <IconButton color="primary" hidden={editEnable === 4 ? false : true} onClick={() => setEditEnable(null)} size="small">
+                        <IconButton color="primary" hidden={editEnable === 4 ? false : true} onClick={() => {
+                          setEditEnable(null)
+                          setRole(0)
+                          setSaveData({})
+                        }} size="small">
                           <Close fontSize="small" />
                         </IconButton>
                       </TableCell>
@@ -487,10 +570,13 @@ export default function AdminTitulares() {
                           hidden={editEnable === 5 ? false : true}
                           variant="standard"
                           id="civilStatus"
-                          defaultValue={dataEdit.civilStatus}
-                        // onChange={(e) => {
-                        //   setService({ ...service, service: { ...e.target.value } })
-                        // }}
+                          defaultValue={!saveData.civilStatus ? dataEdit.civilStatus : saveData.civilStatus}
+                          onChange={(e) => {
+                            setSaveData({
+                              ...saveData, civilStatus: e.target.value
+                            })
+                            console.log(saveData)
+                          }}
                         >
                           <MenuItem value="SOLTERO">
                             Soltero/a
@@ -510,13 +596,17 @@ export default function AdminTitulares() {
                         </Select>
                       </TableCell>
                       <TableCell align="center">
-                        <IconButton color="primary" hidden={editEnable === null ? false : true} onClick={() => setEditEnable(4)} size="small">
+                        <IconButton color="primary" hidden={editEnable === null ? false : true} onClick={() => setEditEnable(5)} size="small">
                           <Edit fontSize="small" />
                         </IconButton>
-                        <IconButton color="primary" hidden={editEnable === 4 ? false : true} size="small">
+                        <IconButton color="primary" hidden={editEnable === 5 ? false : true} size="small" onClick={updateData}>
                           <Save fontSize="small" />
                         </IconButton>
-                        <IconButton color="primary" hidden={editEnable === 4 ? false : true} onClick={() => setEditEnable(null)} size="small">
+                        <IconButton color="primary" hidden={editEnable === 5 ? false : true} onClick={() => {
+                          setEditEnable(null)
+                          setRole(0)
+                          setSaveData({})
+                        }} size="small">
                           <Close fontSize="small" />
                         </IconButton>
                       </TableCell>
@@ -524,30 +614,34 @@ export default function AdminTitulares() {
                     <TableRow hover>
                       <TableCell>Correo</TableCell>
                       <TableCell>
-                        {editEnable !== 5 && dataEdit?.email}
+                        {editEnable !== 6 && dataEdit?.email}
                         <TextField
-                          hidden={editEnable === 5 ? false : true}
+                          hidden={editEnable === 6 ? false : true}
                           label="Email"
                           variant="standard"
                           id="email"
                           type="email"
-                          defaultValue={dataEdit.email}
-                        // value={service.frequency}
-                        // onChange={(e) => {
-                        //   setService({
-                        //     ...service, frequency: parseInt(e.target.value)
-                        //   })
-                        // }}
+                          defaultValue={!saveData.email ? dataEdit.email : saveData.email}
+                          onChange={(e) => {
+                            setSaveData({
+                              ...saveData, email: e.target.value.toUpperCase()
+                            })
+                            console.log(saveData)
+                          }}
                         />
                       </TableCell>
                       <TableCell align="center">
-                        <IconButton color="primary" hidden={editEnable === null ? false : true} onClick={() => setEditEnable(5)} size="small">
+                        <IconButton color="primary" hidden={editEnable === null ? false : true} onClick={() => setEditEnable(6)} size="small">
                           <Edit fontSize="small" />
                         </IconButton>
-                        <IconButton color="primary" hidden={editEnable === 5 ? false : true} size="small">
+                        <IconButton color="primary" hidden={editEnable === 6 ? false : true} size="small" onClick={updateData}>
                           <Save fontSize="small" />
                         </IconButton>
-                        <IconButton color="primary" hidden={editEnable === 5 ? false : true} onClick={() => setEditEnable(null)} size="small">
+                        <IconButton color="primary" hidden={editEnable === 6 ? false : true} onClick={() => {
+                          setEditEnable(null)
+                          setRole(0)
+                          setSaveData({})
+                        }} size="small">
                           <Close fontSize="small" />
                         </IconButton>
                       </TableCell>
@@ -555,30 +649,34 @@ export default function AdminTitulares() {
                     <TableRow hover>
                       <TableCell>Telefono</TableCell>
                       <TableCell>
-                        {editEnable !== 6 && dataEdit?.phone}
+                        {editEnable !== 7 && dataEdit?.phone}
                         <TextField
-                          hidden={editEnable === 6 ? false : true}
+                          hidden={editEnable === 7 ? false : true}
                           label="Email"
                           variant="standard"
                           id="email"
                           type="email"
-                          defaultValue={dataEdit.phone}
-                        // value={service.frequency}
-                        // onChange={(e) => {
-                        //   setService({
-                        //     ...service, frequency: parseInt(e.target.value)
-                        //   })
-                        // }}
+                          defaultValue={!saveData.phone ? dataEdit.phone : saveData.phone}
+                          onChange={(e) => {
+                            setSaveData({
+                              ...saveData, phone: e.target.value
+                            })
+                            console.log(saveData)
+                          }}
                         />
                       </TableCell>
                       <TableCell align="center">
-                        <IconButton color="primary" hidden={editEnable === null ? false : true} onClick={() => setEditEnable(6)} size="small">
+                        <IconButton color="primary" hidden={editEnable === null ? false : true} onClick={() => setEditEnable(7)} size="small">
                           <Edit fontSize="small" />
                         </IconButton>
-                        <IconButton color="primary" hidden={editEnable === 6 ? false : true} size="small">
+                        <IconButton color="primary" hidden={editEnable === 7 ? false : true} size="small" onClick={updateData}>
                           <Save fontSize="small" />
                         </IconButton>
-                        <IconButton color="primary" hidden={editEnable === 6 ? false : true} onClick={() => setEditEnable(null)} size="small">
+                        <IconButton color="primary" hidden={editEnable === 7 ? false : true} onClick={() => {
+                          setEditEnable(null)
+                          setRole(0)
+                          setSaveData({})
+                        }} size="small">
                           <Close fontSize="small" />
                         </IconButton>
                       </TableCell>
@@ -586,15 +684,18 @@ export default function AdminTitulares() {
                     <TableRow hover>
                       <TableCell>Tipo de personal</TableCell>
                       <TableCell>
-                        {editEnable !== 7 && dataEdit?.personalType}
+                        {editEnable !== 8 && dataEdit?.personalType}
                         <Select
-                          hidden={editEnable === 7 ? false : true}
+                          hidden={editEnable === 8 ? false : true}
                           variant="standard"
                           id="personalType"
-                          defaultValue={dataEdit.personalType}
-                        // onChange={(e) => {
-                        //   setService({ ...service, service: { ...e.target.value } })
-                        // }}
+                          defaultValue={!saveData.personalType ? dataEdit.personalType : saveData.personalType}
+                          onChange={(e) => {
+                            setSaveData({
+                              ...saveData, personalType: e.target.value
+                            })
+                            console.log(saveData)
+                          }}
                         >
                           <MenuItem value="FIJO">
                             Fijo
@@ -612,10 +713,14 @@ export default function AdminTitulares() {
                         <IconButton color="primary" hidden={editEnable === null ? false : true} onClick={() => setEditEnable(7)} size="small">
                           <Edit fontSize="small" />
                         </IconButton>
-                        <IconButton color="primary" hidden={editEnable === 7 ? false : true} size="small">
+                        <IconButton color="primary" hidden={editEnable === 8 ? false : true} size="small" onClick={updateData}>
                           <Save fontSize="small" />
                         </IconButton>
-                        <IconButton color="primary" hidden={editEnable === 7 ? false : true} onClick={() => setEditEnable(null)} size="small">
+                        <IconButton color="primary" hidden={editEnable === 8 ? false : true} onClick={() => {
+                          setEditEnable(null)
+                          setRole(0)
+                          setSaveData({})
+                        }} size="small">
                           <Close fontSize="small" />
                         </IconButton>
                       </TableCell>
@@ -623,15 +728,18 @@ export default function AdminTitulares() {
                     <TableRow hover>
                       <TableCell>Categoria</TableCell>
                       <TableCell>
-                        {editEnable !== 8 && dataEdit?.category}
+                        {editEnable !== 9 && dataEdit?.category}
                         <Select
-                          hidden={editEnable === 8 ? false : true}
+                          hidden={editEnable === 9 ? false : true}
                           variant="standard"
                           id="category"
-                          defaultValue={dataEdit.category}
-                        // onChange={(e) => {
-                        //   setService({ ...service, service: { ...e.target.value } })
-                        // }}
+                          defaultValue={!saveData.category ? dataEdit.category : saveData.category}
+                          onChange={(e) => {
+                            setSaveData({
+                              ...saveData, category: e.target.value
+                            })
+                            console.log(saveData)
+                          }}
                         >
                           <MenuItem value="DOCENTE">
                             Docente
@@ -646,13 +754,17 @@ export default function AdminTitulares() {
                         </Select>
                       </TableCell>
                       <TableCell align="center">
-                        <IconButton color="primary" hidden={editEnable === null ? false : true} onClick={() => setEditEnable(8)} size="small">
+                        <IconButton color="primary" hidden={editEnable === null ? false : true} onClick={() => setEditEnable(9)} size="small">
                           <Edit fontSize="small" />
                         </IconButton>
-                        <IconButton color="primary" hidden={editEnable === 8 ? false : true} size="small">
+                        <IconButton color="primary" hidden={editEnable === 9 ? false : true} size="small" onClick={updateData}>
                           <Save fontSize="small" />
                         </IconButton>
-                        <IconButton color="primary" hidden={editEnable === 8 ? false : true} onClick={() => setEditEnable(null)} size="small">
+                        <IconButton color="primary" hidden={editEnable === 9 ? false : true} onClick={() => {
+                          setEditEnable(null)
+                          setRole(0)
+                          setSaveData({})
+                        }} size="small">
                           <Close fontSize="small" />
                         </IconButton>
                       </TableCell>
@@ -660,31 +772,35 @@ export default function AdminTitulares() {
                     <TableRow hover>
                       <TableCell>Fecha Nacimiento</TableCell>
                       <TableCell>
-                        {editEnable !== 9 && moment(dataEdit?.dateBirth).format('D-MM-YYYY')}
+                        {editEnable !== 10 && moment(dataEdit?.dateBirth).format('D-MM-YYYY')}
                         <DesktopDatePicker
                           id="dateBirth"
                           label="Fecha de Nacimiento"
                           inputFormat="DD/MM/YYYY"
+                          defaultValue={!saveData.dateBirth ? dataEdit.dateBirth : saveData.dateBirth}
                           onChange={(e) => {
-                            console.log(e)
-                          }
-                          }
+                            setSaveData({
+                              ...saveData, dateBirth: e.target.value
+                            })
+                            console.log(saveData)
+                          }}
                           renderInput={(params) => (
-                            <TextField {...params} hidden={editEnable === 9 ? false : true} variant="standard" />
+                            <TextField {...params} hidden={editEnable === 10 ? false : true} variant="standard" />
                           )}
-                        // onChange={(e) => {
-                        //   setNewUser({ ...newUser, dateBirth: e })
-                        // }}
                         />
                       </TableCell>
                       <TableCell align="center">
-                        <IconButton color="primary" hidden={editEnable === null ? false : true} onClick={() => setEditEnable(9)} size="small">
+                        <IconButton color="primary" hidden={editEnable === null ? false : true} onClick={() => setEditEnable(10)} size="small">
                           <Edit fontSize="small" />
                         </IconButton>
-                        <IconButton color="primary" hidden={editEnable === 9 ? false : true} size="small">
+                        <IconButton color="primary" hidden={editEnable === 10 ? false : true} size="small" onClick={updateData}>
                           <Save fontSize="small" />
                         </IconButton>
-                        <IconButton color="primary" hidden={editEnable === 9 ? false : true} onClick={() => setEditEnable(null)} size="small">
+                        <IconButton color="primary" hidden={editEnable === 10 ? false : true} onClick={() => {
+                          setEditEnable(null)
+                          setRole(0)
+                          setSaveData({})
+                        }} size="small">
                           <Close fontSize="small" />
                         </IconButton>
                       </TableCell>
@@ -692,8 +808,8 @@ export default function AdminTitulares() {
                     <TableRow hover>
                       <TableCell>Rol</TableCell>
                       <TableCell>
-                        {editEnable !== 10 && dataEdit?.role}
-                        <FormControl hidden={editEnable === 10 ? false : true} variant="filled" sx={{ width: '100%' }}>
+                        {editEnable !== 11 && dataEdit?.role?.name}
+                        <FormControl hidden={editEnable === 11 ? false : true} variant="filled" sx={{ width: '100%' }}>
                           <InputLabel id='role'>Seleccione un Rol</InputLabel>
                           <Select
                             variant="standard"
@@ -713,7 +829,7 @@ export default function AdminTitulares() {
                         </FormControl>
                         <Autocomplete
                           disabled={role > 0 ? false : true}
-                          hidden={editEnable === 10 ? false : true}
+                          hidden={editEnable === 11 ? false : true}
                           multiple
                           value={saveData?.role?.options.length > 0 ? saveData?.role?.options : []}
                           limitTags={3}
@@ -748,16 +864,13 @@ export default function AdminTitulares() {
                         />
                       </TableCell>
                       <TableCell align="center">
-                        <IconButton color="primary" hidden={editEnable === null ? false : true} onClick={() => setEditEnable(10)} size="small">
+                        <IconButton color="primary" hidden={editEnable === null ? false : true} onClick={() => setEditEnable(11)} size="small">
                           <Edit fontSize="small" />
                         </IconButton>
-                        <IconButton color="primary" hidden={editEnable === 10 ? false : true} onClick={() => {
-
-                        }
-                        } size="small">
+                        <IconButton color="primary" hidden={editEnable === 11 ? false : true} onClick={updateData} size="small">
                           <Save fontSize="small" />
                         </IconButton>
-                        <IconButton color="primary" hidden={editEnable === 10 ? false : true} onClick={() => {
+                        <IconButton color="primary" hidden={editEnable === 11 ? false : true} onClick={() => {
                           setEditEnable(null)
                           setRole(0)
                           setSaveData({})

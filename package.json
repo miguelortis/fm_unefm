@@ -1,17 +1,14 @@
 {
-  "name": "@coreui/coreui-free-react-admin-template",
+  "name": "fmunefm",
   "version": "4.1.1",
-  "description": "CoreUI Free React Admin Template",
+  "description": "Transformando el sistema de salud universitario",
   "homepage": ".",
   "bugs": {
     "url": "https://github.com/coreui/coreui-free-react-admin-template/issues"
   },
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:coreui/coreui-free-react-admin-template.git"
-  },
+  "repository": "git@github.com:miguelortis/fm_unefm.git",
   "license": "MIT",
-  "author": "The CoreUI Team (https://github.com/orgs/coreui/people)",
+  "author": "Pedro Arguelles",
   "scripts": {
     "build": "react-scripts build",
     "build:n17": "react-scripts --openssl-legacy-provider build",
@@ -67,11 +64,16 @@
   },
   "devDependencies": {
     "auto-changelog": "~2.3.0",
-    "react-scripts": "^4.0.3",
+    "react-error-overlay": "6.0.9",
+    "react-scripts": "^5.0.1",
     "sass": "^1.43.5"
   },
   "engines": {
     "node": ">=10",
     "npm": ">=6"
-  }
+  },
+  "resolutions": {
+    "react-error-overlay": "6.0.9"
+  },
+  "main": "index.js"
 }

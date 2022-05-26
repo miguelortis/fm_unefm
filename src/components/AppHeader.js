@@ -83,7 +83,7 @@ const AppHeader = () => {
         </CHeaderNav>
 
         <CHeaderNav className="ms-3">
-          <StyledBadge color="primary" badgeContent={currentUser?.role?.toUpperCase()}>
+          <StyledBadge color="primary" badgeContent={currentUser?.role?.name?.toUpperCase()}>
             <h4> {currentUser?.name?.toLowerCase().replace(/\b\w/g, (l) => l.toUpperCase())}</h4>
           </StyledBadge>
           <AppHeaderDropdown />

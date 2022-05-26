@@ -6,7 +6,7 @@ import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 const _nav = [
   ////////HOME/////
   {
-    code: '1',
+    code: 1,
     component: CNavItem,
     name: 'Inicio',
     to: '/account',
@@ -19,12 +19,12 @@ const _nav = [
   },
   ////////PERFIL/////
   {
-    code: '2',
+    code: 2,
     component: CNavTitle,
     name: 'Perfil',
   },
   {
-    code: '2',
+    code: 2,
     component: CNavGroup,
     name: 'Datos Personales',
     icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
@@ -48,12 +48,12 @@ const _nav = [
   },
   ////////FAMILIARES/////
   {
-    code: '3',
+    code: 3,
     component: CNavTitle,
     name: 'Beneficiarios',
   },
   {
-    code: '3',
+    code: 3,
     component: CNavItem,
     name: 'Familiares',
     to: '/beneficiaries',
@@ -73,13 +73,13 @@ const _nav = [
 
   ////// titulo de panel administrativo
   {
-    code: '4',
+    code: 4,
     component: CNavTitle,
     name: 'panel administrativo',
   },
   ////////RECEPCION////////
   {
-    code: '5',
+    code: 5,
     component: CNavItem,
     name: 'Servicios',
     to: '/typeofconsultations',
@@ -87,7 +87,7 @@ const _nav = [
   },
   ////////MEDICO GENERAL////////
   {
-    code: '6',
+    code: 6,
     component: CNavItem,
     name: 'Consultas Pendientes',
     to: '/pendingconsultations',
@@ -100,7 +100,7 @@ const _nav = [
 
   ////////MEDICO EMERGENCIA////////
   {
-    code: '7',
+    code: 7,
     component: CNavItem,
     name: 'Consultas Pendientes',
     to: '/pendingconsultations',
@@ -112,7 +112,7 @@ const _nav = [
   },
   ////////ADMINISTRAR USUARIOS////////
   {
-    code: '11',
+    code: 11,
     component: CNavGroup,
     name: 'Administrar Usuarios',
     icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
@@ -136,7 +136,7 @@ const _nav = [
   },
   ////////ADMINISTRAR SERVICIOS////////
   {
-    code: '12',
+    code: 12,
     component: CNavGroup,
     name: 'Administrar Servicios',
     icon: <CIcon icon={cilUser} customClassName="nav-icon" />,

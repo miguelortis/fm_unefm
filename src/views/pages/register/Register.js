@@ -1,4 +1,4 @@
-/* eslint-disable prettier/prettier */
+
 import React, { Fragment, useState } from 'react'
 import Box from '@mui/material/Box'
 import Stepper from '@mui/material/Stepper'

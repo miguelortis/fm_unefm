@@ -1,4 +1,4 @@
-/* eslint-disable prettier/prettier */
+
 import React, { useState, useEffect } from 'react'
 import { useContext } from 'react'
 import { Context } from '../../contexts/Context'
@@ -202,7 +202,7 @@ export default function Services() {
     }
     try {
       const { data } = await axios.put(
-        'http://localhost:3100/package_update',
+        'https://servidor-fmunefm.herokuapp.com/package_update',
         updatePackage,
         {
           headers: {
@@ -278,7 +278,7 @@ export default function Services() {
       setShowSpinner(false)
       try {
         const { data } = await axios.post(
-          'http://localhost:3100/register_package',
+          'https://servidor-fmunefm.herokuapp.com/register_package',
           newPackage,
           {
             headers: {

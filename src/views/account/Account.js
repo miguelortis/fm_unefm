@@ -20,7 +20,6 @@ const Account = () => {
   const {
     state: { currentUser },
   } = useContext(Context)
-
   // console.log(currentUser)
 
   const tableExample = [

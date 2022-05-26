@@ -1,5 +1,3 @@
-/* eslint-disable prettier/prettier */
-//
 import React, { useState, useEffect } from 'react'
 import { useContext } from 'react'
 import { Context } from '../../contexts/Context'
@@ -129,7 +127,7 @@ export default function Services() {
     useEffect(() => {
         const handleServices = async () => {
             try {
-                const { data } = await axios.get('http://localhost:3100/exchange_rates', {
+                const { data } = await axios.get('https://servidor-fmunefm.herokuapp.com/exchange_rates', {
                     headers: {
                         authorization: `Bearer ${localStorage.getItem('token')}`,
                     },
@@ -164,7 +162,7 @@ export default function Services() {
 
         try {
             const { data } = await axios.put(
-                'http://localhost:3100/update_exchange-rates',
+                'https://servidor-fmunefm.herokuapp.com/update_exchange-rates',
                 newData,
                 {
                     headers: {

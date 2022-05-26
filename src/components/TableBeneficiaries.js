@@ -1,4 +1,4 @@
-/* eslint-disable prettier/prettier */
+
 import React, { useState } from 'react'
 import verify from '../assets/icons/usuarioVerificado.png'
 import { useContext } from 'react'
