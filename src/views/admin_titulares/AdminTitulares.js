@@ -42,7 +42,8 @@ import TablePagination from '@mui/material/TablePagination';
 import axios from 'axios'
 import { DesktopDatePicker } from '@mui/lab'
 import { CheckBox, Close, CheckBoxOutlineBlank, Edit, Save } from '@mui/icons-material';
-
+import Snackbar from '@mui/material/Snackbar'
+import { Alert } from "@mui/material";
 const option = [
   {
     label: '',
@@ -185,11 +186,11 @@ export default function AdminTitulares() {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [open, setOpen] = useState(false);
   const [dataEdit, setDataEdit] = useState({});
-  const [showEdit, setShowEdit] = useState(false);
   const [showSpinner, setShowSpinner] = useState(false)
   const [editEnable, setEditEnable] = useState(null);
   const [saveData, setSaveData] = useState({});
   const [role, setRole] = useState(0);
+  const [snackbar, setSnackbar] = useState({ color: 'success', open: false, message: '' });
   useEffect(() => {
     const handleTitulares = async () => {
       try {
@@ -214,6 +215,9 @@ export default function AdminTitulares() {
 
   }, [])
 
+  const handleCloseSnackbar = () => {
+    setSnackbar({ ...snackbar, open: false });
+  };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -238,7 +242,7 @@ export default function AdminTitulares() {
       saveData.role === "" ||
       saveData.category === "") {
 
-      alert("debe llenar el campo")
+      setSnackbar({ color: 'warning', open: true, message: 'Debe llenar el campo o actualizar los datos' })
       setShowSpinner(false)
     } else {
       const updateUser = { data: saveData, id: dataEdit._id }
@@ -252,10 +256,9 @@ export default function AdminTitulares() {
             },
           },
         )
-        //console.log(data.status)
         if (data.status === 201) {
+          setSnackbar({ color: 'success', open: true, message: data.message })
           console.log(data.message)
-          console.log(data.res)
           setEditEnable(null)
           setRole(0)
           setSaveData({})
@@ -269,11 +272,13 @@ export default function AdminTitulares() {
           setShowSpinner(false)
         }
         if (data.status === 400) {
+          setSnackbar({ color: 'error', open: true, message: data.error })
           console.log(data.error)
           setShowSpinner(false)
         }
       } catch (error) {
         if (error) {
+          setSnackbar({ color: 'error', open: true, message: 'Ocurrio un problema con el servidor' })
           console.log(error)
           setShowSpinner(false)
         }
@@ -288,9 +293,17 @@ export default function AdminTitulares() {
   }
   const handleClose = () => {
     setOpen(false);
+    setEditEnable(null)
+    setRole(0)
+    setSaveData({})
   };
   return (
     <>
+      <Snackbar autoHideDuration={6000} anchorOrigin={{ vertical: 'top', horizontal: 'center' }} key={'top' + 'center'} open={snackbar.open} onClose={handleCloseSnackbar}>
+        <Alert onClose={handleCloseSnackbar} severity={snackbar.color} sx={{ width: '100%' }}>
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
       <Card>
         <Box sx={{ flexGrow: 1 }}>
           <AppBar position="static">
@@ -432,7 +445,6 @@ export default function AdminTitulares() {
                             setSaveData({
                               ...saveData, idCard: e.target.value.replace(/\./g, '')
                             })
-                            console.log(saveData, "cedula")
                           }}
                         />
                       </TableCell>
@@ -467,7 +479,6 @@ export default function AdminTitulares() {
                             setSaveData({
                               ...saveData, name: e.target.value.toUpperCase()
                             })
-                            console.log(saveData)
                           }}
                         />
                       </TableCell>
@@ -502,7 +513,6 @@ export default function AdminTitulares() {
                             setSaveData({
                               ...saveData, lastName: e.target.value.toUpperCase()
                             })
-                            console.log(saveData)
                           }}
                         />
                       </TableCell>
@@ -530,12 +540,11 @@ export default function AdminTitulares() {
                           hidden={editEnable === 4 ? false : true}
                           variant="standard"
                           id="sex"
-                          defaultValue={!saveData.sex ? dataEdit.sex : saveData.sex}
+                          value={!saveData.sex ? dataEdit.sex : saveData.sex}
                           onChange={(e) => {
                             setSaveData({
                               ...saveData, sex: e.target.value
                             })
-                            console.log(saveData)
                           }}
                         >
                           <MenuItem value="MASCULINO">
@@ -571,12 +580,11 @@ export default function AdminTitulares() {
                           hidden={editEnable === 5 ? false : true}
                           variant="standard"
                           id="civilStatus"
-                          defaultValue={!saveData.civilStatus ? dataEdit.civilStatus : saveData.civilStatus}
+                          value={!saveData.civilStatus ? dataEdit.civilStatus : saveData.civilStatus}
                           onChange={(e) => {
                             setSaveData({
                               ...saveData, civilStatus: e.target.value
                             })
-                            console.log(saveData)
                           }}
                         >
                           <MenuItem value="SOLTERO">
@@ -627,6 +635,7 @@ export default function AdminTitulares() {
                             setSaveData({
                               ...saveData, email: e.target.value.toUpperCase()
                             })
+                            console.log(e.target.value.toUpperCase())
                             console.log(saveData)
                           }}
                         />
@@ -662,7 +671,6 @@ export default function AdminTitulares() {
                             setSaveData({
                               ...saveData, phone: e.target.value
                             })
-                            console.log(saveData)
                           }}
                         />
                       </TableCell>
@@ -690,12 +698,11 @@ export default function AdminTitulares() {
                           hidden={editEnable === 8 ? false : true}
                           variant="standard"
                           id="personalType"
-                          defaultValue={!saveData.personalType ? dataEdit.personalType : saveData.personalType}
+                          value={!saveData.personalType ? dataEdit.personalType : saveData.personalType}
                           onChange={(e) => {
                             setSaveData({
                               ...saveData, personalType: e.target.value
                             })
-                            console.log(saveData)
                           }}
                         >
                           <MenuItem value="FIJO">
@@ -711,7 +718,7 @@ export default function AdminTitulares() {
                         </Select>
                       </TableCell>
                       <TableCell align="center">
-                        <IconButton color="primary" hidden={editEnable === null ? false : true} onClick={() => setEditEnable(7)} size="small">
+                        <IconButton color="primary" hidden={editEnable === null ? false : true} onClick={() => setEditEnable(8)} size="small">
                           <Edit fontSize="small" />
                         </IconButton>
                         <IconButton color="primary" hidden={editEnable === 8 ? false : true} size="small" onClick={updateData}>
@@ -734,12 +741,11 @@ export default function AdminTitulares() {
                           hidden={editEnable === 9 ? false : true}
                           variant="standard"
                           id="category"
-                          defaultValue={!saveData.category ? dataEdit.category : saveData.category}
+                          value={!saveData.category ? dataEdit.category : saveData.category}
                           onChange={(e) => {
                             setSaveData({
                               ...saveData, category: e.target.value
                             })
-                            console.log(saveData)
                           }}
                         >
                           <MenuItem value="DOCENTE">
@@ -781,9 +787,8 @@ export default function AdminTitulares() {
                           defaultValue={!saveData.dateBirth ? dataEdit.dateBirth : saveData.dateBirth}
                           onChange={(e) => {
                             setSaveData({
-                              ...saveData, dateBirth: e.target.value
+                              ...saveData, dateBirth: e
                             })
-                            console.log(saveData)
                           }}
                           renderInput={(params) => (
                             <TextField {...params} hidden={editEnable === 10 ? false : true} variant="standard" />
@@ -836,13 +841,11 @@ export default function AdminTitulares() {
                           limitTags={3}
                           id="checkboxes-tags-demo"
                           onChange={(e, v) => {
-                            console.log(v)
                             setSaveData({
                               role: {
                                 name: option[role]?.label, options: v
                               }
                             })
-                            console.log(saveData)
                           }}
                           options={option[role]?.options}
                           disableCloseOnSelect
@@ -888,13 +891,6 @@ export default function AdminTitulares() {
           </DialogContent>
           <DialogActions>
             <Button onClick={handleClose}>Cerrar</Button>
-            <Button hidden={!showEdit} autoFocus>
-              Guardar
-            </Button>
-            <Button hidden={showEdit} onClick={() => setShowEdit(true)}
-              autoFocus>
-              Editar
-            </Button>
           </DialogActions>
         </Dialog>
       </div>

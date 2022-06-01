@@ -17,7 +17,7 @@ import {
     CircularProgress,
     Select,
 } from '@mui/material'
-import { Save } from '@mui/icons-material';
+import { Save, Autorenew } from '@mui/icons-material';
 import * as moment from 'moment'
 import { styled } from '@mui/material/styles'
 import TableCell, { tableCellClasses } from '@mui/material/TableCell'
@@ -148,6 +148,26 @@ export default function Services() {
         handleServices()
 
     }, [])
+
+    const updateExchangeRates = async (id) => {
+        try {
+            const { data } = await axios.post('https://servidor-fmunefm.herokuapp.com/update_auto_exchange-rates',
+                { id },
+                {
+                    headers: {
+                        authorization: `Bearer ${localStorage.getItem('token')}`,
+                    },
+                })
+            dispatch({
+                type: 'SET_ EXCHANGE-RATE',
+                payload: data.exchangeRates,
+            })
+        } catch (error) {
+            if (error) {
+                console.log(error)
+            }
+        }
+    }
 
     const handleInfo = (item) => {
         setInfo({ ...item })
@@ -284,7 +304,7 @@ export default function Services() {
                                     <MenuItem onClick={() => {
                                         handleClickOpen()
                                         setEnableEdit(true)
-                                    }}>Actualizar Divisa</MenuItem>
+                                    }}>Actualizar Divisa Manual</MenuItem>
                                     <MenuItem disabled onClick={() => {
                                         handleClickOpen()
                                         setEnableEdit(false)
@@ -357,7 +377,6 @@ export default function Services() {
                         <Table stickyHeader>
                             <TableHead>
                                 <TableRow>
-                                    <StyledTableCell>Nº</StyledTableCell>
                                     <StyledTableCell>Tipo de Divisa</StyledTableCell>
                                     <StyledTableCell align="center">Tasa (Bs)</StyledTableCell>
                                     <StyledTableCell align="center">Hora Actualizacion</StyledTableCell>
@@ -367,15 +386,17 @@ export default function Services() {
                             <TableBody>
                                 {info?.old_rates?.map((item, index) => (
                                     <TableRow hover key={index}>
-                                        <TableCell component="th" scope="row">
-                                            {index + 1}
-                                        </TableCell>
-                                        <TableCell>
+                                        <TableCell component="th" scope="row" >
                                             {item?.currencyType}
+                                            {item?.currencyType === 'USD' && <IconButton aria-label="delete">
+                                                <Autorenew />
+                                            </IconButton>}
+
                                         </TableCell>
                                         <TableCell align="center">{parseFloat(Math.round(item?.value * 100) / 100).toFixed(2) + "Bs"}</TableCell>
                                         <TableCell align="center">{moment(item?.registrationDate).format('hh:mm:ss A')}</TableCell>
                                         <TableCell align="right">{moment(item?.registrationDate).format('DD MMM YYYY')}</TableCell>
+
                                     </TableRow>
                                 ))}
                             </TableBody>

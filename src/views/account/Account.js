@@ -1,6 +1,7 @@
 import React, { lazy, useEffect } from 'react'
 import { useContext } from 'react'
 import { Context } from '../../contexts/Context'
+import Socket from '../../components/Socket'
 import {
   CCard,
   CCardBody,
@@ -14,6 +15,9 @@ import {
   CTableHeaderCell,
   CTableRow,
 } from '@coreui/react'
+import axios from 'axios'
+
+
 
 const WidgetsBrand = lazy(() => import('../widgets/WidgetsBrand.js'))
 const Account = () => {
@@ -56,6 +60,7 @@ const Account = () => {
   ]
 
   return (
+
     <>
       <WidgetsBrand />
 
