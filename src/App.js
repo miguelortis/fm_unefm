@@ -34,7 +34,7 @@ class App extends Component {
               <Switch>
                 <Route
                   exact
-                  path="/home"
+                  path="/"
                   name="Login Page"
                   render={(props) => <Home {...props} />}
                 />
@@ -57,7 +57,7 @@ class App extends Component {
                   render={(props) => <Page500 {...props} />}
                 />
                 <PrivateRoute
-                  path="/"
+                  path="/account"
                   name="Account"
                   render={(props) => <DefaultLayout {...props} />}
                 />
