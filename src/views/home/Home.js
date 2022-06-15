@@ -82,7 +82,7 @@ export default function Home() {
 
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} >
             <img
-              style={{ width: '60px' }}
+              style={{ width: '60px', padding: '5px' }}
               className="appBar-logo"
               src={logo}
               alt="logo fmunefm"

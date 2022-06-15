@@ -743,3 +743,101 @@
     }
 
 }
+
+@media screen and (min-width: 992px) {
+
+    .main-container {
+        height: 400px;
+        position: relative;
+        top: -4rem;
+        width: 100%;
+        text-align: center;
+    }
+
+    .container_p {
+        width: 800px;
+        height: 400px;
+    }
+
+    .appBar.visible {
+        visibility: visible;
+        opacity: 1;
+        position: sticky;
+        top: 0rem;
+        transition: all 0.4s ease-in-out;
+
+    }
+
+    .animationLogo {
+        border-radius: 10px;
+        width: 208px;
+        position: inherit;
+        opacity: 0;
+        visibility: hidden;
+        animation: animationLogo 5s;
+    }
+
+    .container_button {
+        top: 12rem;
+    }
+
+    .title_logo {
+        position: inherit;
+        width: 25rem;
+        top: 6.5rem;
+        left: 18.6rem;
+        font-size: 1.9rem;
+        font-weight: bold;
+        color: #fff;
+        text-shadow: 0 0 10px rgba(0, 0, 0, 0.61);
+        margin-top: -1rem;
+        animation: fullLogo 6s;
+    }
+
+    .full_logo {
+        width: 600px;
+        position: relative;
+        opacity: 1;
+        visibility: visible;
+        animation: fullLogo 5s;
+    }
+
+    .slogan {
+        position: relative;
+        top: 0.5rem;
+        width: 90%;
+        font-size: 23px;
+        color: #fff;
+        opacity: 1;
+        transform-origin: 50% 50%;
+        transform: scale(1, 1);
+        filter: blur(0px);
+        animation-delay: 7s;
+        animation: vanishIn 3s;
+        z-index: 1000;
+    }
+
+    .container_button {
+        top: 18rem;
+    }
+
+    .buttom_group {
+        top: 1.2rem
+    }
+
+    .button {
+        width: 120px;
+        height: 45px;
+        margin: 0px 28px;
+    }
+
+    .button span {
+        padding-top: 5px;
+        display: flex;
+    }
+
+    .card_home {
+        margin-top: -65px;
+    }
+
+}
