@@ -9,7 +9,7 @@ import fullLogo from "../../assets/images/logoFMW.png";
 import Carousel_notices from "./Carousel_notices";
 import './Home.css';
 import { AccountCircle, ArrowCircleUp, Article, Contacts, MedicalInformation, MedicalServices } from '@mui/icons-material';
-
+import { useHistory } from 'react-router-dom'
 import HomeIcon from '@mui/icons-material/Home';
 import useNearScreen from '../../hooks/useNearScreen';
 import AppBar from '@mui/material/AppBar';
@@ -35,7 +35,7 @@ export default function Home() {
   const appBar = useRef(null);
   const mainContainer = useRef(null);
   const elementRef = useNearScreen({ distance: '0px', threshold: 0.2, root: null, externalRef: mainContainer });
-
+  const history = useHistory()
   useEffect(() => {
     if (elementRef.isNearScreen) {
       appBar?.current?.classList?.remove("visible");
@@ -75,6 +75,7 @@ export default function Home() {
 
     }
   };
+
   return (
     <>
       <AppBar ref={appBar} className='appBar' position='relative' sx={{ top: '-4rem', visibility: 'hidden', zIndex: 0, opacity: '0' }}>
@@ -131,7 +132,7 @@ export default function Home() {
               <MenuItem onClick={handleClose}>Servicios</MenuItem>
               <MenuItem onClick={handleClose}>Planes</MenuItem>
               <MenuItem onClick={handleClose}>Contacto</MenuItem>
-              <MenuItem onClick={handleClose}>Login</MenuItem>
+              <MenuItem onClick={() => history.push('/login')}>Login</MenuItem>
             </Menu>
           </div>
 
@@ -193,7 +194,7 @@ export default function Home() {
               <Contacts color='primary' />
               <span>Contacto</span>
             </button>
-            <button className='button'>
+            <button onClick={() => history.push('/login')} className='button'>
               <AccountCircle color='primary' />
               <span>Login</span>
             </button>
