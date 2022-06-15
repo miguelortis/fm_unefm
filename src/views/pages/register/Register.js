@@ -89,7 +89,8 @@ const Register = () => {
       newUser.password == null ||
       newUser.personalType == null ||
       newUser.phone == null ||
-      newUser.placeBirth == null
+      newUser.placeBirth == null ||
+      newUser.RegistrationDateUnefm == null
     ) {
       setError('Completa todos los campos por favor')
       setShowError(true)
@@ -104,7 +105,7 @@ const Register = () => {
         // console.log(newUser)
 
         axios
-          .post('https://servidor-fmunefm.herokuapp.com/fmunefm/register', newUser)
+          .post('https://servidor-fmunefm.herokuapp.com/user_register', newUser)
           .then((res) => {
             console.log(res)
             console.log(res.data.messaje)
@@ -425,6 +426,27 @@ const Register = () => {
                                   value={newUser.dateBirth}
                                   onChange={(e) => {
                                     setNewUser({ ...newUser, dateBirth: e })
+                                  }}
+                                />
+                                <div style={{ color: '#767982', fontSize: '11px' }}>
+                                  (DD/MM/YYYY)
+                                </div>
+                              </FormControl>
+                            </Grid>
+                            {/*///////////////RegistrationDateUnefm//////////// */}
+                            <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
+                              <FormControl sx={{ width: '30ch' }} variant="standard">
+                                <DesktopDatePicker
+                                  id="RegistrationDateUnefm"
+                                  label="Fecha de Nacimiento"
+                                  inputFormat="DD/MM/YYYY"
+                                  renderInput={(params) => (
+                                    <TextField {...params} variant="standard" />
+                                  )}
+                                  name="RegistrationDateUnefm"
+                                  value={newUser.RegistrationDateUnefm}
+                                  onChange={(e) => {
+                                    setNewUser({ ...newUser, RegistrationDateUnefm: e })
                                   }}
                                 />
                                 <div style={{ color: '#767982', fontSize: '11px' }}>

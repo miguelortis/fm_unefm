@@ -111,7 +111,7 @@ BootstrapDialogTitle.propTypes = {
     children: PropTypes.node,
     onClose: PropTypes.func.isRequired,
 };
-export default function Services() {
+export default function ExchangeRates() {
     const {
         state: { exchangeRate },
         dispatch,
@@ -149,40 +149,20 @@ export default function Services() {
 
     }, [])
 
-    const updateExchangeRates = async (id) => {
-        try {
-            const { data } = await axios.post('https://servidor-fmunefm.herokuapp.com/update_auto_exchange-rates',
-                { id },
-                {
-                    headers: {
-                        authorization: `Bearer ${localStorage.getItem('token')}`,
-                    },
-                })
-            dispatch({
-                type: 'SET_ EXCHANGE-RATE',
-                payload: data.exchangeRates,
-            })
-        } catch (error) {
-            if (error) {
-                console.log(error)
-            }
-        }
-    }
 
     const handleInfo = (item) => {
         setInfo({ ...item })
         setOpenInfo(true)
     };
-    const updateExchangeRate = async () => {
+    const updateExchangeRateManual = async () => {
         if (newUpdate.currencyType === '' || newUpdate.value === '') {
             return alert('No puede dejar campos vacios')
         }
         const newData = { ...newUpdate, value: parseFloat(newUpdate.value) }
-        console.log(newData)
 
         try {
             const { data } = await axios.put(
-                'https://servidor-fmunefm.herokuapp.com/update_exchange-rates',
+                'https://servidor-fmunefm.herokuapp.com/update_manual_exchange-rates',
                 newData,
                 {
                     headers: {
@@ -218,11 +198,11 @@ export default function Services() {
         setAnchorEl(null)
     };
     const handleClose = () => {
+        setOpenInfo(false);
         setOpen(false);
         setAnchorEl(null)
         setNewExchangeRate({ name: "", price: "" })
         setNewUpdate({ value: "" })
-        setOpenInfo(false);
         setEnableEdit(false);
         setInfo({ name: "", price: "", status: "", services: [] })
     };
@@ -320,7 +300,6 @@ export default function Services() {
                         <Table stickyHeader>
                             <TableHead>
                                 <TableRow>
-                                    <StyledTableCell>Nº</StyledTableCell>
                                     <StyledTableCell>Tipo de Divisa</StyledTableCell>
                                     <StyledTableCell align="center">Tasa (Bs)</StyledTableCell>
                                     <StyledTableCell align="center">Hora Actualizacion</StyledTableCell>
@@ -330,15 +309,14 @@ export default function Services() {
                             <TableBody>
                                 {exchangeRate?.map((item, index) => (
                                     <TableRow hover sx={{ cursor: "pointer" }} onClick={() => handleInfo(item)} key={index}>
-                                        <TableCell component="th" scope="row">
-                                            {index + 1}
-                                        </TableCell>
+
                                         <TableCell>
                                             {item?.currencyType}
                                         </TableCell>
                                         <TableCell align="center">{parseFloat(Math.round(item?.value * 100) / 100).toFixed(2) + "Bs"}</TableCell>
                                         <TableCell align="center">{moment(item?.registrationDate).format('hh:mm:ss A')}</TableCell>
                                         <TableCell align="right">{moment(item?.registrationDate).format('DD MMM YYYY')}</TableCell>
+
                                     </TableRow>
                                 ))}
                             </TableBody>
@@ -388,10 +366,6 @@ export default function Services() {
                                     <TableRow hover key={index}>
                                         <TableCell component="th" scope="row" >
                                             {item?.currencyType}
-                                            {item?.currencyType === 'USD' && <IconButton aria-label="delete">
-                                                <Autorenew />
-                                            </IconButton>}
-
                                         </TableCell>
                                         <TableCell align="center">{parseFloat(Math.round(item?.value * 100) / 100).toFixed(2) + "Bs"}</TableCell>
                                         <TableCell align="center">{moment(item?.registrationDate).format('hh:mm:ss A')}</TableCell>
@@ -469,7 +443,7 @@ export default function Services() {
                     </FormControl>
                     <FormControl hidden={!enableEdit} fullWidth sx={{ m: 1, mt: 2, width: "5%" }} variant="standard">
                         <IconButton color="primary" onClick={() => {
-                            updateExchangeRate()
+                            updateExchangeRateManual()
                         }} aria-label="delete">
                             <Save />
                         </IconButton>
@@ -501,7 +475,7 @@ export default function Services() {
                     </FormControl>
                     <FormControl hidden={enableEdit} fullWidth sx={{ m: 1, mt: 2, width: "5%" }} variant="standard">
                         <IconButton color="primary" onClick={() => {
-                            updateExchangeRate()
+                            updateExchangeRateManual()
                         }} aria-label="delete">
                             <Save />
                         </IconButton>

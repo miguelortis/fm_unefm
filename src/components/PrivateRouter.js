@@ -10,7 +10,7 @@ function PrivateRoute({ ...rest }) {
   useIsConsultationsPending()
   const adminToken = localStorage.getItem('token')
   if (!adminToken) {
-    return <Redirect to="/login" />
+    return <Redirect to="/home" />
   }
 
   return (

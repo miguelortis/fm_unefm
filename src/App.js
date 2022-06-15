@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, lazy } from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 //import AuthProvider from './auth/AuthProvider'
 import PrivateRoute from './components/PrivateRouter'
@@ -6,6 +6,7 @@ import DateAdapter from '@mui/lab/AdapterMoment'
 import LocalizationProvider from '@mui/lab/LocalizationProvider'
 import { ContextProvider } from './contexts/Context'
 import './scss/style.scss'
+import './App.css'
 
 const loading = (
   <div className="pt-3 text-center">
@@ -14,13 +15,14 @@ const loading = (
 )
 
 // Containers
-const DefaultLayout = React.lazy(() => import('./layout/DefaultLayout'))
+const DefaultLayout = lazy(() => import('./layout/DefaultLayout'))
 
 // Pages
-const Login = React.lazy(() => import('./views/pages/login/Login'))
-const Register = React.lazy(() => import('./views/pages/register/Register'))
-const Page404 = React.lazy(() => import('./views/pages/page404/Page404'))
-const Page500 = React.lazy(() => import('./views/pages/Unauthorised/Unauthorised'))
+const Home = lazy(() => import('./views/home/Home'))
+const Login = lazy(() => import('./views/pages/login/Login'))
+const Register = lazy(() => import('./views/pages/register/Register'))
+const Page404 = lazy(() => import('./views/pages/page404/Page404'))
+const Page500 = lazy(() => import('./views/pages/Unauthorised/Unauthorised'))
 
 class App extends Component {
   render() {
@@ -30,6 +32,12 @@ class App extends Component {
           <Router>
             <React.Suspense fallback={loading}>
               <Switch>
+                <Route
+                  exact
+                  path="/home"
+                  name="Login Page"
+                  render={(props) => <Home {...props} />}
+                />
                 <Route
                   exact
                   path="/login"

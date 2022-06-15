@@ -12,6 +12,7 @@ const Services = lazy(() => import('./views/services/Services'))
 const Plans = lazy(() => import('./views/plans/Plans'))
 const ExchangeRates = lazy(() => import('./views/exchange_rates/ExchangeRates'))
 const Titulares = lazy(() => import('./views/admin_titulares/AdminTitulares'))
+//const Home = lazy(() => import('./views/home/Home'))
 const Report = lazy(() => import('./views/report'))
 
 
@@ -27,6 +28,7 @@ const routes = [
   { path: '/plans', name: 'Plans', component: Plans },
   { path: '/exchange_rates', name: 'ExchangeRates', component: ExchangeRates },
   { path: '/titulares', name: 'Titulares', component: Titulares },
+  //{ path: '/home', name: 'Home', component: Home },
   { path: '/report', name: 'Reporte', component: Report },
 
 ]

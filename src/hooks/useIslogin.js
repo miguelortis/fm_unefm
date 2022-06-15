@@ -10,10 +10,10 @@ import Socket from '../components/Socket'
 const useIsLogin = () => {
   const history = useHistory()
   const {
-    state: { currentUser },
+    state: { currentUser, packages },
     dispatch,
   } = useContext(Context)
-
+  console.log(currentUser?.role?.options?.find(role => role.code === 12))
   /////////////////SOLICITUD DATOS USUARIO /////////////////////////
   useEffect(() => {
     const fetchData = async () => {
@@ -44,6 +44,35 @@ const useIsLogin = () => {
       fetchData()
     }
   }, [dispatch, currentUser, history])
+  /////////////PACKAGES////////////////////////////
+  useEffect(() => {
+    const handlePackages = async () => {
+      try {
+        const { data } = await axios.get('https://servidor-fmunefm.herokuapp.com/packages', {
+          headers: {
+            authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+          //cancelToken: source.token,
+        })
+        console.log(data)
+        dispatch({
+          type: 'SET_ PACKAGES',
+          payload: data,
+        })
+        console.log(packages)
+      } catch (error) {
+        if (error?.response?.status === 401) {
+          console.log(error)
+        }
+      }
+    }
+    if (!!localStorage.getItem('token') && currentUser?.role?.options?.find(role => role.code === 12)) {
+
+      handlePackages()
+    }
+
+
+  }, [dispatch, currentUser])
   //////////////////////////////////////////////////
   useEffect(() => {
     Socket.emit('addUser', currentUser?._id, currentUser?.role)

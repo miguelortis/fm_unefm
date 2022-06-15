@@ -177,9 +177,9 @@ const columns = [
   },
 ];
 export default function AdminTitulares() {
-  // const {
-  //   dispatch,
-  // } = useContext(Context)
+  const {
+    state: { packages },
+  } = useContext(Context)
   const [titulares, setTitulares] = useState([])
   const [search, setSearch] = useState([])
   const [page, setPage] = useState(0);
@@ -264,6 +264,7 @@ export default function AdminTitulares() {
           setSaveData({})
           setTitulares(titulares.map(titular => titular._id === data.res._id ? data.res : titular))
           setSearch(titulares.map(titular => titular._id === data.res._id ? data.res : titular))
+          console.log(data.res)
           setDataEdit(data.res)
           // dispatch({
           //   type: 'SET_ EXCHANGE-RATE',
@@ -289,6 +290,7 @@ export default function AdminTitulares() {
   const handleEdit = (row) => {
     setOpen(true)
     setDataEdit(row)
+    console.log(row)
     // setElement({ ...row })
   }
   const handleClose = () => {
@@ -414,7 +416,7 @@ export default function AdminTitulares() {
             <span style={{ display: 'block', color: '#fff' }}>...Cargando</span>
           </div>
           <DialogTitle id="alert-dialog-title">
-            <StyledBadge color={dataEdit.status === 3 ? 'info' : dataEdit.status === 2 ? 'warning' : 'success'} badgeContent={dataEdit.status === 3 ? 'No Verificado' : dataEdit.status === 2 ? 'Suspendido' : 'Activo'}>
+            <StyledBadge color={dataEdit.status === 1 ? 'info' : dataEdit.status === 4 ? 'warning' : 'success'} badgeContent={dataEdit.status === 1 ? 'No Verificado' : dataEdit.status === 4 ? 'Suspendido' : 'Activo'}>
               <span>{`Modificar Titular ${dataEdit?.name}`}</span>
             </StyledBadge >
           </DialogTitle>
@@ -776,6 +778,7 @@ export default function AdminTitulares() {
                         </IconButton>
                       </TableCell>
                     </TableRow>
+
                     <TableRow hover>
                       <TableCell>Fecha Nacimiento</TableCell>
                       <TableCell>
@@ -879,6 +882,45 @@ export default function AdminTitulares() {
                           setRole(0)
                           setSaveData({})
 
+                        }} size="small">
+                          <Close fontSize="small" />
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                    <TableRow hover>
+                      <TableCell>Plan</TableCell>
+                      <TableCell>
+                        {editEnable !== 12 && dataEdit?.package?.name}
+                        <Select
+                          hidden={editEnable === 12 ? false : true}
+                          variant="standard"
+                          id="package"
+                          defaultValue={packages?.findIndex((el) => el._id === dataEdit?.package?._id)}
+                          onChange={(e) => {
+                            setSaveData({
+                              ...saveData, package: packages[e.target.value]._id
+                            })
+                            console.log(packages)
+                            console.log(packages?.findIndex((el) => el._id === dataEdit?.package?._id))
+                          }}
+                        >
+                          {packages?.map((item, index) => {
+                            return <MenuItem key={index} value={index}>{item.name}</MenuItem>
+                          })}
+
+                        </Select>
+                      </TableCell>
+                      <TableCell align="center">
+                        <IconButton color="primary" hidden={editEnable === null ? false : true} onClick={() => setEditEnable(12)} size="small">
+                          <Edit fontSize="small" />
+                        </IconButton>
+                        <IconButton color="primary" hidden={editEnable === 12 ? false : true} size="small" onClick={updateData}>
+                          <Save fontSize="small" />
+                        </IconButton>
+                        <IconButton color="primary" hidden={editEnable === 12 ? false : true} onClick={() => {
+                          setEditEnable(null)
+                          setRole(0)
+                          setSaveData({})
                         }} size="small">
                           <Close fontSize="small" />
                         </IconButton>

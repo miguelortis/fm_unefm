@@ -123,10 +123,12 @@ export default function Services() {
           },
           //cancelToken: source.token,
         })
+        //console.log(data)
         dispatch({
           type: 'SET_ SERVICES',
           payload: data,
         })
+
       } catch (error) {
         if (error?.response?.status === 401) {
           console.log(error)
@@ -138,30 +140,7 @@ export default function Services() {
 
 
   }, [dispatch])
-  useEffect(() => {
-    const handlePackages = async () => {
-      try {
-        const { data } = await axios.get('https://servidor-fmunefm.herokuapp.com/packages', {
-          headers: {
-            authorization: `Bearer ${localStorage.getItem('token')}`,
-          },
-          //cancelToken: source.token,
-        })
-        dispatch({
-          type: 'SET_ PACKAGES',
-          payload: data,
-        })
-      } catch (error) {
-        if (error?.response?.status === 401) {
-          console.log(error)
-        }
-      }
-    }
 
-    handlePackages()
-
-
-  }, [])
 
   useEffect(() => {
 
@@ -200,6 +179,7 @@ export default function Services() {
         return { service: item?.service?._id, frequency: item?.frequency }
       })
     }
+    console.log(updatePackage)
     try {
       const { data } = await axios.put(
         'https://servidor-fmunefm.herokuapp.com/package_update',
@@ -412,7 +392,7 @@ export default function Services() {
               name='name'
               label="Nombre del Plan"
               value={info?.name}
-              onChange={(e) => setInfo({ ...info, name: e.target.value })}
+              onChange={(e) => setInfo({ ...info, name: e.target.value.toUpperCase() })}
             />
             <TextField
               sx={{ width: '20%' }}
