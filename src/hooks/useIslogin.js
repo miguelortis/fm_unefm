@@ -13,7 +13,6 @@ const useIsLogin = () => {
     state: { currentUser, packages },
     dispatch,
   } = useContext(Context)
-  console.log(currentUser?.role?.options?.find(role => role.code === 12))
   /////////////////SOLICITUD DATOS USUARIO /////////////////////////
   useEffect(() => {
     const fetchData = async () => {
@@ -24,7 +23,6 @@ const useIsLogin = () => {
           },
           //cancelToken: source.token,
         })
-        console.log('data', data)
         dispatch({
           type: 'SET_USER_DATA',
           payload: data,
@@ -54,12 +52,10 @@ const useIsLogin = () => {
           },
           //cancelToken: source.token,
         })
-        console.log(data)
         dispatch({
           type: 'SET_ PACKAGES',
           payload: data,
         })
-        console.log(packages)
       } catch (error) {
         if (error?.response?.status === 401) {
           console.log(error)
@@ -77,7 +73,6 @@ const useIsLogin = () => {
   useEffect(() => {
     Socket.emit('addUser', currentUser?._id, currentUser?.role)
     Socket.on('getUsers', (users) => {
-      console.log(users)
       // setOnlineUsers(
       //   user.followings.filter((f) => users.some((u) => u.userId === f))
       // );

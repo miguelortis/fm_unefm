@@ -6,7 +6,7 @@ import bgImage1 from "../../assets/images/bgImage_home1.jpg";
 import logo from "../../assets/images/logoFM_home.png";
 import logoGif from "../../assets/images/logoGif.gif";
 import fullLogo from "../../assets/images/logoFMW.png";
-import Carousel_notices from "./Carousel_notices";
+import Carousel from "./Carousel";
 import './Home.css';
 import { AccountCircle, ArrowCircleUp, Article, Contacts, MedicalInformation, MedicalServices } from '@mui/icons-material';
 import { useHistory } from 'react-router-dom'
@@ -28,6 +28,30 @@ const content = [
   'lorem ipsum dolor sit amet consectetur adipisicing elit lorem ipsum dolor sit amet consectetur adipisicing elit lorem ipsum dolor sit amet consectetur adipisicing elit lorem ipsum dolor sit amet consectetur adipisicing elit lorem ipsum dolor sit amet consectetur adipisicing elit lorem ipsum dolor sit amet consectetur adipisicing elit',
   'lorem ipsum dolor sit amet consectetur adipisicing elit lorem ipsum dolor sit amet consectetur adipisicing elit lorem ipsum dolor sit amet consectetur adipisicing elit lorem ipsum dolor sit amet consectetur adipisicing elit lorem ipsum dolor sit amet consectetur adipisicing elit lorem ipsum dolor sit amet consectetur adipisicing elit',
   'lorem ipsum dolor sit amet consectetur adipisicing elit lorem ipsum dolor sit amet consectetur adipisicing elit lorem ipsum dolor sit amet consectetur adipisicing elit lorem ipsum dolor sit amet consectetur adipisicing elit lorem ipsum dolor sit amet consectetur adipisicing elit lorem ipsum dolor sit amet consectetur adipisicing elit'
+]
+
+const carouselContent = [
+  {
+    label: 'Lago en algun lugar del mundo',
+    imgPath:
+      'https://fondosmil.com/fondo/2319.jpg',
+  },
+  {
+    label: 'lago de dia hermoso',
+    imgPath:
+      'https://fondosmil.com/fondo/11112.jpg',
+  },
+  {
+    label: 'lago congelado',
+    imgPath:
+      'https://www.solofondos.com/wp-content/uploads/2015/04/Fondos-de-paisajes-768x480.jpg',
+  },
+  {
+    label: 'Goč, Serbia',
+    imgPath:
+      'https://www.solofondos.com/wp-content/uploads/2015/04/paisajes-para-fondo-de-escritorio-gratis-768x432.jpg',
+  },
+
 ]
 
 export default function Home() {
@@ -219,7 +243,7 @@ export default function Home() {
       <div
         className="card_home"
       >
-        <Carousel_notices id='carousel' />
+        <Carousel title='RESUMEN DE NOTICIAS' content={carouselContent} id='carousel' />
         {content.map((el, i) =>
           <p style={{ textAlign: 'justify', margin: '15px' }} key={i}>{el}</p>
         )}

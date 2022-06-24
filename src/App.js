@@ -35,7 +35,7 @@ class App extends Component {
                 <Route
                   exact
                   path="/"
-                  name="Login Page"
+                  name="Home"
                   render={(props) => <Home {...props} />}
                 />
                 <Route
@@ -57,7 +57,7 @@ class App extends Component {
                   render={(props) => <Page500 {...props} />}
                 />
                 <PrivateRoute
-                  path="/account"
+                  path="/"
                   name="Account"
                   render={(props) => <DefaultLayout {...props} />}
                 />

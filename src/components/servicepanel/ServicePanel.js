@@ -68,7 +68,7 @@ export default function ServicePanel({ item, setOpenService }) {
         patientType: 'Titular',
       })
     }
-  }, [item, dataUser])
+  }, [item, dataUser, newService])
 
   const handleCloseSnackbar = () => {
     setShowSnackbar({ ...showSnackbar, open: false })
@@ -133,7 +133,7 @@ export default function ServicePanel({ item, setOpenService }) {
             justifyContent="center"
             spacing={1}
             sx={{ flexGrow: 1, backgroundColor: '#EDF0F7' }}
-            //columnSpacing={{ xs: 1, sm: 2, md: 1 }}
+          //columnSpacing={{ xs: 1, sm: 2, md: 1 }}
           >
             {/* /////////////PACIENTE///////////// */}
             <Grid item xs={12} sm={6} md={6} sx={{ backgroundColor: '#EDF0F7' }}>
@@ -222,20 +222,20 @@ export default function ServicePanel({ item, setOpenService }) {
                         Parentesco:{' '}
                         {(dataUser?.relationship === 'PADRE' &&
                           dataUser?.user?.sex === 'FEMENINO') ||
-                        (dataUser?.relationship === 'MADRE' && dataUser?.user?.sex === 'FEMENINO')
+                          (dataUser?.relationship === 'MADRE' && dataUser?.user?.sex === 'FEMENINO')
                           ? 'Hija'
                           : (dataUser?.relationship === 'PADRE' &&
-                              dataUser?.user?.sex === 'MASCULINO') ||
+                            dataUser?.user?.sex === 'MASCULINO') ||
                             (dataUser?.relationship === 'MADRE' &&
                               dataUser?.user?.sex === 'MASCULINO')
-                          ? 'Hijo'
-                          : dataUser?.relationship === 'HIJO' && dataUser?.user?.sex === 'MASCULINO'
-                          ? 'Padre'
-                          : dataUser?.relationship === 'HIJO' && dataUser?.user?.sex === 'FEMENINO'
-                          ? 'Madre'
-                          : dataUser?.relationship === 'HIJO' && dataUser?.user?.sex === 'FEMENINO'
-                          ? 'Madre'
-                          : 'Conyuge'}
+                            ? 'Hijo'
+                            : dataUser?.relationship === 'HIJO' && dataUser?.user?.sex === 'MASCULINO'
+                              ? 'Padre'
+                              : dataUser?.relationship === 'HIJO' && dataUser?.user?.sex === 'FEMENINO'
+                                ? 'Madre'
+                                : dataUser?.relationship === 'HIJO' && dataUser?.user?.sex === 'FEMENINO'
+                                  ? 'Madre'
+                                  : 'Conyuge'}
                       </Typography>
                     </>
                   )}

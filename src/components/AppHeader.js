@@ -41,25 +41,20 @@ const AppHeader = () => {
   return (
     <CHeader position="fixed" className="mb-4">
       <CContainer fluid>
+        <CHeaderBrand className="mx-auto d-md-none" to="/">
+          <CImage src={logoFM} width={200} />
+        </CHeaderBrand>
+        <CHeaderDivider />
         <CHeaderToggler
           className="ps-1"
           onClick={() => dispatch({ type: 'set', sidebarShow: !sidebarShow })}
         >
           <CIcon icon={cilMenu} size="lg" />
         </CHeaderToggler>
-        <CHeaderBrand className="mx-auto d-md-none" to="/">
-          <CImage src={logoFM} width={200} />
-        </CHeaderBrand>
-        <CHeaderDivider />
         <CHeaderNav className="d-none d-md-flex me-auto">
           <CNavItem>
             <CNavLink to="/account" component={NavLink} activeClassName="active">
               Inicio
-            </CNavLink>
-          </CNavItem>
-          <CNavItem>
-            <CNavLink to="/notifications/modals" component={NavLink}>
-              Citas Con Especialistas
             </CNavLink>
           </CNavItem>
           <CNavItem>

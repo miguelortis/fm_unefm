@@ -18,8 +18,8 @@ const Report = lazy(() => import('./views/report'))
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
-  { path: '/profile', name: 'Profile', component: Profile },
   { path: '/account', name: 'Account', component: Account },
+  { path: '/profile', name: 'Profile', component: Profile },
   { path: '/beneficiaries', name: 'Beneficiaries', component: Beneficiaries },
   { path: '/typeofconsultations', name: 'TypeOfConsultations', component: TypeOfConsultations },
   { path: '/consultafiliados', name: 'Consultafiliados', component: Consultafiliados },
