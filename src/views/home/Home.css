@@ -5,6 +5,7 @@
     text-align: center;
     top: -4rem;
     z-index: 2;
+    background-image: url(../../assets/images/bgImage_home1.jpg);
 }
 
 .container_p {
@@ -565,6 +566,7 @@
         top: -4rem;
         width: 100%;
         text-align: center;
+        background-image: url(../../assets/images/bgImage_home.jpg);
     }
 
     .container_p {
@@ -805,7 +807,7 @@
     .slogan {
         position: relative;
         top: 0.5rem;
-        width: 90%;
+        width: 100%;
         font-size: 23px;
         color: #fff;
         opacity: 1;

@@ -4,7 +4,6 @@ const Account = lazy(() => import('./views/account/Account'))
 const Profile = lazy(() => import('./views/profile/Profile'))
 const Beneficiaries = lazy(() => import('./views/beneficiaries/Beneficiaries'))
 const TypeOfConsultations = lazy(() => import('./views/type_of_consultation/TypeOfConsultations'))
-const Consultafiliados = lazy(() => import('./views/consultafiliados/Consultafiliados'))
 const PendingConsultations = lazy(() =>
   import('./views/pending_consultations/PendingConsultations'),
 )
@@ -22,7 +21,6 @@ const routes = [
   { path: '/profile', name: 'Profile', component: Profile },
   { path: '/beneficiaries', name: 'Beneficiaries', component: Beneficiaries },
   { path: '/typeofconsultations', name: 'TypeOfConsultations', component: TypeOfConsultations },
-  { path: '/consultafiliados', name: 'Consultafiliados', component: Consultafiliados },
   { path: '/pendingconsultations', name: 'PendingConsultations', component: PendingConsultations },
   { path: '/services', name: 'Services', component: Services },
   { path: '/plans', name: 'Plans', component: Plans },

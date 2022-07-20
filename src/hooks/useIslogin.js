@@ -13,15 +13,14 @@ const useIsLogin = () => {
     state: { currentUser, packages },
     dispatch,
   } = useContext(Context)
-  /////////////////SOLICITUD DATOS USUARIO /////////////////////////
+  /////////////////SOLICITUD DATOS USUARIO /////////////////////////https://servidor-fmunefm.herokuapp.com/
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { data } = await axios.get('https://servidor-fmunefm.herokuapp.com/profile', {
+        const { data } = await axios.get('http://localhost:3100/user/data-user', {
           headers: {
             authorization: `Bearer ${localStorage.getItem('token')}`,
           },
-          //cancelToken: source.token,
         })
         dispatch({
           type: 'SET_USER_DATA',
@@ -34,7 +33,7 @@ const useIsLogin = () => {
           dispatch({
             type: 'RESET',
           })
-          history.push('/account')
+          history.push('/login')
         }
       }
     }
@@ -70,14 +69,7 @@ const useIsLogin = () => {
 
   }, [dispatch, currentUser])
   //////////////////////////////////////////////////
-  useEffect(() => {
-    Socket.emit('addUser', currentUser?._id, currentUser?.role)
-    Socket.on('getUsers', (users) => {
-      // setOnlineUsers(
-      //   user.followings.filter((f) => users.some((u) => u.userId === f))
-      // );
-    })
-  }, [currentUser])
+
   ///////////////////////////////////////////////////////////////////
 }
 

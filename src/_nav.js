@@ -81,8 +81,15 @@ const _nav = [
   {
     code: 5,
     component: CNavItem,
-    name: 'Servicios',
+    name: 'Consultas',
     to: '/typeofconsultations',
+    icon: <CIcon icon={cilPencil} customClassName="nav-icon" />,
+  },
+  {
+    code: 5,
+    component: CNavItem,
+    name: 'Laboratorio',
+    to: '/laboratoryAssistant',
     icon: <CIcon icon={cilPencil} customClassName="nav-icon" />,
   },
   ////////MEDICO GENERAL////////

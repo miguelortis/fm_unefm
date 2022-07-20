@@ -45,9 +45,9 @@ const arrayCard = [
 ]
 
 
-export default function WidgetsBrand(withCharts) {
+export default function WidgetsBrand({withCharts}) {
   WidgetsBrand.propTypes = {
-    withCharts: PropTypes.object,
+    withCharts: PropTypes.number,
   }
   const history = useHistory()
   return (

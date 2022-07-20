@@ -6,8 +6,8 @@ import useIsConsultationsPending from '../hooks/useIsConsultationsPending'
 
 function PrivateRoute({ ...rest }) {
   useIsLogin()
-  useIsDataTotal()
-  useIsConsultationsPending()
+  //useIsDataTotal()
+  //useIsConsultationsPending()
   const adminToken = localStorage.getItem('token')
   if (!adminToken) {
     return <Redirect to="/" />

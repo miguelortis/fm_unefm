@@ -107,11 +107,6 @@ export default function PendingConsultations() {
         type: 'SET_CONSULTATIONS',
         payload: [...Consultations],
       })
-      // setArrivalMessage({
-      //   sender: data.senderId,
-      //   text: data.text,
-      //   createdAt: Date.now(),
-      // })
     })
   }, [dispatch])
 

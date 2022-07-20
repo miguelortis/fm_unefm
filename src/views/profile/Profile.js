@@ -93,9 +93,8 @@ export default function Profile() {
 
     //alert('Completa todos los Campos')
     try {
-      const { data } = await axios.patch(
-        'https://servidor-fmunefm.herokuapp.com/modify-headline',
-        updateData,
+      const { data } = await axios.patch(`${process.env.REACT_APP_TEST_URL}/user/update-user`,
+      updateData,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem('token')}`,

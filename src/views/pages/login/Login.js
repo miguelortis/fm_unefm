@@ -42,12 +42,13 @@ export default function SignInSide() {
     const idCard = data.get('idCard')
     const password = data.get('password')
     try {
-      const result = await axios.post('https://servidor-fmunefm.herokuapp.com/fmunefm/login', {
+      const result = await axios.post(`${process.env.REACT_APP_TEST_URL}/auth/login`, {
         idCard,
         password,
       })
       if (result.data.status === 202) {
-        localStorage.setItem('token', result.data.data)
+        console.log('res', result.data)
+        localStorage.setItem('token', result.data.token)
         return ((() => {
           history.push('/account')
           setShowSpinner(false)

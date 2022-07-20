@@ -1,6 +1,5 @@
-import * as React from 'react';
+import  React, {useEffect, useState, useRef} from 'react';
 import Box from '@mui/material/Box';
-import CssBaseline from '@mui/material/CssBaseline';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import RestoreIcon from '@mui/icons-material/Restore';
@@ -12,36 +11,65 @@ import ListItem from '@mui/material/ListItem';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemText from '@mui/material/ListItemText';
 import Avatar from '@mui/material/Avatar';
+import useNearScreen from '../../../hooks/useNearScreen';
+import PropTypes from 'prop-types'
+import spinner from '../../../assets/spinners/spinner-bars.svg'
 
-function refreshMessages() {
-    const getRandomInt = (max) => Math.floor(Math.random() * Math.floor(max));
+export default function History({setScrollBottom, setParams, showSpinner, data, value, setValue}) {
+  History.propTypes = {
+    setScrollBottom: PropTypes.func,
+    setParams: PropTypes.func,
+    showSpinner: PropTypes.bool,
+    data: PropTypes.object,
+    value: PropTypes.number,
+    setValue: PropTypes.func,
+  }
+// variables de estado
+    const [array, setArray] = useState([]);
+    
+// referencias
+    const ref = useRef(null);
+    const list = useRef(null);
+// useEffect
+    useEffect(() => {
+        list.current.scrollTo(0, 0);
+    }, [value]);
 
-    return Array.from(new Array(50)).map(
-        () => messageExamples[getRandomInt(messageExamples.length)],
-    );
-}
-
-export default function FixedBottomNavigation() {
-    const [value, setValue] = React.useState(0);
-    const ref = React.useRef(null);
-    const [messages, setMessages] = React.useState(() => refreshMessages());
-
-    React.useEffect(() => {
-        ref.current.ownerDocument.body.scrollTop = 0;
-        setMessages(refreshMessages());
-    }, [value, setMessages]);
+    useEffect(() => {
+      if (value === 0) {
+        setArray(data.SH.history);
+        setParams({IT: data.SH.IT, IA: data.SH.history.length});
+      }else if (value === 1) {
+        setArray(data.PH.history);
+        setParams({IT: data.PH.IT, IA: data.PH.history.length});
+      }else if (value === 2) {
+        setArray(data.TH.history);
+        setParams({IT: data.TH.IT, IA: data.TH.history.length});
+      }
+    }, [value, data]);
+  
+    const elementRef = useNearScreen({ distance: '0px', threshold: 0.2, root: null, externalRef: ref });
+    useEffect(() => {
+      if (elementRef.isNearScreen) {
+        setScrollBottom(true)
+      } else {
+        setScrollBottom(false)
+      }
+    }, [elementRef.isNearScreen]);
 
     return (
-        <Box ref={ref}>
-            <List sx={{ maxHeight: '220px', overflowY: 'auto' }}>
-                {messages.map(({ primary, secondary, person }, index) => (
-                    <ListItem button key={index + person}>
+        <Box >
+            <List ref={list} sx={{ minHeight: '220px', maxHeight: '220px', overflowY: 'auto', backgroundColor: 'ghostwhite'}}>
+                {array?.map(({ lastName, name }, index) => (
+                    <ListItem button key={index }>
                         <ListItemAvatar>
-                            <Avatar alt="Profile Picture" src={person} />
+                            <Avatar alt="Profile Picture" src={''} />
                         </ListItemAvatar>
-                        <ListItemText primary={primary} secondary={secondary} />
+                        <ListItemText primary={value === 0 ? name : value === 1 ? index : 'test'} secondary={value === 0 ? lastName : value === 1 ? index + 100 : 'test2'} />
                     </ListItem>
                 ))}
+                
+                <div style={{display: 'flex', justifyContent: 'center', height: '20px'}} ref={ref}><img style={{width:'20px'}} hidden={!showSpinner} src={spinner}/></div>
             </List>
             <Paper sx={{ position: 'relative', bottom: 0, left: 0, right: 0, pb: 0 }}>
                 <BottomNavigation

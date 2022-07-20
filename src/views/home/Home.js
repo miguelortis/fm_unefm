@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from 'react';
 // @mui material components
-import { Box, Grid, Card, Divider, Fab } from "@mui/material";
 import bgImage from "../../assets/images/bgImage_home.jpg";
 import bgImage1 from "../../assets/images/bgImage_home1.jpg";
 import logo from "../../assets/images/logoFM_home.png";
@@ -10,16 +9,12 @@ import Carousel from "./Carousel";
 import './Home.css';
 import { AccountCircle, ArrowCircleUp, Article, Contacts, MedicalInformation, MedicalServices } from '@mui/icons-material';
 import { useHistory } from 'react-router-dom'
-import HomeIcon from '@mui/icons-material/Home';
 import useNearScreen from '../../hooks/useNearScreen';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
-import Switch from '@mui/material/Switch';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormGroup from '@mui/material/FormGroup';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import AppFooter from '../../components/AppFooter';
@@ -68,23 +63,6 @@ export default function Home() {
     }
   }, [elementRef.isNearScreen]);
 
-
-  useEffect(() => {
-    if (window.innerWidth < 500) {
-      document.getElementById("main-container").style.backgroundImage = `url(${bgImage1})`;
-    }
-    window.addEventListener('resize', () => {
-      console.log(window.innerWidth);
-      if (window.innerWidth < 500) {
-        document.getElementById("main-container").style.backgroundImage = `url(${bgImage1})`;
-      }
-      if (window.innerWidth >= 500) {
-        document.getElementById("main-container").style.backgroundImage = `url(${bgImage})`;
-      }
-    }
-      , false);
-
-  }, []);
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -168,7 +146,6 @@ export default function Home() {
         className='main-container'
         style={{
           width: "100%",
-          backgroundImage: `url(${bgImage})`,
           backgroundSize: "cover",
           backgroundPosition: "top",
           placeItems: "center",
@@ -191,7 +168,7 @@ export default function Home() {
               FONDO DE MUTUALIDAD
             </h5>
             <h5 className="slogan">
-              Transformando el sistema de salud de los trabajadores universitarios
+              Transformando el sistema de salud de los trabajadores universitarios...
             </h5>
 
           </div>
