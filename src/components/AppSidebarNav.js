@@ -64,9 +64,10 @@ export const AppSidebarNav = ({ items }) => {
   return (
     <React.Fragment>
       {items &&
-        items?.map((item, index) =>
-          currentUser?.role?.options?.find(role => role?.code === item?.code) ? item?.items ? navGroup(item, index) : navItem(item, index) : '',
-        )}
+        items?.map((item, index) => 
+          currentUser?.role?.options?.find(role => role?.code === item?.code) ? item?.items ? navGroup(item, index) : navItem(item, index) :  currentUser?.role?.name !== 'USER' && item?.code === 4 && navItem(item, index)
+         
+    )}
     </React.Fragment>
     // <React.Fragment>
     //   {items &&

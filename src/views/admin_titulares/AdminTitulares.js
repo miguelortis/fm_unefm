@@ -51,7 +51,7 @@ const option = [
     ],
   },
   {
-    label: 'Usuario',
+    label: 'USER',
     options: [
       { title: 'Inicio', code: 1 },
       { title: 'Perfil', code: 2 },
@@ -59,28 +59,43 @@ const option = [
     ],
   },
   {
-    label: 'Beneficiarios',
+    label: 'RECEPTION',
     options: [
-      { title: 'Panel Administrativo (titulo)', code: 4 },
+      { title: 'Inicio', code: 1 },
+      { title: 'Perfil', code: 2 },
+      { title: 'Familiares', code: 3 },
       { title: 'Servicios', code: 5 },
     ],
   },
   {
-    label: 'Medico General',
+    label: 'NURSE',
     options: [
-      { title: 'Panel Administrativo (titulo)', code: 4 },
+      { title: 'Inicio', code: 1 },
+      { title: 'Perfil', code: 2 },
+      { title: 'Familiares', code: 3 },
+      { title: 'Servicios', code: 5 },
+    ],
+  },
+  {
+    label: 'MEDICAL',
+    options: [
+      { title: 'Inicio', code: 1 },
+      { title: 'Perfil', code: 2 },
+      { title: 'Familiares', code: 3 },
       { title: 'Consultas Pendientes', code: 6 },
     ],
   },
   {
-    label: 'Medico Emergencia',
+    label: 'ADMIN',
     options: [
-      { title: 'Panel Administrativo (titulo)', code: 4 },
+      { title: 'Inicio', code: 1 },
+      { title: 'Perfil', code: 2 },
+      { title: 'Familiares', code: 3 },
       { title: 'Consultas Pendientes', code: 7 },
     ],
   },
   {
-    label: 'Master',
+    label: 'SUDO',
     options: [
       { title: 'Inicio', code: 1 },
       { title: 'Perfil', code: 2 },
@@ -194,7 +209,7 @@ export default function AdminTitulares() {
   useEffect(() => {
     const handleTitulares = async () => {
       try {
-        const { data } = await axios.get('https://servidor-fmunefm.herokuapp.com/titulares', {
+        const { data } = await axios.get(`${process.env.REACT_APP_TEST_URL}/admin/users`, {
           headers: {
             authorization: `Bearer ${localStorage.getItem('token')}`,
           },
@@ -245,6 +260,7 @@ export default function AdminTitulares() {
       setSnackbar({ color: 'warning', open: true, message: 'Debe llenar el campo o actualizar los datos' })
       setShowSpinner(false)
     } else {
+      saveData.role.label !== 'USER' && setSaveData({ role: {...saveData.role, options: [...saveData.role.options, { title: 'Panel Administrativo (titulo)', code: 4 }] } }) 
       const updateUser = { data: saveData, id: dataEdit._id }
       try {
         const { data } = await axios.put(
@@ -299,6 +315,23 @@ export default function AdminTitulares() {
     setRole(0)
     setSaveData({})
   };
+  const getLabel = (label) => {
+    switch (label) {
+      case 'USER':
+        return 'Usuario'
+      case 'RECEPTION':
+        return 'Recepción'
+      case 'NURSE':
+        return 'Enfermero/a'
+      case 'MEDICAL':
+        return 'Médico'
+      case 'ADMIN':
+        return 'Administrador'
+      case 'SUDO':
+        return 'Super Admin'
+      default: return ''
+    }
+  }
   return (
     <>
       <Snackbar autoHideDuration={6000} anchorOrigin={{ vertical: 'top', horizontal: 'center' }} key={'top' + 'center'} open={snackbar.open} onClose={handleCloseSnackbar}>
@@ -831,7 +864,7 @@ export default function AdminTitulares() {
                           >
 
                             {option?.map((item, index) => {
-                              return <MenuItem key={index} value={index}>{item.label}</MenuItem>
+                              return <MenuItem key={index} value={index}>{getLabel(item.label)}</MenuItem>
                             })}
 
                           </Select>

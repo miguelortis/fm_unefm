@@ -93,7 +93,7 @@ export default function Profile() {
 
     //alert('Completa todos los Campos')
     try {
-      const { data } = await axios.patch(`${process.env.REACT_APP_TEST_URL}/user/update-user`,
+      const { data } = await axios.patch(`${process.env.REACT_APP_TEST_URL}/user/user-update`,
       updateData,
         {
           headers: {
@@ -111,6 +111,7 @@ export default function Profile() {
         })
         setShowSpinner(false)
         setOpen(false)
+        setUpdateData(null)
       }
     } catch (error) {
       if (error) {
@@ -284,7 +285,7 @@ export default function Profile() {
                     type="email"
                     id="email"
                     defaultValue={currentUser?.email}
-                    label="Standard"
+                    label="Email actual"
                     variant="standard"
                     InputProps={{
                       readOnly: true,
@@ -301,9 +302,8 @@ export default function Profile() {
                     id="email"
                     onChange={(e) => {
                       setUpdateData({ ...updateData, email: e.target.value.toUpperCase() })
-                      console.log(currentUser?.email)
                     }}
-                    label="Standard"
+                    label="Email nuevo"
                     variant="standard"
                     InputProps={{
                       startAdornment: (

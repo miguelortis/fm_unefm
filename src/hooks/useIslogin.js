@@ -17,7 +17,7 @@ const useIsLogin = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { data } = await axios.get('http://localhost:3100/user/data-user', {
+        const { data } = await axios.get(`${process.env.REACT_APP_TEST_URL}/user/data`, {
           headers: {
             authorization: `Bearer ${localStorage.getItem('token')}`,
           },

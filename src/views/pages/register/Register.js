@@ -101,11 +101,9 @@ const Register = () => {
         setShowError(true)
         setShowSpinner(false)
       } else {
-        // setNewUser({ ...newUser, registrationDate: new Date() })
-        // console.log(newUser)
 
         axios
-          .post('https://servidor-fmunefm.herokuapp.com/user_register', newUser)
+          .post(`${process.env.REACT_APP_TEST_URL}/auth/register`, newUser)
           .then((res) => {
             console.log(res)
             console.log(res.data.messaje)
@@ -438,7 +436,7 @@ const Register = () => {
                               <FormControl sx={{ width: '30ch' }} variant="standard">
                                 <DesktopDatePicker
                                   id="RegistrationDateUnefm"
-                                  label="Fecha de Nacimiento"
+                                  label="Fecha de ingreso a la universidad"
                                   inputFormat="DD/MM/YYYY"
                                   renderInput={(params) => (
                                     <TextField {...params} variant="standard" />

@@ -46,6 +46,7 @@ export default function SignInSide() {
         idCard,
         password,
       })
+      console.log('res', result)
       if (result.data.status === 202) {
         console.log('res', result.data)
         localStorage.setItem('token', result.data.token)
@@ -53,13 +54,13 @@ export default function SignInSide() {
           history.push('/account')
           setShowSpinner(false)
         })())
-      } else if (result.status === 204) {
+      } else if (result.data.status === 204) {
         alert('usuario no existe')
         setShowSpinner(false)
-      } else if (result.status === 400) {
+      } else if (result.data.status === 400) {
         alert('Contraseña incorrecta')
         setShowSpinner(false)
-      } else if (result.status === 401) {
+      } else if (result.data.status === 401) {
         alert('Este usuario se encuentra en espera para ser verificado')
         setShowSpinner(false)
       }

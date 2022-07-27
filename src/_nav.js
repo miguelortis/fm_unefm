@@ -12,10 +12,6 @@ const _nav = [
     to: '/account',
     icon: <CIcon icon={cilHome} customClassName="nav-icon" />,
 
-    // badge: {
-    //   color: 'info',
-    //   text: 'NEW',
-    // },
   },
   ////////PERFIL/////
   {

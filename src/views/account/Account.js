@@ -37,9 +37,9 @@ const Account = () => {
         type = 'ALL';
         skip = 0;
         setValue(0);
-      }
+      } 
       try {
-        const { data } = await axios.get(`http://localhost:3100/history?skip=${skip}&type=${type}&limit=${limit}`, {
+        const { data } = await axios.get(`${process.env.REACT_APP_TEST_URL}/sinister/sinisters?skip=${skip}&type=${type}&limit=${limit}`, {
           headers: {
             authorization: `Bearer ${localStorage.getItem('token')}`,
           },
