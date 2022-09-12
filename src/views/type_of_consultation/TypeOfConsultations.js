@@ -119,11 +119,11 @@ export default function TypeOfConsultations() {
     <Card style={{ textAlign: 'center' }} sx={{ minWidth: 275 }}>
       <CardHeader title="Tipo de Consulta" />
       <Divider />
-      <Grid container spacing={3}>
+      <Grid container sx={{m: 0, mt: 1, minHeight: '460px', justifyContent: 'center', width: '100%'}}>
         <Grid item xs={6} md={6} lg={6}>
-          <Card>
+          <Card >
             <Typography variant="h6" component="h6">
-              Clientes
+              Seleccion de Paciente
             </Typography>
             <CardContent>
               <AppBar position="static">
@@ -175,7 +175,7 @@ export default function TypeOfConsultations() {
                   </Search>
                 </Toolbar>
               </AppBar>
-              <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
+              <List sx={{ maxHeight: '290px', overflowY: 'auto' }}>
                 {resultSearch.map((item, index) => (
                   <React.Fragment key={index}>
                     <Divider variant="inset" component="li" />

@@ -260,7 +260,7 @@ export default function AdminTitulares() {
       setSnackbar({ color: 'warning', open: true, message: 'Debe llenar el campo o actualizar los datos' })
       setShowSpinner(false)
     } else {
-      saveData.role.label !== 'USER' && setSaveData({ role: {...saveData.role, options: [...saveData.role.options, { title: 'Panel Administrativo (titulo)', code: 4 }] } }) 
+      
       const updateUser = { data: saveData, id: dataEdit._id }
       try {
         const { data } = await axios.put(

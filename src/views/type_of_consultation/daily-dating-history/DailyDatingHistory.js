@@ -34,7 +34,7 @@ export default function DailyDatingHistory() {
 
     return (
         <Box ref={ref}>
-            <AppBar sx={{ position: 'relative', bottom: 0, left: 0, right: 0, pb: 0 }}>
+            <AppBar color='transparent' sx={{ position: 'relative', bottom: 0, left: 0, right: 0, pb: 0, p: '5px'}}>
                 <BottomNavigation
                     showLabels
                     value={value}
@@ -47,7 +47,7 @@ export default function DailyDatingHistory() {
                     <BottomNavigationAction label="Total Consultas Diarias" icon={<ArchiveIcon />} />
                 </BottomNavigation>
             </AppBar>
-            <List sx={{ maxHeight: '220px', overflowY: 'auto' }}>
+            <List sx={{ maxHeight: '290px', overflowY: 'auto' }}>
                 {messages.map(({ primary, secondary, person }, index) => (
                     <ListItem button key={index + person}>
                         <ListItemAvatar>
