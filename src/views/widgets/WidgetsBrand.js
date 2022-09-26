@@ -18,7 +18,7 @@ const arrayCard = [
     name: 'APS Plus',
     value: '10',
     bgcolor: 'rgb(81, 147, 247)',
-    to: '/account',
+    to: '/user-plan',
   },
   {
     title: 'Familiares',

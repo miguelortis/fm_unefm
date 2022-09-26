@@ -18,6 +18,13 @@
     justify-content: center;
 }
 
+.plans{
+ width: 100%;
+ display: flex;
+ justify-content: center;
+ background-color: #B0BEC5;
+}
+
 .appBar.visible {
     visibility: visible;
     opacity: 1;

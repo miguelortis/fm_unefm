@@ -93,7 +93,7 @@ export default function Profile() {
 
     //alert('Completa todos los Campos')
     try {
-      const { data } = await axios.patch(`${process.env.REACT_APP_TEST_URL}/user/user-update`,
+      const { data } = await axios.put(`${process.env.REACT_APP_TEST_URL}/user/update`,
       updateData,
         {
           headers: {

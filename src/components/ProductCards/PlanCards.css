@@ -1,0 +1,392 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,300,500);
+.color-0 .container-button {
+  background-color: #607D8B;
+}
+.color-0 .container-button:before {
+  background-color: #607D8B;
+}
+.color-0 .w-item span {
+  color: #607D8B;
+}
+.color-1 .container-button {
+  background-color: #98f;
+}
+.color-1 .container-button:before {
+  background-color: #98f;
+}
+.color-1 .w-item span {
+  color: #98f;
+}
+
+.color-2 .container-button {
+  background-color: #1bbc9d;
+}
+.color-2 .container-button:before {
+  background-color: #1bbc9d;
+}
+.color-2 .w-item span {
+  color: #1bbc9d;
+}
+
+.color-3 .container-button {
+  background-color: #DB343A;
+}
+.color-3 .container-button:before {
+  background-color: #DB343A;
+}
+.color-3 .w-item span {
+  color: #DB343A;
+}
+
+.color-4 .container-button {
+  background-color: #E91E63;
+}
+.color-4 .container-button:before {
+  background-color: #E91E63;
+}
+.color-4 .w-item span {
+  color: #E91E63;
+}
+
+.color-5 .container-button {
+  background-color: #3498db;
+}
+.color-5 .container-button:before {
+  background-color: #3498db;
+}
+.color-5 .w-item span {
+  color: #3498db;
+}
+
+.color-6 .container-button {
+  background-color: #db34c8;
+}
+.color-6 .container-button:before {
+  background-color: #db34c8;
+}
+.color-6 .w-item span {
+  color: #db34c8;
+}
+
+.color-7 .container-button {
+  background-color: #37db34;
+}
+.color-7 .container-button:before {
+  background-color: #37db34;
+}
+.color-7 .w-item span {
+  color: #37db34;
+}
+.color-8 .container-button {
+  background-color: #db7c34;
+}
+.color-8 .container-button:before {
+  background-color: #db7c34;
+}
+.color-8 .w-item span {
+  color: #db7c34;
+}
+
+.color-9 .container-button {
+  background-color: #80D8FF;
+}
+.color-9 .container-button:before {
+  background-color: #80D8FF;
+}
+.color-9 .w-item span {
+  color: #80D8FF;
+}
+
+.color-10 .container-button {
+  background-color: #340c5d;
+}
+.color-10 .container-button:before {
+  background-color: #340c5d;
+}
+.color-10 .w-item span {
+  color: #340c5d;
+}
+
+.w-table {
+  display: table;
+  width: 100%;
+  height: 100%;
+}
+
+.w-table-cell {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.w-container {
+  position: relative;
+  max-width: 100%;
+  margin: 30px auto 0;
+  font-size: 0;
+  text-align: center;
+}
+.w-card {
+  background-color: #fff;
+  display: inline-block;
+  vertical-align: top;
+  width: 100%;
+  color: #333;
+  font-size: 30px;
+  font-weight: 300;
+  -moz-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+}
+.w-card .card-header {
+  overflow: hidden;
+  padding: 10px 0 0;
+}
+.w-card .card-header .w-title, .w-card .card-header .w-price {
+  position: relative;
+  z-index: 2;
+}
+.w-card .card-header .w-price {
+  font-size: 42px;
+  font-weight: 500;
+  padding: 1px 20px 5px;
+}
+.w-card .card-content {
+  padding: 10px;
+  text-align: justify;
+}
+.w-card .card-content .w-item {
+  font-size: 20px;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+.w-card .card-content .w-item:last-child {
+  border-bottom: none;
+}
+.w-card .card-content .w-item span {
+  font-weight: 500;
+}
+.w-card .container-button {
+  position: relative;
+}
+.w-card .container-button .w-button {
+    cursor: pointer;
+  position: relative;
+  display: block;
+  padding: 10px;
+  color: #fff;
+  font-weight: 400;
+  z-index: 2;
+  text-decoration: none;
+  -moz-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+}
+.w-card .container-button:before, .w-card .container-button:after {
+  content: "";
+  position: absolute;
+  top: 0px;
+  left: 50%;
+  width: 0%;
+  height: 0%;
+  border-radius: 50%;
+  -moz-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+}
+.w-card .container-button:after {
+  z-index: 1;
+  background-color: rgba(255, 255, 255, 0.1);
+  -moz-transition: all 0.5s;
+  -o-transition: all 0.5s;
+  -webkit-transition: all 0.5s;
+  transition: all 0.5s;
+}
+.w-card .container-button:hover .w-button {
+  padding: 0px 20px 40px;
+}
+.w-card .container-button:hover:before {
+  top: -200px;
+  left: 0px;
+  width: 100%;
+  height: 400px;
+}
+.w-card .container-button:hover:after {
+  top: -200px;
+  left: 0px;
+  width: 100%;
+  height: 400px;
+}
+.w-card:hover {
+  z-index: 2;
+  margin: -20px var(--card-margin) 50px;
+}
+.w-card:hover .w-button {
+  opacity: 1;
+}
+
+
+/* CAROUSEL */
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans+Condensed:wght@300&display=swap");
+:root {
+  --showCards: calc(var(--cardWidth) * var(--cardsToShow));
+  --card-margin: 21.5px;
+  --card-shadow: rgba(46, 49, 52, 0.4);
+  --color-white: #fff;
+  --color-lightgrey: #ccc;
+  --color-ui: #999;
+  --color-ui-hover: #666;
+  --cardWidth: calc(var(--carouselWidth) / var(--num));
+  --carouselWidth: calc(300px * var(--num));
+  --carouselLeftMargin: calc(2vw - var(--cardWidth));
+}
+/* @media screen and (max-width: 900px) {
+  
+} */
+@media screen and (max-width: 520px) {
+  :root {
+    --showCards: var(--cardWidth)
+  }
+}
+.carouselwrapper {
+  width: var(--showCards);
+    text-align: center;
+    overflow: hidden;
+    background: transparent;
+    position: relative;
+  }
+
+  .carouselwrapper h3 {
+    margin: 30px;
+  }
+  
+  .carousel {
+    margin: 30px 0 !important;
+    width: var(--carouselWidth);
+    margin: 0 0 0 var(--carouselLeftMargin);
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    padding: 0;
+    left: calc(var(--cardWidth) - calc(var(--cardWidth) * 2)) 
+  }
+  .carousel.prev {
+    -webkit-animation-duration: 0.6s;
+            animation-duration: 0.6s;
+    -webkit-animation-timing-function: cubic-bezier(0.83, 0, 0.17, 1);
+            animation-timing-function: cubic-bezier(0.83, 0, 0.17, 1);
+    -webkit-animation-name: prev;
+            animation-name: prev;
+  }
+  .carousel.next {
+    -webkit-animation-duration: 0.6s;
+            animation-duration: 0.6s;
+    -webkit-animation-timing-function: cubic-bezier(0.83, 0, 0.17, 1);
+            animation-timing-function: cubic-bezier(0.83, 0, 0.17, 1);
+    -webkit-animation-name: next;
+            animation-name: next;
+  }
+  .carousel li {
+    text-align: center;
+    width: calc(var(--cardWidth) - var(--card-margin) * 2);
+    box-sizing: border-box;
+  }
+  
+  .ui-left{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    /* width: calc(100% - var(--card-margin) * 2); */
+    justify-content: space-between;
+    padding: var(--card-margin);
+    z-index: 100;
+    left: 0;
+  }
+  .ui-right {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+   /*  width: calc(100% - var(--card-margin) * 2); */
+    justify-content: space-between;
+    padding: var(--card-margin);
+    z-index: 100;
+    right: 0;
+  }
+  .ui-left button,
+  .ui-right button {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-ui);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    color: var(--color-white);
+    box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.25);
+    border: 0;
+    transition: all 0.2s cubic-bezier(0.39, 0.575, 0.565, 1);
+  }
+  .ui-left button:hover,
+  .ui-right button:hover {
+    background: var(--color-ui-hover);
+  }
+  .ui-left button:focus,
+  .ui-right button:focus {
+    outline: none;
+    border: 1px solid white;
+  }
+  
+  .card {
+    box-shadow: 0px 1px 2px 0px var(--card-shadow);
+    border-radius: 4px;
+    margin: var(--card-margin);
+    background: var(--color-white);
+  }
+  .card .material-icons {
+    font-size: 4.8rem;
+  }
+  .card p {
+    font-family: "Open Sans Condensed", sans-serif;
+    font-size: 1.4rem;
+    margin-bottom: 0;
+  }
+  
+  @-webkit-keyframes next {
+    from {
+      transform: translateX(0px);
+    }
+    to {
+      transform: translateX(calc(0px + var(--cardWidth)));
+    }
+  }
+  
+  @keyframes next {
+    from {
+      transform: translateX(0px);
+    }
+    to {
+      transform: translateX(calc(0px + var(--cardWidth)));
+    }
+  }
+  @-webkit-keyframes prev {
+    from {
+      transform: translateX(0px);
+    }
+    to {
+      transform: translateX(calc(0px - var(--cardWidth)));
+    }
+  }
+  @keyframes prev {
+    from {
+      transform: translateX(0px);
+    }
+    to {
+      transform: translateX(calc(0px - var(--cardWidth)));
+    }
+  }

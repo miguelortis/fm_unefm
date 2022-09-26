@@ -117,7 +117,7 @@ export default function Services() {
   useEffect(() => {
     const handleServices = async () => {
       try {
-        const { data } = await axios.get('https://servidor-fmunefm.herokuapp.com/services', {
+        const { data } = await axios.get('https://servidor-fmunefm.herokuapp.com/service/datas', {
           headers: {
             authorization: `Bearer ${localStorage.getItem('token')}`,
           },

@@ -1,0 +1,17 @@
+.tab-header{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.container-tabs{
+    background-color: #fff;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.container-packages{
+    background: #fff;
+    display: flex;
+    justify-content: center;
+}

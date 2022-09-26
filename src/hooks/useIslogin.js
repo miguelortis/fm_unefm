@@ -45,7 +45,7 @@ const useIsLogin = () => {
   useEffect(() => {
     const handlePackages = async () => {
       try {
-        const { data } = await axios.get('https://servidor-fmunefm.herokuapp.com/packages', {
+        const { data } = await axios.get('https://servidor-fmunefm.herokuapp.com/package/datas', {
           headers: {
             authorization: `Bearer ${localStorage.getItem('token')}`,
           },

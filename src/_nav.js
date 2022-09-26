@@ -38,7 +38,7 @@ const _nav = [
       {
         component: CNavItem,
         name: 'Plan de Cobertura',
-        to: '/noexist',
+        to: '/user-plan',
       },
     ],
   },
@@ -152,7 +152,7 @@ const _nav = [
       {
         component: CNavItem,
         name: 'Planes',
-        to: '/plans',
+        to: '/plan-setting',
       },
       {
         component: CNavItem,

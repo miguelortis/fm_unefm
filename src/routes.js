@@ -8,7 +8,8 @@ const PendingConsultations = lazy(() =>
   import('./views/pending_consultations/PendingConsultations'),
 )
 const Services = lazy(() => import('./views/services/Services'))
-const Plans = lazy(() => import('./views/plans/Plans'))
+const PlanStettings = lazy(() => import('./views/PlanSetup/PlanSetup'))
+const UserPlan = lazy(() => import('./views/UserPlan'))
 const ExchangeRates = lazy(() => import('./views/exchange_rates/ExchangeRates'))
 const Titulares = lazy(() => import('./views/admin_titulares/AdminTitulares'))
 //const Home = lazy(() => import('./views/home/Home'))
@@ -23,7 +24,8 @@ const routes = [
   { path: '/typeofconsultations', name: 'TypeOfConsultations', component: TypeOfConsultations },
   { path: '/pendingconsultations', name: 'PendingConsultations', component: PendingConsultations },
   { path: '/services', name: 'Services', component: Services },
-  { path: '/plans', name: 'Plans', component: Plans },
+  { path: '/plan-setting', name: 'planSetting', component: PlanStettings },
+  { path: '/user-plan', name: 'userPlan', component: UserPlan },
   { path: '/exchange_rates', name: 'ExchangeRates', component: ExchangeRates },
   { path: '/titulares', name: 'Titulares', component: Titulares },
   //{ path: '/home', name: 'Home', component: Home },

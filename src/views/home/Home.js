@@ -18,6 +18,8 @@ import MenuIcon from '@mui/icons-material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import AppFooter from '../../components/AppFooter';
+import PlanCards from 'src/components/ProductCards/PlanCards';
+import Request from 'src/utils/Request';
 
 const content = [
   'lorem ipsum dolor sit amet consectetur adipisicing elit lorem ipsum dolor sit amet consectetur adipisicing elit lorem ipsum dolor sit amet consectetur adipisicing elit lorem ipsum dolor sit amet consectetur adipisicing elit lorem ipsum dolor sit amet consectetur adipisicing elit lorem ipsum dolor sit amet consectetur adipisicing elit',
@@ -51,6 +53,7 @@ const carouselContent = [
 
 export default function Home() {
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [packages, setPackages] = React.useState([]);
   const appBar = useRef(null);
   const mainContainer = useRef(null);
   const elementRef = useNearScreen({ distance: '0px', threshold: 0.2, root: null, externalRef: mainContainer });
@@ -63,6 +66,15 @@ export default function Home() {
     }
   }, [elementRef.isNearScreen]);
 
+  useEffect(() => {
+    const getPackages = async() =>{
+      const res = await Request.get('/packages')
+        console.log(res.data)
+        setPackages(res.data.content)
+    }
+    getPackages()
+  }, [])
+  
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -181,23 +193,23 @@ export default function Home() {
 
             <button className='button'>
               <Article color='primary' />
-              <span>Noticias</span>
+              <span>Contacto</span>
             </button>
             <button className='button'>
               <MedicalServices color='primary' />
               <span>Servicios</span>
             </button>
-            <button className='button'>
+            <button className='button' onClick={()=> window.location.href='#plans'}>
               <MedicalInformation color='primary' />
               <span>Planes</span>
             </button>
             <button className='button'>
               <Contacts color='primary' />
-              <span>Contacto</span>
+              <span>Registro</span>
             </button>
             <button onClick={() => history.push('/login')} className='button'>
               <AccountCircle color='primary' />
-              <span>Login</span>
+              <span>Ingresar</span>
             </button>
 
           </div>
@@ -224,6 +236,9 @@ export default function Home() {
         {content.map((el, i) =>
           <p style={{ textAlign: 'justify', margin: '15px' }} key={i}>{el}</p>
         )}
+      </div>
+      <div id='plans' className='plans'>
+        <PlanCards dataSource={packages} cardsToShow={3}/>
       </div>
       <AppFooter />
     </>
