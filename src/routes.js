@@ -12,6 +12,7 @@ const PlanStettings = lazy(() => import('./views/PlanSetup/PlanSetup'))
 const UserPlan = lazy(() => import('./views/UserPlan'))
 const ExchangeRates = lazy(() => import('./views/exchange_rates/ExchangeRates'))
 const Titulares = lazy(() => import('./views/admin_titulares/AdminTitulares'))
+const Appointments = lazy(() => import('./views/appointments/Appointments'))
 //const Home = lazy(() => import('./views/home/Home'))
 const Report = lazy(() => import('./views/report'))
 
@@ -28,6 +29,7 @@ const routes = [
   { path: '/user-plan', name: 'userPlan', component: UserPlan },
   { path: '/exchange_rates', name: 'ExchangeRates', component: ExchangeRates },
   { path: '/titulares', name: 'Titulares', component: Titulares },
+  { path: '/appointments', name: 'Appointments', component: Appointments },
   //{ path: '/home', name: 'Home', component: Home },
   { path: '/report', name: 'Reporte', component: Report },
 

@@ -1,17 +1,15 @@
-import { createStore } from 'redux'
+import { combineReducers, createStore } from 'redux'
+import { userReducer } from './reducers/userReducer'
+import { sidebarReducer } from './reducers/sidebarReducer'
+import { modalReducer } from './reducers/modalReducer'
+import { loadingReducer } from './reducers/loadingReducer'
 
-const initialState = {
-  sidebarShow: true,
-}
+const reducers = combineReducers({
+ user: userReducer,
+ sidebar: sidebarReducer,
+ showModal: modalReducer,
+ loading: loadingReducer,
+})
 
-const changeState = (state = initialState, { type, ...rest }) => {
-  switch (type) {
-    case 'set':
-      return { ...state, ...rest }
-    default:
-      return state
-  }
-}
-
-const store = createStore(changeState)
+const store = createStore(reducers)
 export default store

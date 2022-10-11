@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import Modal from '../modal/Modal'
 import {
   Card,
   CardContent,
@@ -227,8 +226,6 @@ export default function TypeOfConsultations() {
           </Card>
         </Grid>
       </Grid>
-
-      <Modal setVisibleModal={setVisibleModal} visibleModal={visibleModal} component={component} />
     </Card>
   )
 }

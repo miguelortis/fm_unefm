@@ -12,6 +12,9 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useDispatch } from 'react-redux';
+import message from 'src/components/commons/message';
+import { TYPES } from 'src/actions/loadingAction';
 
 function Copyright(props) {
   return (
@@ -26,7 +29,7 @@ const theme = createTheme();
 
 export default function SignInSide() {
   const history = useHistory()
-  const [showSpinner, setShowSpinner] = useState(false)
+  const dispatch = useDispatch()
   useEffect(() => {
     if (!!localStorage.getItem('token')) {
       return <Redirect to="/account" />
@@ -38,7 +41,7 @@ export default function SignInSide() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    setShowSpinner(true)
+    dispatch({ type: TYPES.SHOW_LOADING, payload: true })
     const idCard = data.get('idCard')
     const password = data.get('password')
     try {
@@ -46,47 +49,24 @@ export default function SignInSide() {
         idCard,
         password,
       })
-      console.log('res', result)
-      if (result.data.status === 202) {
-        console.log('res', result.data)
+      if (result.data.status === 200) {
         localStorage.setItem('token', result.data.token)
-        return ((() => {
-          history.push('/account')
-          setShowSpinner(false)
-        })())
-      } else if (result.data.status === 204) {
-        alert('usuario no existe')
-        setShowSpinner(false)
-      } else if (result.data.status === 400) {
-        alert('Contraseña incorrecta')
-        setShowSpinner(false)
-      } else if (result.data.status === 401) {
-        alert('Este usuario se encuentra en espera para ser verificado')
-        setShowSpinner(false)
+        dispatch({ type: TYPES.SHOW_LOADING, payload: false })
+        history.push('/account')
+        return
+      } else {
+        message.error(result.data.message)
+        dispatch({ type: TYPES.SHOW_LOADING, payload: false })
       }
     } catch (error) {
       console.log(error)
+      message.error('Ocurrio un poroblema con el servidor')
+      dispatch({ type: TYPES.SHOW_LOADING, payload: false })
     }
   };
 
   return (
     <ThemeProvider theme={theme}>
-      <div
-        hidden={!showSpinner}
-        style={{
-          position: 'absolute',
-          width: '100%',
-          height: '100%',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          zIndex: 999,
-          backgroundColor: 'rgba(8, 34, 49, 0.575)',
-        }}
-      >
-        <CSpinner style={{ display: 'block' }} color="info" />
-        <span style={{ display: 'block', color: '#fff' }}>...Cargando</span>
-      </div>
       <Grid container component="main" sx={{ height: '100vh' }}>
         <CssBaseline />
         <Grid

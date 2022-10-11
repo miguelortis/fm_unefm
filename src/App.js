@@ -2,11 +2,14 @@ import React, { Component, lazy } from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 //import AuthProvider from './auth/AuthProvider'
 import PrivateRoute from './components/PrivateRouter'
-import DateAdapter from '@mui/lab/AdapterMoment'
-import LocalizationProvider from '@mui/lab/LocalizationProvider'
+import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { ContextProvider } from './contexts/Context'
 import './scss/style.scss'
 import './App.css'
+import { Toaster } from 'react-hot-toast'
+import Modal from './components/commons/modal'
+import Loading from './components/commons/Loading'
 
 const loading = (
   <div className="pt-3 text-center">
@@ -24,11 +27,16 @@ const Register = lazy(() => import('./views/pages/register/Register'))
 const Page404 = lazy(() => import('./views/pages/page404/Page404'))
 const Page500 = lazy(() => import('./views/pages/Unauthorised/Unauthorised'))
 
-class App extends Component {
-  render() {
+const App = () => {
+    
     return (
       <ContextProvider>
-        <LocalizationProvider dateAdapter={DateAdapter}>
+        <LocalizationProvider dateAdapter={AdapterLuxon}>
+        {/*  */}
+        <Toaster/>
+        <Modal/>
+        <Loading/>
+        {/*  */}
           <Router>
             <React.Suspense fallback={loading}>
               <Switch>
@@ -62,18 +70,12 @@ class App extends Component {
                   render={(props) => <DefaultLayout {...props} />}
                 />
                 <Route exact path="*" name="Page 404" render={(props) => <Page404 {...props} />} />
-                {/* <PrivateRoute
-                path="/account/admin"
-                name="Admin"
-                render={(props) => <DefaultLayout {...props} />}
-              /> */}
               </Switch>
             </React.Suspense>
           </Router>
         </LocalizationProvider>
       </ContextProvider>
     )
-  }
 }
 
 export default App

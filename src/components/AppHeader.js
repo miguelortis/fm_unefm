@@ -32,11 +32,9 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 }))
 
 const AppHeader = () => {
-  const {
-    state: { currentUser },
-  } = useContext(Context)
   const dispatch = useDispatch()
-  const sidebarShow = useSelector((state) => state.sidebarShow)
+  const currentUser = useSelector((state) => state.user)
+  console.log(currentUser)
   ///
   return (
     <CHeader position="fixed" className="mb-4">
@@ -47,7 +45,7 @@ const AppHeader = () => {
         <CHeaderDivider />
         <CHeaderToggler
           className="ps-1"
-          onClick={() => dispatch({ type: 'set', sidebarShow: !sidebarShow })}
+          onClick={() => dispatch({ type: 'SIDEBAR_SHOW'})}
         >
           <CIcon icon={cilMenu} size="lg" />
         </CHeaderToggler>
@@ -79,7 +77,7 @@ const AppHeader = () => {
 
         <CHeaderNav className="ms-3">
           <StyledBadge color="primary" badgeContent={currentUser?.role?.name?.toUpperCase()}>
-            <h4> {currentUser?.name?.toLowerCase().replace(/\b\w/g, (l) => l.toUpperCase())}</h4>
+            <h4> {currentUser?.user?.name?.toLowerCase().replace(/\b\w/g, (l) => l.toUpperCase())}</h4>
           </StyledBadge>
           <AppHeaderDropdown />
         </CHeaderNav>

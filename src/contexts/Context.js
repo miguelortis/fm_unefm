@@ -81,11 +81,6 @@ const ContextProvider = ({ children }) => {
   }
   const [state, dispatch] = useReducer(reducer, initialState)
   const { currentUser } = state
-  /* const logout = () => {
-    history.push('/')
-  } */
-
-  useEffect(() => { }, [dispatch, currentUser])
 
   return <Context.Provider value={{ state, dispatch }}>{children}</Context.Provider>
 }

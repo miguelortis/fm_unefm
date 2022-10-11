@@ -161,6 +161,13 @@ const _nav = [
       },
     ],
   },
+  {
+    code: 12,
+    component: CNavItem,
+    name: 'Administrar citas',
+    to: '/appointments',
+    icon: <CIcon icon={cilPencil} customClassName="nav-icon" />,
+  },
   //////////
   // {
   //   component: CNavItem,

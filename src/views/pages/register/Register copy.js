@@ -42,7 +42,7 @@ const Register = () => {
       newUser.dateBirth == null ||
       newUser.category == null ||
       newUser.civilStatus == null ||
-      newUser.direction == null ||
+      newUser.address == null ||
       newUser.documentType == null ||
       newUser.email == null ||
       newUser.idCard == null ||
@@ -292,11 +292,11 @@ const Register = () => {
                       </CInputGroupText>
                       <CFormTextarea
                         required
-                        value={newUser.direction}
+                        value={newUser.address}
                         onChange={(e) => {
-                          setNewUser({ ...newUser, direction: e.target.value.toUpperCase() })
+                          setNewUser({ ...newUser, address: e.target.value.toUpperCase() })
                         }}
-                        name="direction"
+                        name="address"
                         rows=" 1 "
                         placeholder="Direccion de Habitacion"
                         autoComplete="Direccion"

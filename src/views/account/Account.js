@@ -6,6 +6,7 @@ import Socket from '../../components/Socket'
 import { Card } from '@mui/material'
 import WidgetsBrand from '../widgets/WidgetsBrand.js'
 import axios from 'axios'
+import { useSelector } from 'react-redux'
 
 
 //https://servidor-fmunefm.herokuapp.com/
@@ -15,9 +16,7 @@ const Account = () => {
   const [value, setValue] = useState(null);
   const [params, setParams] = useState({IT: 1, IA: 0});
   const [showSpinner, setShowSpinner] = useState(false);
-  const {
-    state: { currentUser },
-  } = useContext(Context)
+  const currentUser = useSelector((state) => state.user)
   console.log('currentUser', currentUser)
   useEffect(() => {
     async function getHistory() {

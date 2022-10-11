@@ -32,18 +32,19 @@ import {
 import AffiliationContract from 'src/views/affiliationcontract/AffiliationContract'
 import TermsAndConditions from 'src/views/termsAndConditions/TermsAndConditions'
 const initialValues = {
-  documentType: '',
+  documentType: 'V',
   idCard: '',
   password: '',
   name: '',
   lastName: '',
-  direction: '',
+  address: '',
   dateBirth: '',
   placeBirth: '',
   email: '',
   phone: '',
   sex: '',
   civilStatus: '',
+  unefmDate: '',
   category: '',
   personalType: '',
 }
@@ -80,7 +81,7 @@ const Register = () => {
       newUser.dateBirth == null ||
       newUser.category == null ||
       newUser.civilStatus == null ||
-      newUser.direction == null ||
+      newUser.address == null ||
       newUser.documentType == null ||
       newUser.email == null ||
       newUser.idCard == null ||
@@ -90,7 +91,7 @@ const Register = () => {
       newUser.personalType == null ||
       newUser.phone == null ||
       newUser.placeBirth == null ||
-      newUser.RegistrationDateUnefm == null
+      newUser.unefmDate == null
     ) {
       setError('Completa todos los campos por favor')
       setShowError(true)
@@ -103,20 +104,20 @@ const Register = () => {
       } else {
 
         axios
-          .post(`${process.env.REACT_APP_TEST_URL}/auth/register`, newUser)
+          .post(`${process.env.REACT_APP_TEST_URL}/users/register`, newUser)
           .then((res) => {
             console.log(res)
-            console.log(res.data.messaje)
+            console.log(res.data.message)
 
-            if (res.data.status === 201) {
+            if (res.status === 200) {
               setNewUser(initialValues)
               document.getElementById('Form').reset()
               setShowSpinner(false)
               history.push('/login')
             }
 
-            if (res.data.status === 400) {
-              setError(res.data.error)
+            if (res.status === 500) {
+              setError(res.data.message)
               setShowError(true)
               setShowSpinner(false)
             }
@@ -259,7 +260,6 @@ const Register = () => {
                                 // value={age}
                                 // onChange={handleChange}
                                 >
-                                  <MenuItem value=""></MenuItem>
                                   <MenuItem value="V">V</MenuItem>
                                   <MenuItem value="E">E</MenuItem>
                                 </Select>
@@ -360,7 +360,7 @@ const Register = () => {
                                   id="name"
                                   value={newUser.name}
                                   onChange={(e) => {
-                                    setNewUser({ ...newUser, name: e.target.value.toUpperCase() })
+                                    setNewUser({ ...newUser, name: e.target.value})
                                   }}
                                 />
                                 <div style={{ color: '#767982', fontSize: '11px' }}>
@@ -379,7 +379,7 @@ const Register = () => {
                                   onChange={(e) => {
                                     setNewUser({
                                       ...newUser,
-                                      lastName: e.target.value.toUpperCase(),
+                                      lastName: e.target.value,
                                     })
                                   }}
                                 />
@@ -401,7 +401,7 @@ const Register = () => {
                                   onChange={(e) => {
                                     setNewUser({
                                       ...newUser,
-                                      email: e.target.value.toUpperCase(),
+                                      email: e.target.value,
                                     })
                                   }}
                                 />
@@ -435,16 +435,16 @@ const Register = () => {
                             <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
                               <FormControl sx={{ width: '30ch' }} variant="standard">
                                 <DesktopDatePicker
-                                  id="RegistrationDateUnefm"
+                                  id="unefmDate"
                                   label="Fecha de ingreso a la universidad"
                                   inputFormat="DD/MM/YYYY"
                                   renderInput={(params) => (
                                     <TextField {...params} variant="standard" />
                                   )}
-                                  name="RegistrationDateUnefm"
-                                  value={newUser.RegistrationDateUnefm}
+                                  name="unefmDate"
+                                  value={newUser.unefmDate}
                                   onChange={(e) => {
-                                    setNewUser({ ...newUser, RegistrationDateUnefm: e })
+                                    setNewUser({ ...newUser, unefmDate: e })
                                   }}
                                 />
                                 <div style={{ color: '#767982', fontSize: '11px' }}>
@@ -463,7 +463,7 @@ const Register = () => {
                                   onChange={(e) => {
                                     setNewUser({
                                       ...newUser,
-                                      placeBirth: e.target.value.toUpperCase(),
+                                      placeBirth: e.target.value,
                                     })
                                   }}
                                 />
@@ -475,17 +475,17 @@ const Register = () => {
                             {/*//////////////////DIRECTION///////////// */}
                             <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
                               <FormControl sx={{ width: '30ch' }} variant="standard">
-                                <InputLabel htmlFor="direction">Direccion de Habitacion</InputLabel>
+                                <InputLabel htmlFor="address">Direccion de Habitacion</InputLabel>
                                 <Input
                                   type="textarea"
                                   rows=" 1 "
                                   required
-                                  id="direction"
-                                  value={newUser.direction}
+                                  id="address"
+                                  value={newUser.address}
                                   onChange={(e) => {
                                     setNewUser({
                                       ...newUser,
-                                      direction: e.target.value.toUpperCase(),
+                                      address: e.target.value,
                                     })
                                   }}
                                 />
@@ -506,7 +506,7 @@ const Register = () => {
                                   onChange={(e) => {
                                     setNewUser({
                                       ...newUser,
-                                      phone: e.target.value.toUpperCase(),
+                                      phone: e.target.value,
                                     })
                                   }}
                                 />
@@ -660,10 +660,11 @@ const Register = () => {
                                     newUser.email &&
                                     newUser.dateBirth &&
                                     newUser.placeBirth &&
-                                    newUser.direction &&
+                                    newUser.address &&
                                     newUser.phone &&
                                     newUser.sex &&
                                     newUser.civilStatus &&
+                                    newUser.unefmDate &&
                                     newUser.category &&
                                     newUser.personalType
                                     ? false

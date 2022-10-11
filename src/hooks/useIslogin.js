@@ -4,27 +4,30 @@ import { Context } from '../contexts/Context'
 import { useHistory } from 'react-router-dom'
 import axios from 'axios'
 import Socket from '../components/Socket'
+import { useDispatch, useSelector } from 'react-redux'
 
 // const CancelToken = axios.CancelToken
 // const source = CancelToken.source()
 const useIsLogin = () => {
+  const dispatch = useDispatch()
+  const user = useSelector((state) => state.user)
   const history = useHistory()
-  const {
+ /*  const {
     state: { currentUser, packages },
     dispatch,
-  } = useContext(Context)
+  } = useContext(Context) */
   /////////////////SOLICITUD DATOS USUARIO /////////////////////////https://servidor-fmunefm.herokuapp.com/
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { data } = await axios.get(`${process.env.REACT_APP_TEST_URL}/user/data`, {
+        const { data } = await axios.get(`${process.env.REACT_APP_TEST_URL}/auth/user`, {
           headers: {
             authorization: `Bearer ${localStorage.getItem('token')}`,
           },
         })
         dispatch({
-          type: 'SET_USER_DATA',
-          payload: data,
+          type: 'SAVE_USER',
+          payload: data.content,
         })
       } catch (error) {
         //console.log(error)
@@ -37,10 +40,10 @@ const useIsLogin = () => {
         }
       }
     }
-    if (!!localStorage.getItem('token') && currentUser === null) {
+    if (!!localStorage.getItem('token') && user === null) {
       fetchData()
     }
-  }, [dispatch, currentUser, history])
+  }, [dispatch, user, history])
   /////////////PACKAGES////////////////////////////
   useEffect(() => {
     const handlePackages = async () => {
@@ -49,7 +52,6 @@ const useIsLogin = () => {
           headers: {
             authorization: `Bearer ${localStorage.getItem('token')}`,
           },
-          //cancelToken: source.token,
         })
         dispatch({
           type: 'SET_ PACKAGES',
@@ -61,13 +63,13 @@ const useIsLogin = () => {
         }
       }
     }
-    if (!!localStorage.getItem('token') && currentUser?.role?.options?.find(role => role.code === 12)) {
+    if (!!localStorage.getItem('token') && user?.role?.options?.find(role => role.code === 12)) {
 
       handlePackages()
     }
 
 
-  }, [dispatch, currentUser])
+  }, [dispatch, user])
   //////////////////////////////////////////////////
 
   ///////////////////////////////////////////////////////////////////

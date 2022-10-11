@@ -35,7 +35,7 @@ return (
                   </div>
                     {e.name ? <Rating style={{zIndex: 100}} precision={0.1} readOnly name="customized-10" defaultValue={(usersPerPlan * stars / allUsers)} max={stars} /> : <Skeleton />}
                   <div className="container-button">
-                    {e.name ?<a className="w-button" onClick={handleClick}>Contratar</a> : <Skeleton />}
+                    {e.name ?<a className="w-button" onClick={()=>handleClick(e)}>Contratar</a> : <Skeleton />}
                   </div>
                 </div>
                 <div className="card-content">

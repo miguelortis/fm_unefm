@@ -6,11 +6,10 @@ import { Context } from '../contexts/Context'
 import PropTypes from 'prop-types'
 
 import { CBadge } from '@coreui/react'
+import { useSelector } from 'react-redux'
 //
 export const AppSidebarNav = ({ items }) => {
-  const {
-    state: { currentUser },
-  } = useContext(Context)
+  const currentUser = useSelector(state => state.user)
   const location = useLocation()
   const navLink = (name, icon, badge) => {
     return (
@@ -66,7 +65,7 @@ export const AppSidebarNav = ({ items }) => {
       {items &&
         items?.map((item, index) => {
         return(
-          currentUser?.role?.options?.find(role => role?.code === item?.code) ? item?.items ? navGroup(item, index) : navItem(item, index) :  currentUser?.role?.name !== 'USER' && item?.code === 4 && navItem(item, index)
+          currentUser?.role?.options?.find(role => role === item?.code) ? item?.items ? navGroup(item, index) : navItem(item, index) :  currentUser?.role?.name !== 'USER' && item?.code === 4 && navItem(item, index)
         )}
     )}
     </React.Fragment>

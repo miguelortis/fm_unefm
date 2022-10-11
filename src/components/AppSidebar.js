@@ -15,16 +15,14 @@ import navigation from '../_nav'
 
 const AppSidebar = () => {
   const dispatch = useDispatch()
-  const unfoldable = useSelector((state) => state.sidebarUnfoldable)
-  const sidebarShow = useSelector((state) => state.sidebarShow)
-
+  const sidebar = useSelector((state) => state.sidebar)
   return (
     <CSidebar
       position="fixed"
-      unfoldable={unfoldable}
-      visible={!sidebarShow}
+      unfoldable={sidebar.unfoldable}
+      visible={sidebar.show}
       onVisibleChange={(visible) => {
-        dispatch({ type: 'set', sidebarShow: visible })
+        dispatch({ type: 'SIDEBAR_SHOW', payload: visible })
       }}
     >
       <CSidebarBrand className="d-none d-md-flex" to="/">
@@ -42,7 +40,7 @@ const AppSidebar = () => {
       </CSidebarNav>
       <CSidebarToggler
         className="d-none d-lg-flex"
-        onClick={() => dispatch({ type: 'set', sidebarUnfoldable: !unfoldable })}
+        onClick={() => dispatch({ type: 'SIDEBAR_UNFOLDABLE'})}
       />
     </CSidebar>
   )

@@ -26,27 +26,22 @@ import padre from '../../assets/images/avatars/padre.svg'
 import madre from '../../assets/images/avatars/madre.svg'
 import conyugeF from '../../assets/images/avatars/conyugeF.svg'
 import conyugeM from '../../assets/images/avatars/conyugeM.svg'
-import { useContext } from 'react'
-import { Context } from '../../contexts/Context'
 import Socket from '../../components/Socket'
+import { useDispatch, useSelector } from 'react-redux'
 const AppHeaderDropdown = () => {
-  const {
-    state: { currentUser },
-    dispatch,
-  } = useContext(Context)
+  const  currentUser = useSelector(state => state.user)
+  const  dispatch = useDispatch()
   const history = useHistory()
 
   const handleLogout = () => {
     localStorage.removeItem('token')
     Socket.disconnect()
-    dispatch({
-      type: 'RESET',
-    })
-    history.push('/login')
+    dispatch({type: 'RESET'})
+    history.push('/')
   }
   const calcularEdad = () => {
     var hoy = new Date()
-    var cumpleanos = new Date(currentUser?.dateBirth)
+    var cumpleanos = new Date(currentUser?.user?.dateBirth)
     var edad = hoy.getFullYear() - cumpleanos.getFullYear()
     var m = hoy.getMonth() - cumpleanos.getMonth()
 
@@ -63,13 +58,13 @@ const AppHeaderDropdown = () => {
       <CDropdownToggle placement="bottom-end" className="py-0" caret={true}>
         <CAvatar
           src={
-            edad < 50 && currentUser?.sex === 'MASCULINO'
+            edad < 50 && currentUser?.user?.sex === 'MASCULINO'
               ? conyugeM
-              : edad < 50 && currentUser?.sex === 'FEMENINO'
+              : edad < 50 && currentUser?.user?.sex === 'FEMENINO'
               ? conyugeF
-              : edad > 50 && currentUser?.sex === 'MASCULINO'
+              : edad > 50 && currentUser?.user?.sex === 'MASCULINO'
               ? padre
-              : edad > 50 && currentUser?.sex === 'FEMENINO'
+              : edad > 50 && currentUser?.user?.sex === 'FEMENINO'
               ? madre
               : '??'
           }
