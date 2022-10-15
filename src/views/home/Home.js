@@ -203,7 +203,7 @@ export default function Home() {
               <MedicalInformation color='primary' />
               <span>Planes</span>
             </button>
-            <button className='button'>
+            <button onClick={() => history.push('/renewal')} className='button'>
               <Contacts color='primary' />
               <span>Registro</span>
             </button>

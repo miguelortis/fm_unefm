@@ -45,7 +45,7 @@ export default function TableBeneficiaries() {
     const handleReport = async () => {
       try {
         setLoading(false)
-        const { data } = await axios.get('https://servidor-fmunefm.herokuapp.com/report')
+        const { data } = await axios.get('https://backend-fmunefm.herokuapp.com/report')
         console.log('data', data)
         setReport(data)
         if (data) {

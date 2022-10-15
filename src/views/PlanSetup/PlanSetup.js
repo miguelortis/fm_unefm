@@ -117,7 +117,7 @@ export default function Services() {
   useEffect(() => {
     const handleServices = async () => {
       try {
-        const { data } = await axios.get('https://servidor-fmunefm.herokuapp.com/service/datas', {
+        const { data } = await axios.get('https://backend-fmunefm.herokuapp.com/service/datas', {
           headers: {
             authorization: `Bearer ${localStorage.getItem('token')}`,
           },
@@ -182,7 +182,7 @@ export default function Services() {
     console.log(updatePackage)
     try {
       const { data } = await axios.put(
-        'https://servidor-fmunefm.herokuapp.com/package/datas',
+        'https://backend-fmunefm.herokuapp.com/package/datas',
         updatePackage,
         {
           headers: {
@@ -258,7 +258,7 @@ export default function Services() {
       setShowSpinner(false)
       try {
         const { data } = await axios.post(
-          'https://servidor-fmunefm.herokuapp.com/register_package',
+          'https://backend-fmunefm.herokuapp.com/register_package',
           newPackage,
           {
             headers: {

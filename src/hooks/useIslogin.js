@@ -16,7 +16,7 @@ const useIsLogin = () => {
     state: { currentUser, packages },
     dispatch,
   } = useContext(Context) */
-  /////////////////SOLICITUD DATOS USUARIO /////////////////////////https://servidor-fmunefm.herokuapp.com/
+  /////////////////SOLICITUD DATOS USUARIO /////////////////////////https://backend-fmunefm.herokuapp.com/
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -25,6 +25,7 @@ const useIsLogin = () => {
             authorization: `Bearer ${localStorage.getItem('token')}`,
           },
         })
+        console.log(data)
         dispatch({
           type: 'SAVE_USER',
           payload: data.content,
@@ -48,7 +49,7 @@ const useIsLogin = () => {
   useEffect(() => {
     const handlePackages = async () => {
       try {
-        const { data } = await axios.get('https://servidor-fmunefm.herokuapp.com/package/datas', {
+        const { data } = await axios.get('https://backend-fmunefm.herokuapp.com/package/datas', {
           headers: {
             authorization: `Bearer ${localStorage.getItem('token')}`,
           },

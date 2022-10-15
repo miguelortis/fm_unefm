@@ -10,6 +10,7 @@ import './App.css'
 import { Toaster } from 'react-hot-toast'
 import Modal from './components/commons/modal'
 import Loading from './components/commons/Loading'
+import RenewalPage from './views/renewalPage';
 
 const loading = (
   <div className="pt-3 text-center">
@@ -51,6 +52,12 @@ const App = () => {
                   path="/login"
                   name="Login Page"
                   render={(props) => <Login {...props} />}
+                />
+                <Route
+                  exact
+                  path="/renewal"
+                  name="Renewal Page"
+                  render={(props) => <RenewalPage {...props} />}
                 />
                 <Route
                   exact

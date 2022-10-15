@@ -15,7 +15,7 @@ const useIsDataTotal = () => {
     //////////////////SOLICITUD DATOS FAMILIARES///////////////////////
     const DataTotal = async () => {
       try {
-        const { data } = await axios.get('https://servidor-fmunefm.herokuapp.com/all_data', {
+        const { data } = await axios.get('https://backend-fmunefm.herokuapp.com/all_data', {
           headers: {
             authorization: `Bearer ${localStorage.getItem('token')}`,
           },

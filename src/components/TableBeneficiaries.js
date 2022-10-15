@@ -58,7 +58,7 @@ export default function TableBeneficiaries() {
       console.log(idCard)
 
       const res = await axios.delete(
-        `https://servidor-fmunefm.herokuapp.com/beneficiary_delete/${idCard}`,
+        `https://backend-fmunefm.herokuapp.com/beneficiary_delete/${idCard}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem('token')}`,

@@ -9,7 +9,8 @@ import Button from '@mui/material/Button'
 import { CCol, CContainer, CRow } from '@coreui/react'
 import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
-import { DesktopDatePicker } from '@mui/lab'
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import axios from 'axios'
 import { Redirect, useHistory } from 'react-router-dom'
 import { CSpinner } from '@coreui/react-pro'
@@ -413,7 +414,8 @@ const Register = () => {
                             {/*///////////////DATEBIRTH//////////// */}
                             <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
                               <FormControl sx={{ width: '30ch' }} variant="standard">
-                                <DesktopDatePicker
+                                <DatePicker
+                                disableFuture
                                   id="dateBirth"
                                   label="Fecha de Nacimiento"
                                   inputFormat="DD/MM/YYYY"
@@ -434,7 +436,7 @@ const Register = () => {
                             {/*///////////////RegistrationDateUnefm//////////// */}
                             <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
                               <FormControl sx={{ width: '30ch' }} variant="standard">
-                                <DesktopDatePicker
+                                <DatePicker
                                   id="unefmDate"
                                   label="Fecha de ingreso a la universidad"
                                   inputFormat="DD/MM/YYYY"

@@ -6,3 +6,13 @@
   background-color: #82bcf79c;
   border-radius: 4px;
 }
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  appearance: none;
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+input[type=number] { 
+  appearance: textfield;
+  -moz-appearance:textfield; 
+}

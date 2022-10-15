@@ -21,7 +21,7 @@ const handleAppointment = () =>{
 }
 
 const handleSearch = (e) =>{
-  setSearch(customers.filter((customer) => customer.name.includes(e.target.value) || customer.phone.includes(e.target.value)))
+  setSearch(customers.filter((customer) => customer.name.toLowerCase().includes(e.target.value.toLowerCase()) || customer.phone.includes(e.target.value)))
   console.log(customers)
 }
 return (

@@ -9,7 +9,7 @@ import axios from 'axios'
 import { useSelector } from 'react-redux'
 
 
-//https://servidor-fmunefm.herokuapp.com/
+//https://backend-fmunefm.herokuapp.com/
 const Account = () => {
   const [historys, setHistorys] = useState({SH: {history: []}, PH: {history: []}, TH: {history: []}})
   const [scrollBottom, setScrollBottom] = useState(false)

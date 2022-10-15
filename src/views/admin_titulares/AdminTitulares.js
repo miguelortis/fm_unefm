@@ -264,7 +264,7 @@ export default function AdminTitulares() {
       const updateUser = { data: saveData, id: dataEdit._id }
       try {
         const { data } = await axios.put(
-          'https://servidor-fmunefm.herokuapp.com/user_update',
+          'https://backend-fmunefm.herokuapp.com/user_update',
           updateUser,
           {
             headers: {

@@ -127,7 +127,7 @@ export default function ExchangeRates() {
     useEffect(() => {
         const handleServices = async () => {
             try {
-                const { data } = await axios.get('https://servidor-fmunefm.herokuapp.com/exchange_rates', {
+                const { data } = await axios.get('https://backend-fmunefm.herokuapp.com/exchange_rates', {
                     headers: {
                         authorization: `Bearer ${localStorage.getItem('token')}`,
                     },
@@ -162,7 +162,7 @@ export default function ExchangeRates() {
 
         try {
             const { data } = await axios.put(
-                'https://servidor-fmunefm.herokuapp.com/update_manual_exchange-rates',
+                'https://backend-fmunefm.herokuapp.com/update_manual_exchange-rates',
                 newData,
                 {
                     headers: {
@@ -222,7 +222,7 @@ export default function ExchangeRates() {
             console.log(serviceData)
             try {
                 const { data } = await axios.post(
-                    'https://servidor-fmunefm.herokuapp.com/register_services',
+                    'https://backend-fmunefm.herokuapp.com/register_services',
                     serviceData,
                     {
                         headers: {
