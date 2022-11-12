@@ -13,6 +13,7 @@ const UserPlan = lazy(() => import('./views/UserPlan'))
 const ExchangeRates = lazy(() => import('./views/exchange_rates/ExchangeRates'))
 const Titulares = lazy(() => import('./views/admin_titulares/AdminTitulares'))
 const Appointments = lazy(() => import('./views/appointments/Appointments'))
+const Checkout = lazy(() => import('./views/renewalPage/Checkout'))
 //const Home = lazy(() => import('./views/home/Home'))
 const Report = lazy(() => import('./views/report'))
 
@@ -30,7 +31,7 @@ const routes = [
   { path: '/exchange_rates', name: 'ExchangeRates', component: ExchangeRates },
   { path: '/titulares', name: 'Titulares', component: Titulares },
   { path: '/appointments', name: 'Appointments', component: Appointments },
-  //{ path: '/home', name: 'Home', component: Home },
+  //{ path: '/checkout', name: 'Checkout', component: Checkout },
   { path: '/report', name: 'Reporte', component: Report },
 
 ]

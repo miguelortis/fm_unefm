@@ -120,9 +120,9 @@ return (
 // PropTypes
 PlanCards.propTypes = {
   style: PropTypes.object,
-  dataSource: PropTypes.array.isRequired,
-  cardsToShow: PropTypes.number.isRequired,
-  onClick: PropTypes.func.isRequired,
+  dataSource: PropTypes.array,
+  cardsToShow: PropTypes.number,
+  onClick: PropTypes.func,
 }
 Carousel.propTypes = {
   style: PropTypes.object,

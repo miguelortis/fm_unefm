@@ -5,21 +5,22 @@ import useIsDataTotal from 'src/hooks/useIsDataTotal'
 import useIsConsultationsPending from '../hooks/useIsConsultationsPending'
 import { useSelector } from 'react-redux'
 
-function PrivateRoute({ ...rest }) {
+function RenewalRoute({ ...rest }) {
   const user = useSelector((state) => state.user)
   useIsLogin()
   //useIsDataTotal()
   //useIsConsultationsPending()
-  const token = localStorage.getItem('token')
-  if (!token && !user) {
-    return <Redirect to="/login" />
+  const oldUserToken = localStorage.getItem('oldUserToken')
+  if(!oldUserToken && !user){
+    return <Redirect to="/renewal" />
+  }else{
+    return (
+      <>
+        <Route {...rest} />
+      </>
+    )
   }
-
-  return (
-    <>
-      <Route {...rest} />
-    </>
-  )
+  
 }
 
-export default PrivateRoute
+export default RenewalRoute

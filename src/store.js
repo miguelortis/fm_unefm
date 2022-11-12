@@ -1,15 +1,15 @@
-import { combineReducers, createStore } from 'redux'
-import { userReducer } from './reducers/userReducer'
-import { sidebarReducer } from './reducers/sidebarReducer'
-import { modalReducer } from './reducers/modalReducer'
-import { loadingReducer } from './reducers/loadingReducer'
+import { combineReducers, createStore } from "redux";
+import { userReducer } from "./redux/reducers/userReducer";
+import { sidebarReducer } from "./redux/reducers/sidebarReducer";
+import { modalReducer } from "./redux/reducers/modalReducer";
+import { loadingReducer } from "./redux/reducers/loadingReducer";
 
 const reducers = combineReducers({
- user: userReducer,
- sidebar: sidebarReducer,
- showModal: modalReducer,
- loading: loadingReducer,
-})
+  user: userReducer,
+  sidebar: sidebarReducer,
+  showModal: modalReducer,
+  loading: loadingReducer,
+});
 
-const store = createStore(reducers)
-export default store
+const store = createStore(reducers);
+export default store;

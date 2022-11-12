@@ -11,6 +11,8 @@ import { Toaster } from 'react-hot-toast'
 import Modal from './components/commons/modal'
 import Loading from './components/commons/Loading'
 import RenewalPage from './views/renewalPage';
+import Checkout from './views/renewalPage/Checkout';
+import RenewalRoute from './components/RenewalRoute';
 
 const loading = (
   <div className="pt-3 text-center">
@@ -70,6 +72,11 @@ const App = () => {
                   path="/unauthorised"
                   name="Not Authorised"
                   render={(props) => <Page500 {...props} />}
+                />
+                <RenewalRoute
+                  path="/Checkout"
+                  name="Checkout"
+                  render={(props) => <Checkout {...props} />}
                 />
                 <PrivateRoute
                   path="/"

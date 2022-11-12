@@ -12,39 +12,75 @@ const useIsLogin = () => {
   const dispatch = useDispatch()
   const user = useSelector((state) => state.user)
   const history = useHistory()
- /*  const {
-    state: { currentUser, packages },
-    dispatch,
-  } = useContext(Context) */
-  /////////////////SOLICITUD DATOS USUARIO /////////////////////////https://backend-fmunefm.herokuapp.com/
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const { data } = await axios.get(`${process.env.REACT_APP_TEST_URL}/auth/user`, {
-          headers: {
-            authorization: `Bearer ${localStorage.getItem('token')}`,
-          },
-        })
-        console.log(data)
+
+
+  const fetchDataUser = async () => {
+    try {
+      const { data } = await axios.get(`${process.env.REACT_APP_TEST_URL}/auth/user`, {
+        headers: {
+          authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      })
+      console.log(data)
+      dispatch({
+        type: 'SAVE_USER',
+        payload: data.content,
+      })
+    } catch (error) {
+      //console.log(error)
+      if (error?.response?.status === 401 && !!localStorage.getItem('token')) {
+        localStorage.removeItem('token')
         dispatch({
-          type: 'SAVE_USER',
-          payload: data.content,
+          type: 'RESET',
         })
-      } catch (error) {
-        //console.log(error)
-        if (error?.response?.status === 401 && !!localStorage.getItem('token')) {
-          localStorage.removeItem('token')
-          dispatch({
-            type: 'RESET',
-          })
-          history.push('/login')
-        }
+        history.push('/login')
       }
     }
+  }
+
+  const getDataToUpdate = async () => {
+    try {
+      const { data } = await axios.get(`${process.env.REACT_APP_RENEWAL_TEST_URL}/oldUser/user`, {
+        headers: {
+          authorization: `Bearer ${localStorage.getItem('oldUserToken')}`,
+        },
+      })
+      console.log(data)
+      dispatch({
+        type: 'SAVE_USER',
+        payload: data.content,
+      })
+    } catch (error) {
+      //console.log(error)
+      if (error?.response?.status === 401 && !!localStorage.getItem('oldUserToken')) {
+        localStorage.removeItem('oldUserToken')
+        dispatch({
+          type: 'RESET',
+        })
+        history.push('/')
+      }
+    }
+  }
+
+
+
+  /////////////////SOLICITUD DATOS USUARIO /////////////////////////https://backend-fmunefm.herokuapp.com/
+  useEffect(() => {
+    
     if (!!localStorage.getItem('token') && user === null) {
-      fetchData()
+      fetchDataUser()
+    }else if(!!localStorage.getItem('oldUserToken') && user === null){
+      getDataToUpdate()
     }
   }, [dispatch, user, history])
+
+
+
+
+
+
+
+
   /////////////PACKAGES////////////////////////////
   useEffect(() => {
     const handlePackages = async () => {

@@ -16,3 +16,7 @@ input[type=number] {
   appearance: textfield;
   -moz-appearance:textfield; 
 }
+.error-input{
+  background-color: rgba(254, 0, 0, 0.156) !important;
+  transition: all 0.3s linear;
+}

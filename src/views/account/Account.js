@@ -17,7 +17,6 @@ const Account = () => {
   const [params, setParams] = useState({IT: 1, IA: 0});
   const [showSpinner, setShowSpinner] = useState(false);
   const currentUser = useSelector((state) => state.user)
-  console.log('currentUser', currentUser)
   useEffect(() => {
     async function getHistory() {
       

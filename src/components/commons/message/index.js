@@ -18,6 +18,9 @@ const message = {
   
     // Error
     error: (text) => toast.error(text),
+
+    // warning
+    warning: (text) => toast.warning(text),
   
     // Promise
     
