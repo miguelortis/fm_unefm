@@ -15,7 +15,7 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { NumericFormat } from "react-number-format";
 import { useDispatch } from "react-redux";
-import { TYPES } from "src/redux/actions/loadingAction";
+import { TYPES } from "src/redux/constants/loadingAction";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import message from "src/components/commons/message";

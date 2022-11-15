@@ -1,5 +1,5 @@
-import React from 'react'
-import { useHistory } from 'react-router-dom'
+import React from "react";
+import { useHistory } from "react-router-dom";
 import {
   CAvatar,
   CBadge,
@@ -9,7 +9,7 @@ import {
   CDropdownItem,
   CDropdownMenu,
   CDropdownToggle,
-} from '@coreui/react'
+} from "@coreui/react";
 import {
   cilBell,
   cilCreditCard,
@@ -20,59 +20,61 @@ import {
   cilSettings,
   cilTask,
   cilUser,
-} from '@coreui/icons'
-import CIcon from '@coreui/icons-react'
-import padre from '../../assets/images/avatars/padre.svg'
-import madre from '../../assets/images/avatars/madre.svg'
-import conyugeF from '../../assets/images/avatars/conyugeF.svg'
-import conyugeM from '../../assets/images/avatars/conyugeM.svg'
-import Socket from '../../components/Socket'
-import { useDispatch, useSelector } from 'react-redux'
+} from "@coreui/icons";
+import CIcon from "@coreui/icons-react";
+import padre from "../../assets/images/avatars/padre.svg";
+import madre from "../../assets/images/avatars/madre.svg";
+import conyugeF from "../../assets/images/avatars/conyugeF.svg";
+import conyugeM from "../../assets/images/avatars/conyugeM.svg";
+import Socket from "../../components/Socket";
+import { useDispatch, useSelector } from "react-redux";
 const AppHeaderDropdown = () => {
-  const  currentUser = useSelector(state => state.user)
-  const  dispatch = useDispatch()
-  const history = useHistory()
+  const currentUser = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const history = useHistory();
 
   const handleLogout = () => {
-    localStorage.removeItem('token')
-    Socket.disconnect()
-    dispatch({type: 'RESET'})
-    history.push('/')
-  }
+    localStorage.removeItem("token");
+    Socket.disconnect();
+    dispatch({ type: "RESET_LOGOUT" });
+    history.push("/");
+  };
   const calcularEdad = () => {
-    var hoy = new Date()
-    var cumpleanos = new Date(currentUser?.user?.dateBirth)
-    var edad = hoy.getFullYear() - cumpleanos.getFullYear()
-    var m = hoy.getMonth() - cumpleanos.getMonth()
+    var hoy = new Date();
+    var cumpleanos = new Date(currentUser?.user?.dateBirth);
+    var edad = hoy.getFullYear() - cumpleanos.getFullYear();
+    var m = hoy.getMonth() - cumpleanos.getMonth();
 
     if (m < 0 || (m === 0 && hoy.getDate() < cumpleanos.getDate())) {
-      edad--
+      edad--;
     }
 
-    return edad
-  }
-  const edad = calcularEdad()
+    return edad;
+  };
+  const edad = calcularEdad();
   //
   return (
     <CDropdown variant="nav-item">
       <CDropdownToggle placement="bottom-end" className="py-0" caret={true}>
         <CAvatar
           src={
-            edad < 50 && currentUser?.user?.sex === 'MASCULINO'
+            edad < 50 && currentUser?.user?.sex === "MASCULINO"
               ? conyugeM
-              : edad < 50 && currentUser?.user?.sex === 'FEMENINO'
+              : edad < 50 && currentUser?.user?.sex === "FEMENINO"
               ? conyugeF
-              : edad > 50 && currentUser?.user?.sex === 'MASCULINO'
+              : edad > 50 && currentUser?.user?.sex === "MASCULINO"
               ? padre
-              : edad > 50 && currentUser?.user?.sex === 'FEMENINO'
+              : edad > 50 && currentUser?.user?.sex === "FEMENINO"
               ? madre
-              : '??'
+              : "??"
           }
           size="lg"
         />
       </CDropdownToggle>
       <CDropdownMenu className="pt-0" placement="bottom-end">
-        <CDropdownHeader className="bg-light fw-semibold py-2">Account</CDropdownHeader>
+        <CDropdownHeader className="bg-light fw-semibold py-2">
+          Account
+        </CDropdownHeader>
         <CDropdownItem href="#">
           <CIcon icon={cilBell} className="me-2" />
           Updates
@@ -101,7 +103,9 @@ const AppHeaderDropdown = () => {
             42
           </CBadge>
         </CDropdownItem>
-        <CDropdownHeader className="bg-light fw-semibold py-2">Settings</CDropdownHeader>
+        <CDropdownHeader className="bg-light fw-semibold py-2">
+          Settings
+        </CDropdownHeader>
         <CDropdownItem href="#">
           <CIcon icon={cilUser} className="me-2" />
           Profile
@@ -125,13 +129,13 @@ const AppHeaderDropdown = () => {
           </CBadge>
         </CDropdownItem>
         <CDropdownDivider />
-        <CDropdownItem style={{ cursor: 'pointer' }} onClick={handleLogout}>
+        <CDropdownItem style={{ cursor: "pointer" }} onClick={handleLogout}>
           <CIcon icon={cilAccountLogout} className="me-2" />
           Cerrar Sesión
         </CDropdownItem>
       </CDropdownMenu>
     </CDropdown>
-  )
-}
+  );
+};
 
-export default AppHeaderDropdown
+export default AppHeaderDropdown;

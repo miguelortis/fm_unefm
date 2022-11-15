@@ -1,4 +1,4 @@
-import { TYPES } from "src/redux/actions/loadingAction";
+import { TYPES } from "src/redux/constants/loadingAction";
 
 export const loadingInitialState = false;
 

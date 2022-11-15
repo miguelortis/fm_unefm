@@ -1,4 +1,4 @@
-import { TYPES } from "src/redux/actions/modalAction";
+import { TYPES } from "src/redux/constants/modalAction";
 
 export const modalInitialState = {
   title: "",

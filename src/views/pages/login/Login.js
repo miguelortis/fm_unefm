@@ -12,9 +12,10 @@ import Grid from "@mui/material/Grid";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import message from "src/components/commons/message";
-import { TYPES } from "src/redux/actions/loadingAction";
+import { TYPES } from "src/redux/constants/loadingAction";
+import { userlogin } from "src/redux/actions/userActions";
 
 function Copyright(props) {
   return (
@@ -35,6 +36,8 @@ const theme = createTheme();
 export default function SignInSide() {
   const history = useHistory();
   const dispatch = useDispatch();
+  const { loadingUserInfo, userInfo, successUserInfo, errorUserInfo } =
+    useSelector((state) => state.userAuth);
   useEffect(() => {
     if (!!localStorage.getItem("token")) {
       return <Redirect to="/account" />;
@@ -47,7 +50,9 @@ export default function SignInSide() {
     dispatch({ type: TYPES.SHOW_LOADING, payload: true });
     const idCard = data.get("idCard");
     const password = data.get("password");
-    try {
+    dispatch(userlogin(idCard, password));
+    errorUserInfo && message.error(errorUserInfo);
+    /* try {
       const result = await axios.post(
         `${process.env.REACT_APP_TEST_URL}/auth/login`,
         {
@@ -68,7 +73,7 @@ export default function SignInSide() {
       console.log(error);
       message.error("Ocurrio un poroblema con el servidor");
       dispatch({ type: TYPES.SHOW_LOADING, payload: false });
-    }
+    } */
   };
 
   return (

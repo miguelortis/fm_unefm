@@ -18,7 +18,7 @@ import {
   Tooltip,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { TYPES } from "src/redux/actions/modalAction";
+import { TYPES } from "src/redux/constants/modalAction";
 import RegisterFamily from "src/components/registerFamily";
 import Empty from "src/components/commons/Empty/Empty";
 import Request from "src/utils/Request";

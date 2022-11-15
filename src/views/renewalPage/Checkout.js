@@ -18,7 +18,7 @@ import PackagesAndTerms from "./step/PackagesAndTerms";
 import { useDispatch, useSelector } from "react-redux";
 import logoFM from "src/assets/images/logoFMW.png";
 import RequestUS from "src/utils/RequestUS";
-import { TYPES } from "src/redux/actions/loadingAction";
+import { TYPES } from "src/redux/constants/loadingAction";
 import checkFormInput from "src/utils/checkFormInput";
 import message from "src/components/commons/message";
 
@@ -123,19 +123,19 @@ export default function Checkout() {
   useEffect(() => {
     if (!userDataToUpdate && CurrentUser) {
       const schema = {
-        idCard: CurrentUser.cedula,
+        idCard: CurrentUser?.cedula,
         password: "",
-        documentType: CurrentUser.tipodocument,
-        name: CurrentUser.name,
-        lastName: CurrentUser.lastName,
-        address: CurrentUser.direccion,
-        email: CurrentUser.email,
-        gender: CurrentUser.sexo.toUpperCase(),
-        placeBirth: CurrentUser.placeBirth,
-        dateBirth: CurrentUser.nacimiento,
-        civilStatus: CurrentUser.edocivil.toUpperCase(),
-        category: CurrentUser.categoria.toUpperCase(),
-        personalType: CurrentUser.tipopersonal.toUpperCase(),
+        documentType: CurrentUser?.tipodocument,
+        name: CurrentUser?.name,
+        lastName: CurrentUser?.lastName,
+        address: CurrentUser?.direccion,
+        email: CurrentUser?.email,
+        gender: CurrentUser?.sexo?.toUpperCase(),
+        placeBirth: CurrentUser?.placeBirth,
+        dateBirth: CurrentUser?.nacimiento,
+        civilStatus: CurrentUser?.edocivil?.toUpperCase(),
+        category: CurrentUser?.categoria?.toUpperCase(),
+        personalType: CurrentUser?.tipopersonal?.toUpperCase(),
         phone: "",
       };
       setUserDataToUpdate(schema);

@@ -1,4 +1,4 @@
-import { TYPES } from "src/redux/actions/sidebarAtion";
+import { TYPES } from "src/redux/constants/sidebarAtion";
 
 export const sidebarInitialState = {
   show: false,

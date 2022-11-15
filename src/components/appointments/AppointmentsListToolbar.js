@@ -13,7 +13,7 @@ import {
 import PropTypes from "prop-types";
 import SearchIcon from "@mui/icons-material/Search";
 import { useDispatch } from "react-redux";
-import { TYPES } from "src/redux/actions/modalAction";
+import { TYPES } from "src/redux/constants/modalAction";
 import NewAppointment from "./NewAppointment";
 
 export const AppointmentsListToolbar = ({ setSearch, customers }) => {
