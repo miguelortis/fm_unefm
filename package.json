@@ -77,7 +77,7 @@
     "sass": "^1.43.5"
   },
   "engines": {
-    "node": "15",
+    "node": ">=10",
     "npm": ">=6"
   },
   "resolutions": {
