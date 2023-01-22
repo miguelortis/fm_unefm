@@ -1,4 +1,4 @@
-import { TYPES } from "src/redux/constants/modalAction";
+import { HIDDEN_MODAL, SHOW_MODAL } from "src/redux/constants/modalConstants";
 
 export const modalInitialState = {
   title: "",
@@ -8,11 +8,9 @@ export const modalInitialState = {
 
 export function modalReducer(state = modalInitialState, action) {
   switch (action.type) {
-    case TYPES.SHOW_MODAL:
+    case SHOW_MODAL:
       return { ...state, ...action.payload };
-    case TYPES.HIDDEN_MODAL:
-      return modalInitialState;
-    case TYPES.RESET:
+    case HIDDEN_MODAL:
       return modalInitialState;
 
     default:

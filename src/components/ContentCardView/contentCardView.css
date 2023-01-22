@@ -1,0 +1,19 @@
+.card-view {
+}
+
+.card-view-head {
+  display: flex;
+  align-items: center;
+  justify-content: left;
+}
+
+.card-view-title-container {
+  border: 10px solid;
+  border-image-slice: 1;
+  border-width: 0px 0 3px 6px;
+  border-image-source: linear-gradient(to left, #fff, #000);
+}
+
+.card-view-title {
+  margin: 5px;
+}

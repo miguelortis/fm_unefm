@@ -1,16 +1,16 @@
+import React from "react";
+import { NavLink, useLocation } from "react-router-dom";
+import { useContext } from "react";
+import { Context } from "../contexts/Context";
+import PropTypes from "prop-types";
 
-import React from 'react'
-import { NavLink, useLocation } from 'react-router-dom'
-import { useContext } from 'react'
-import { Context } from '../contexts/Context'
-import PropTypes from 'prop-types'
-
-import { CBadge } from '@coreui/react'
-import { useSelector } from 'react-redux'
+import { CBadge } from "@coreui/react";
+import { useSelector } from "react-redux";
 //
 export const AppSidebarNav = ({ items }) => {
-  const currentUser = useSelector(state => state.user)
-  const location = useLocation()
+  const { currentUser } = useSelector((state) => state.user);
+  console.log(currentUser);
+  const location = useLocation();
   const navLink = (name, icon, badge) => {
     return (
       <>
@@ -22,29 +22,29 @@ export const AppSidebarNav = ({ items }) => {
           </CBadge>
         )}
       </>
-    )
-  }
+    );
+  };
 
   const navItem = (item, index) => {
-    const { component, name, badge, icon, ...rest } = item
-    const Component = component
+    const { component, name, badge, icon, ...rest } = item;
+    const Component = component;
     return (
       <Component
         {...(rest.to &&
           !rest.items && {
-          component: NavLink,
-          activeClassName: 'active',
-        })}
+            component: NavLink,
+            activeClassName: "active",
+          })}
         key={index}
         {...rest}
       >
         {navLink(name, icon, badge)}
       </Component>
-    )
-  }
+    );
+  };
   const navGroup = (item, index) => {
-    const { component, name, icon, to, ...rest } = item
-    const Component = component
+    const { component, name, icon, to, ...rest } = item;
+    const Component = component;
     return (
       <Component
         idx={String(index)}
@@ -54,20 +54,24 @@ export const AppSidebarNav = ({ items }) => {
         {...rest}
       >
         {item.items?.map((item, index) =>
-          item.items ? navGroup(item, index) : navItem(item, index),
+          item.items ? navGroup(item, index) : navItem(item, index)
         )}
       </Component>
-    )
-  }
+    );
+  };
 
   return (
     <React.Fragment>
       {items &&
         items?.map((item, index) => {
-        return(
-          currentUser?.role?.options?.find(role => role === item?.code) ? item?.items ? navGroup(item, index) : navItem(item, index) :  currentUser?.role?.name !== 'USER' && item?.code === 4 && navItem(item, index)
-        )}
-    )}
+          return currentUser?.role?.options?.find((role) => role === item?.code)
+            ? item?.items
+              ? navGroup(item, index)
+              : navItem(item, index)
+            : currentUser?.role?.name !== "USER" &&
+                item?.code === 4 &&
+                navItem(item, index);
+        })}
     </React.Fragment>
     // <React.Fragment>
     //   {items &&
@@ -85,9 +89,9 @@ export const AppSidebarNav = ({ items }) => {
     //         : '',
     //     )}
     // </React.Fragment>
-  )
-}
+  );
+};
 
 AppSidebarNav.propTypes = {
   items: PropTypes.arrayOf(PropTypes.any).isRequired,
-}
+};

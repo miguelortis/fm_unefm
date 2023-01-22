@@ -1,18 +1,17 @@
-
-import React, { useState } from 'react'
-import verify from '../assets/icons/usuarioVerificado.png'
-import { useContext } from 'react'
-import { Context } from '../contexts/Context'
-import hijo from '../assets/images/avatars/hijo.svg'
-import hija from '../assets/images/avatars/hija.svg'
-import padre from '../assets/images/avatars/padre.svg'
-import madre from '../assets/images/avatars/madre.svg'
-import conyugeF from '../assets/images/avatars/conyugeF.svg'
-import conyugeM from '../assets/images/avatars/conyugeM.svg'
-import { CButton, CSpinner } from '@coreui/react'
-import CIcon from '@coreui/icons-react'
-import { cilSettings, cilTrash, cilUserPlus } from '@coreui/icons'
-import ModalBeneficiary from './ModalBeneficiary'
+import React, { useState } from "react";
+import verify from "../assets/icons/usuarioVerificado.png";
+import { useContext } from "react";
+import { Context } from "../contexts/Context";
+import hijo from "../assets/images/avatars/hijo.svg";
+import hija from "../assets/images/avatars/hija.svg";
+import padre from "../assets/images/avatars/padre.svg";
+import madre from "../assets/images/avatars/madre.svg";
+import conyugeF from "../assets/images/avatars/conyugeF.svg";
+import conyugeM from "../assets/images/avatars/conyugeM.svg";
+import { CButton, CSpinner } from "@coreui/react";
+import CIcon from "@coreui/icons-react";
+import { cilSettings, cilTrash, cilUserPlus } from "@coreui/icons";
+import ModalBeneficiary from "./ModalBeneficiary";
 import {
   CAvatar,
   CBadge,
@@ -33,91 +32,94 @@ import {
   CRow,
   CSmartTable,
   CTooltip,
-} from '@coreui/react-pro'
-import axios from 'axios'
-import { IconButton } from '@mui/material'
-import { DisplaySettings, PersonalVideo } from '@mui/icons-material'
+} from "@coreui/react-pro";
+import axios from "axios";
+import { IconButton } from "@mui/material";
+import { DisplaySettings, PersonalVideo } from "@mui/icons-material";
+import { useSelector } from "react-redux";
 
 export default function TableBeneficiaries() {
+  const currentUser = useSelector((state) => state.user);
+  const state = useSelector((state) => state);
   const {
-    state: { dataTotal, currentUser },
-  } = useContext(Context)
-  const Beneficiaries = currentUser?.beneficiaries
-  const [visibleModalEdit, setVisibleModalEdit] = useState(false)
-  const [details, setDetails] = useState([])
-  const [visible, setVisible] = useState(false)
+    state: { dataTotal },
+  } = useContext(Context);
+  const Beneficiaries = currentUser?.beneficiaries;
+  const [visibleModalEdit, setVisibleModalEdit] = useState(false);
+  const [details, setDetails] = useState([]);
+  const [visible, setVisible] = useState(false);
 
-  console.log(Beneficiaries)
+  console.log(Beneficiaries);
   const handleModalEditBeneficiary = () => {
-    setVisibleModalEdit(!visibleModalEdit)
-  }
-
-  console.log(dataTotal)
+    setVisibleModalEdit(!visibleModalEdit);
+  };
+  console.log(state);
+  console.log(dataTotal);
   const deleteBeneficiary = async (idCard) => {
     try {
-      console.log(idCard)
+      console.log(idCard);
 
       const res = await axios.delete(
         `https://backend-fmunefm.herokuapp.com/beneficiary_delete/${idCard}`,
         {
           headers: {
-            authorization: `Bearer ${localStorage.getItem('token')}`,
+            authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-        },
-      )
+        }
+      );
 
-      console.log(res)
+      console.log(res);
     } catch (error) {
       if (error) {
-        console.log(error)
+        console.log(error);
       }
     }
-  }
+  };
   ///console.log(currentUser)
 
   const columns = [
     {
-      label: 'Nombre',
-      key: 'name',
-      _style: { width: '40%' },
+      label: "Nombre",
+      key: "name",
+      _style: { width: "40%" },
     },
     {
-      label: 'Cedula',
-      key: 'idCard',
-      _style: { width: '40%' },
+      label: "Cedula",
+      key: "idCard",
+      _style: { width: "40%" },
     },
-    { label: 'Estado', key: 'status', _style: { width: '20%' } },
+    { label: "Estado", key: "status", _style: { width: "20%" } },
     {
-      key: 'show_details',
-      label: 'Opciones',
-      _style: { width: '1%' },
+      key: "show_details",
+      label: "Opciones",
+      _style: { width: "1%" },
       filter: false,
       sorter: false,
     },
-  ]
+  ];
 
   const getBadge = (status) => {
     switch (status) {
       case true:
-        return <img src={verify} alt="" />
+        return <img src={verify} alt="" />;
       case false:
-        return <CSpinner color="info" />
+        return <CSpinner color="info" />;
 
       default:
-        return <CSpinner color="info" />
+        return <CSpinner color="info" />;
     }
-  }
+  };
 
   const toggleDetails = (index) => {
-    const position = details.indexOf(index)
-    let newDetails = details.slice()
+    const position = details.indexOf(index);
+    let newDetails = details.slice();
     if (position !== -1) {
-      newDetails.splice(position, 1)
+      newDetails.splice(position, 1);
     } else {
-      newDetails = [...details, index]
+      newDetails = [...details, index];
     }
-    setDetails(newDetails)
-  }
+    setDetails(newDetails);
+  };
   return (
     <>
       <CNavbar expand="lg" colorScheme="dark" className="bg-dark">
@@ -129,12 +131,15 @@ export default function TableBeneficiaries() {
             onClick={() => setVisible(!visible)}
           />
 
-          <CCollapse className="navbar-collapse justify-content-end" visible={visible}>
+          <CCollapse
+            className="navbar-collapse justify-content-end"
+            visible={visible}
+          >
             <CNavbarNav className="justify-content-end">
               <CNavItem>
                 <CButton
                   color="dark"
-                  style={{ cursor: 'pointer' }}
+                  style={{ cursor: "pointer" }}
                   onClick={() => handleModalEditBeneficiary()}
                   active
                 >
@@ -161,7 +166,9 @@ export default function TableBeneficiaries() {
           name: (item) => (
             <td>
               <CTooltip
-                content={item.relationship.replace(/\b\w/g, (l) => l.toUpperCase())}
+                content={item.relationship.replace(/\b\w/g, (l) =>
+                  l.toUpperCase()
+                )}
                 placement="top"
                 trigger="hover"
               >
@@ -169,23 +176,26 @@ export default function TableBeneficiaries() {
                   <CAvatar
                     size="xl"
                     src={
-                      item?.relationship === 'PADRE'
+                      item?.relationship === "PADRE"
                         ? padre
-                        : item?.relationship === 'MADRE'
-                          ? madre
-                          : item?.relationship === 'HIJA'
-                            ? hija
-                            : item?.relationship === 'HIJO'
-                              ? hijo
-                              : item?.relationship === 'CONYUGE' && item?.beneficiary?.sex === 'FEMENINO'
-                                ? conyugeF
-                                : item?.relationship === 'CONYUGE' && item?.beneficiary?.sex === 'MASCULINO'
-                                  ? conyugeM
-                                  : ''
+                        : item?.relationship === "MADRE"
+                        ? madre
+                        : item?.relationship === "HIJA"
+                        ? hija
+                        : item?.relationship === "HIJO"
+                        ? hijo
+                        : item?.relationship === "CONYUGE" &&
+                          item?.beneficiary?.sex === "FEMENINO"
+                        ? conyugeF
+                        : item?.relationship === "CONYUGE" &&
+                          item?.beneficiary?.sex === "MASCULINO"
+                        ? conyugeM
+                        : ""
                     }
-
-                  />{' '}
-                  {item?.beneficiary?.name?.toLowerCase().replace(/\b\w/g, (l) => l.toUpperCase())}{' '}
+                  />{" "}
+                  {item?.beneficiary?.name
+                    ?.toLowerCase()
+                    .replace(/\b\w/g, (l) => l.toUpperCase())}{" "}
                 </h5>
               </CTooltip>
             </td>
@@ -194,15 +204,15 @@ export default function TableBeneficiaries() {
             <td>
               <h6>
                 {item?.beneficiary?.documentType.toUpperCase()}
-                {'-'}
-                {item?.beneficiary?.idCard}{' '}
+                {"-"}
+                {item?.beneficiary?.idCard}{" "}
               </h6>
             </td>
           ),
           status: (item) => (
             <td>
               <CTooltip
-                content={item?.beneficiary?.status ? 'Verificado' : 'En espera'}
+                content={item?.beneficiary?.status ? "Verificado" : "En espera"}
                 placement="top"
                 trigger="hover"
               >
@@ -219,7 +229,7 @@ export default function TableBeneficiaries() {
                   //shape="square"
                   size="sm"
                   onClick={() => {
-                    toggleDetails(item?.beneficiary?.idCard)
+                    toggleDetails(item?.beneficiary?.idCard);
                   }}
                 >
                   {details.includes(item?.beneficiary?.idCard) ? (
@@ -229,19 +239,21 @@ export default function TableBeneficiaries() {
                   )}
                 </IconButton>
               </td>
-            )
+            );
           },
           details: (item) => {
             return (
               <CRow>
-                <CCollapse visible={details.includes(item?.beneficiary?.idCard)}>
+                <CCollapse
+                  visible={details.includes(item?.beneficiary?.idCard)}
+                >
                   <CCard>
                     {/* <CCardHeader component="h5">Header</CCardHeader> */}
                     <CCardBody>
                       <CCardTitle>
                         {item?.beneficiary?.name
                           ?.toLowerCase()
-                          .replace(/\b\w/g, (l) => l.toUpperCase())}{' '}
+                          .replace(/\b\w/g, (l) => l.toUpperCase())}{" "}
                         {item?.beneficiary?.lastName
                           ?.toLowerCase()
                           .replace(/\b\w/g, (l) => l.toUpperCase())}
@@ -260,25 +272,25 @@ export default function TableBeneficiaries() {
                             rounded
                             thumbnail
                             src={
-                              item?.relationship === 'HIJO' &&
-                                item?.beneficiary?.sex === 'MASCULINO'
+                              item?.relationship === "HIJO" &&
+                              item?.beneficiary?.sex === "MASCULINO"
                                 ? hijo
-                                : item?.relationship === 'HIJO' &&
-                                  item?.beneficiary?.sex === 'FEMENINO'
-                                  ? hija
-                                  : item?.relationship === 'MADRE' &&
-                                    item?.beneficiary?.sex === 'FEMENINO'
-                                    ? madre
-                                    : item?.relationship === 'PADRE' &&
-                                      item?.beneficiary?.sex === 'MASCULINO'
-                                      ? padre
-                                      : item?.relationship === 'CONYUGE' &&
-                                        item?.beneficiary?.sex === 'FEMENINO'
-                                        ? conyugeF
-                                        : item?.relationship === 'CONYUGE' &&
-                                          item?.beneficiary?.sex === 'MASCULINO'
-                                          ? conyugeM
-                                          : hijo
+                                : item?.relationship === "HIJO" &&
+                                  item?.beneficiary?.sex === "FEMENINO"
+                                ? hija
+                                : item?.relationship === "MADRE" &&
+                                  item?.beneficiary?.sex === "FEMENINO"
+                                ? madre
+                                : item?.relationship === "PADRE" &&
+                                  item?.beneficiary?.sex === "MASCULINO"
+                                ? padre
+                                : item?.relationship === "CONYUGE" &&
+                                  item?.beneficiary?.sex === "FEMENINO"
+                                ? conyugeF
+                                : item?.relationship === "CONYUGE" &&
+                                  item?.beneficiary?.sex === "MASCULINO"
+                                ? conyugeM
+                                : hijo
                             }
                             width={150}
                             height={150}
@@ -295,7 +307,8 @@ export default function TableBeneficiaries() {
                             Fecha Nacimiento: {item?.beneficiary?.dateBirth}
                           </CCardText>
                           <CCardText className="text-muted">
-                            Fecha Registro: {item?.beneficiary?.registrationDate}
+                            Fecha Registro:{" "}
+                            {item?.beneficiary?.registrationDate}
                           </CCardText>
                         </CCol>
                       </CRow>
@@ -309,7 +322,9 @@ export default function TableBeneficiaries() {
                         <CIcon icon={cilSettings} size="xxl" />
                       </CButton>
                       <CButton
-                        onClick={() => deleteBeneficiary(item?.beneficiary?.idCard)}
+                        onClick={() =>
+                          deleteBeneficiary(item?.beneficiary?.idCard)
+                        }
                         size="lg"
                         color="light"
                         shape="rounded-pill"
@@ -320,20 +335,20 @@ export default function TableBeneficiaries() {
                   </CCard>
                 </CCollapse>
               </CRow>
-            )
+            );
           },
         }}
-        sorterValue={{ column: 'name', state: 'asc' }}
+        sorterValue={{ column: "name", state: "asc" }}
         tableFilter
         tableFilterPlaceholder="Buscar"
         tableFilterLabel=""
         tableHeadProps={{
-          color: 'info',
+          color: "info",
         }}
         tableProps={{
-          align: 'middle',
+          align: "middle",
           responsive: true,
-          color: 'light',
+          color: "light",
           hover: true,
         }}
       />
@@ -343,5 +358,5 @@ export default function TableBeneficiaries() {
         visibleModalEdit={visibleModalEdit}
       />
     </>
-  )
+  );
 }

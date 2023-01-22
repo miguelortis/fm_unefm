@@ -13,16 +13,20 @@ import {
 import PropTypes from "prop-types";
 import SearchIcon from "@mui/icons-material/Search";
 import { useDispatch } from "react-redux";
-import { TYPES } from "src/redux/constants/modalAction";
+import { SHOW_MODAL } from "src/redux/constants/modalConstants";
 import NewAppointment from "./NewAppointment";
+import { showModal } from "src/redux/actions/modalActions";
 
 export const AppointmentsListToolbar = ({ setSearch, customers }) => {
   const dispatch = useDispatch();
   const handleAppointment = () => {
-    dispatch({
-      type: TYPES.SHOW_MODAL,
-      payload: { title: "Nueva Cita", open: true, content: <NewAppointment /> },
-    });
+    dispatch(
+      showModal({
+        title: "Nueva Cita",
+        open: true,
+        content: <NewAppointment />,
+      })
+    );
   };
 
   const handleSearch = (e) => {

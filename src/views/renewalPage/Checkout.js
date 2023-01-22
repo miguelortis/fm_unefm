@@ -18,7 +18,7 @@ import PackagesAndTerms from "./step/PackagesAndTerms";
 import { useDispatch, useSelector } from "react-redux";
 import logoFM from "src/assets/images/logoFMW.png";
 import RequestUS from "src/utils/RequestUS";
-import { TYPES } from "src/redux/constants/loadingAction";
+import { TYPES } from "src/redux/constants/loadingConstants";
 import checkFormInput from "src/utils/checkFormInput";
 import message from "src/components/commons/message";
 
@@ -38,7 +38,6 @@ const theme = createTheme();
 
 export default function Checkout() {
   const CurrentUser = useSelector((state) => state.user);
-  const dispatch = useDispatch();
   const [userDataToUpdate, setUserDataToUpdate] = useState(null);
   const [activeStep, setActiveStep] = useState(0);
   const [beneficiaries, setBeneficiaries] = useState([]);

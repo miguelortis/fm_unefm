@@ -18,7 +18,7 @@ import {
   Tooltip,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { TYPES } from "src/redux/constants/modalAction";
+import { SHOW_MODAL } from "src/redux/constants/modalConstants";
 import RegisterFamily from "src/components/registerFamily";
 import Empty from "src/components/commons/Empty/Empty";
 import Request from "src/utils/Request";
@@ -26,6 +26,7 @@ import RequestUS from "src/utils/RequestUS";
 import checkFormInput from "src/utils/checkFormInput";
 import TransferList from "src/components/commons/TransferList";
 import message from "src/components/commons/message";
+import { showModal } from "src/redux/actions/modalActions";
 
 const relationShip = (key) => {
   switch (key) {
@@ -163,19 +164,14 @@ export default function FamilyData({
         )
       );
     }
-    handlerClose();
     /* return
     const res = await RequestUS.post(`/beneficiaries`, {values})
      */
   };
-  const handlerClose = () => {
-    dispatch({ type: TYPES.HIDDEN_MODAL });
-  };
 
   const handlerADD = () => {
-    dispatch({
-      type: TYPES.SHOW_MODAL,
-      payload: {
+    dispatch(
+      showModal({
         title: "Agregar familiar",
         open: true,
         content: (
@@ -185,15 +181,13 @@ export default function FamilyData({
             onChange={handlerBeneficiaries}
           />
         ),
-      },
-    });
+      })
+    );
   };
 
   const handlerEdit = (value) => {
-    console.log(value);
-    dispatch({
-      type: TYPES.SHOW_MODAL,
-      payload: {
+    dispatch(
+      showModal({
         title: "Editar familiar",
         open: true,
         content: (
@@ -204,8 +198,8 @@ export default function FamilyData({
             onChange={handlerBeneficiaries}
           />
         ),
-      },
-    });
+      })
+    );
   };
   const handlerList = (left, right) => {
     setBeneficiaries(left);
@@ -233,7 +227,6 @@ export default function FamilyData({
       </Box>
       {/* {beneficiaries?.length <= 0 && <Empty text='Sin Beneficiarios'/>} */}
       <TransferList
-        handleCloseModal={handlerClose}
         handlerEdit={handlerEdit}
         rightDefaults={newBeneficiaries}
         leftDefaults={beneficiaries}

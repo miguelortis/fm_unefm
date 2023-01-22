@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Link, Redirect, useHistory } from "react-router-dom";
-import { CSpinner } from "@coreui/react-pro";
-import axios from "axios";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -14,8 +12,8 @@ import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useDispatch, useSelector } from "react-redux";
 import message from "src/components/commons/message";
-import { TYPES } from "src/redux/constants/loadingAction";
 import { userlogin } from "src/redux/actions/userActions";
+import Loading from "src/components/commons/Loading";
 
 function Copyright(props) {
   return (
@@ -36,44 +34,35 @@ const theme = createTheme();
 export default function SignInSide() {
   const history = useHistory();
   const dispatch = useDispatch();
-  const { loadingUserInfo, userInfo, successUserInfo, errorUserInfo } =
+
+  const [loading, setLoading] = useState(false);
+
+  const { loadingUserInfo, userInfo, successUserLogin, errorUserLogin } =
     useSelector((state) => state.userAuth);
+  const test = useSelector((state) => state);
+
   useEffect(() => {
     if (!!localStorage.getItem("token")) {
       return <Redirect to="/account" />;
     }
   }, []);
+  useEffect(() => {
+    if (successUserLogin && !errorUserLogin) {
+      setLoading(false);
+      history.push("/account");
+    } else if (errorUserLogin) {
+      message.error(errorUserLogin);
+      setLoading(false);
+    }
+  }, [successUserLogin, errorUserLogin]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    dispatch({ type: TYPES.SHOW_LOADING, payload: true });
+    setLoading(true);
     const idCard = data.get("idCard");
     const password = data.get("password");
     dispatch(userlogin(idCard, password));
-    errorUserInfo && message.error(errorUserInfo);
-    /* try {
-      const result = await axios.post(
-        `${process.env.REACT_APP_TEST_URL}/auth/login`,
-        {
-          idCard,
-          password,
-        }
-      );
-      if (result.data.status === 200) {
-        localStorage.setItem("token", result.data.token);
-        dispatch({ type: TYPES.SHOW_LOADING, payload: false });
-        history.push("/account");
-        return;
-      } else {
-        message.error(result.data.message);
-        dispatch({ type: TYPES.SHOW_LOADING, payload: false });
-      }
-    } catch (error) {
-      console.log(error);
-      message.error("Ocurrio un poroblema con el servidor");
-      dispatch({ type: TYPES.SHOW_LOADING, payload: false });
-    } */
   };
 
   return (
@@ -163,6 +152,7 @@ export default function SignInSide() {
           </Box>
         </Grid>
       </Grid>
+      {loading && <Loading />}
     </ThemeProvider>
   );
 }

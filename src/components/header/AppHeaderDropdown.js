@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import {
   CAvatar,
@@ -28,48 +28,55 @@ import conyugeF from "../../assets/images/avatars/conyugeF.svg";
 import conyugeM from "../../assets/images/avatars/conyugeM.svg";
 import Socket from "../../components/Socket";
 import { useDispatch, useSelector } from "react-redux";
+import { logout } from "src/redux/actions/userActions";
+import calculateAge from "src/utils/calculateAge";
+import { CircularProgress } from "@mui/material";
 const AppHeaderDropdown = () => {
-  const currentUser = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    Socket.disconnect();
-    dispatch({ type: "RESET_LOGOUT" });
-    history.push("/");
-  };
-  const calcularEdad = () => {
-    var hoy = new Date();
-    var cumpleanos = new Date(currentUser?.user?.dateBirth);
-    var edad = hoy.getFullYear() - cumpleanos.getFullYear();
-    var m = hoy.getMonth() - cumpleanos.getMonth();
+  const { currentUser } = useSelector((state) => state.user);
+  const { loadingProfilePic, successProfilePic, ProfilePicData } = useSelector(
+    (state) => state.profilePic
+  );
 
-    if (m < 0 || (m === 0 && hoy.getDate() < cumpleanos.getDate())) {
-      edad--;
+  const [picture, setPicture] = useState("");
+
+  useEffect(() => {
+    if (successProfilePic) {
+      setPicture(ProfilePicData);
     }
+  }, [successProfilePic, loadingProfilePic]);
 
-    return edad;
+  const handleLogout = () => {
+    history.push("/");
+    Socket.disconnect();
+    dispatch(logout());
   };
-  const edad = calcularEdad();
+
+  const age = calculateAge(currentUser?.user?.dateBirth);
   //
   return (
     <CDropdown variant="nav-item">
       <CDropdownToggle placement="bottom-end" className="py-0" caret={true}>
         <CAvatar
           src={
-            edad < 50 && currentUser?.user?.sex === "MASCULINO"
+            loadingProfilePic
+              ? ""
+              : /*  : age < 50 && currentUser?.user?.sex === "MASCULINO"
               ? conyugeM
-              : edad < 50 && currentUser?.user?.sex === "FEMENINO"
+              : age < 50 && currentUser?.user?.sex === "FEMENINO"
               ? conyugeF
-              : edad > 50 && currentUser?.user?.sex === "MASCULINO"
+              : age > 50 && currentUser?.user?.sex === "MASCULINO"
               ? padre
-              : edad > 50 && currentUser?.user?.sex === "FEMENINO"
-              ? madre
-              : "??"
+              : age > 50 && currentUser?.user?.sex === "FEMENINO"
+              ? madre */
+                `data:image/png;base64,${picture}`
           }
           size="lg"
-        />
+        >
+          <CircularProgress color="inherit" />{" "}
+        </CAvatar>
       </CDropdownToggle>
       <CDropdownMenu className="pt-0" placement="bottom-end">
         <CDropdownHeader className="bg-light fw-semibold py-2">

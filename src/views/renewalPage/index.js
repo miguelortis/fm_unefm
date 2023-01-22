@@ -15,10 +15,10 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { NumericFormat } from "react-number-format";
 import { useDispatch } from "react-redux";
-import { TYPES } from "src/redux/constants/loadingAction";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import message from "src/components/commons/message";
+import { showLoading } from "src/redux/actions/loadingActions";
 
 function Copyright() {
   return (
@@ -60,7 +60,7 @@ export default function RenewalPage() {
       values.idCard === undefined
     )
       return message.error("Debe ingresar la cedula");
-    dispatch({ type: TYPES.SHOW_LOADING, payload: true });
+    dispatch(showLoading(true));
     try {
       const result = await axios.get(
         `${process.env.REACT_APP_RENEWAL_TEST_URL}/auth/oldUser/${values.idCard}`
@@ -68,17 +68,17 @@ export default function RenewalPage() {
       console.log(result);
       if (result.data.status === 200) {
         localStorage.setItem("oldUserToken", result.data.token);
-        dispatch({ type: TYPES.SHOW_LOADING, payload: false });
+        dispatch(showLoading(false));
         history.push("/checkout");
         return;
       } else {
         message.error(result.data.message);
-        dispatch({ type: TYPES.SHOW_LOADING, payload: false });
+        dispatch(showLoading(false));
       }
     } catch (error) {
       console.log(error);
       message.error("Ocurrio un poroblema con el servidor");
-      dispatch({ type: TYPES.SHOW_LOADING, payload: false });
+      dispatch(showLoading(false));
     }
   };
 

@@ -1,5 +1,0 @@
-export const TYPES = {
-    SHOW_MODAL: 'SHOW_MODAL',
-    HIDDEN_MODAL: 'HIDDEN_MODAL',
-    RESET: 'RESET',
-}

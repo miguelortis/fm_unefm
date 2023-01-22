@@ -1,5 +1,6 @@
-import { Cancel } from '@mui/icons-material';
-import CropIcon from '@mui/icons-material/Crop';
+import { Cancel } from "@mui/icons-material";
+import PropTypes from "prop-types";
+import CropIcon from "@mui/icons-material/Crop";
 import {
   Box,
   Button,
@@ -7,16 +8,16 @@ import {
   DialogContent,
   Slider,
   Typography,
-} from '@mui/material';
-import React, { useState, useContext } from 'react';
-import { Context } from '../contexts/Context';
-import Cropper from 'react-easy-crop';
-import getCroppedImg from './utils/cropImage';
+} from "@mui/material";
+import React, { useState, useContext } from "react";
+import Cropper from "react-easy-crop";
+import getCroppedImg from "./utils/cropImage";
+import { useDispatch } from "react-redux";
+import message from "../message";
+import { showLoading } from "src/redux/actions/loadingActions";
 
 const CropEasy = ({ photoURL, setOpenCrop, setPhotoURL, setFile }) => {
-  const {
-    dispatch,
-  } = useContext(Context)
+  const dispatch = useDispatch();
   const [crop, setCrop] = useState({ x: 10, y: 100 });
   const [zoom, setZoom] = useState(1);
   const [rotation, setRotation] = useState(0);
@@ -27,7 +28,7 @@ const CropEasy = ({ photoURL, setOpenCrop, setPhotoURL, setFile }) => {
   };
 
   const cropImage = async () => {
-    dispatch({ type: 'SET_LOADING', payload: true });
+    dispatch(showLoading(true));
     try {
       const { file, url } = await getCroppedImg(
         photoURL,
@@ -38,25 +39,25 @@ const CropEasy = ({ photoURL, setOpenCrop, setPhotoURL, setFile }) => {
       setFile(file);
       setOpenCrop(false);
     } catch (error) {
-      dispatch({ type: 'SET_ALERT', payload: { isAlert: true, severity: 'error', message: error.message, timeout: 5000, location: 'modal' } });
-
+      message.error(error.message);
       console.log(error);
     }
-    dispatch({ type: 'SET_LOADING', payload: false });
+    dispatch(showLoading(false));
   };
   return (
     <>
       <DialogContent
         dividers
         sx={{
-          background: '#333',
-          position: 'relative',
-          height: 400,
-          width: 'auto',
-          minWidth: { sm: 500 },
+          background: "#333",
+          position: "relative",
+          height: 250,
+          width: "auto",
+          minWidth: { sm: 300 },
         }}
       >
         <Cropper
+          cropShape="round"
           image={photoURL}
           crop={crop}
           zoom={zoom}
@@ -68,8 +69,8 @@ const CropEasy = ({ photoURL, setOpenCrop, setPhotoURL, setFile }) => {
           onCropComplete={cropComplete}
         />
       </DialogContent>
-      <DialogActions sx={{ flexDirection: 'column', mx: 3, my: 2 }}>
-        <Box sx={{ width: '100%', mb: 1 }}>
+      <DialogActions sx={{ flexDirection: "column" }}>
+        <Box sx={{ width: "100%", mb: 1 }}>
           <Box>
             <Typography>Zoom: {zoomPercent(zoom)}</Typography>
             <Slider
@@ -83,7 +84,7 @@ const CropEasy = ({ photoURL, setOpenCrop, setPhotoURL, setFile }) => {
             />
           </Box>
           <Box>
-            <Typography>Rotation: {rotation + '°'}</Typography>
+            <Typography>Rotation: {rotation + "°"}</Typography>
             <Slider
               valueLabelDisplay="auto"
               min={0}
@@ -95,9 +96,9 @@ const CropEasy = ({ photoURL, setOpenCrop, setPhotoURL, setFile }) => {
         </Box>
         <Box
           sx={{
-            display: 'flex',
+            display: "flex",
             gap: 2,
-            flexWrap: 'wrap',
+            flexWrap: "wrap",
           }}
         >
           <Button
@@ -124,4 +125,11 @@ export default CropEasy;
 
 const zoomPercent = (value) => {
   return `${Math.round(value * 100)}%`;
+};
+
+CropEasy.propTypes = {
+  photoURL: PropTypes.string,
+  setOpenCrop: PropTypes.func,
+  setPhotoURL: PropTypes.func,
+  setFile: PropTypes.func,
 };

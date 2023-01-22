@@ -1,59 +1,61 @@
-import React from 'react'
-import CIcon from '@coreui/icons-react'
-import { cilUser, cilHome, cilGroup, cilPencil } from '@coreui/icons'
-import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
+import React from "react";
+import CIcon from "@coreui/icons-react";
+import { cilUser, cilHome, cilGroup, cilPencil } from "@coreui/icons";
+import { CNavGroup, CNavItem, CNavTitle } from "@coreui/react";
+import {
+  AccountBoxOutlined,
+  AssignmentInd,
+  FamilyRestroomOutlined,
+  HomeOutlined,
+  MedicalServices,
+  PermContactCalendar,
+} from "@mui/icons-material";
 
 const _nav = [
   ////////HOME/////
   {
     code: 1,
     component: CNavItem,
-    name: 'Inicio',
-    to: '/account',
-    icon: <CIcon icon={cilHome} customClassName="nav-icon" />,
-
+    name: "Inicio",
+    to: "/account",
+    icon: <HomeOutlined sx={{ mr: 2, ml: 1 }} />,
   },
   ////////PERFIL/////
-  {
+  /* {
     code: 2,
     component: CNavTitle,
     name: 'Perfil',
-  },
+  }, */
   {
     code: 2,
     component: CNavGroup,
-    name: 'Datos Personales',
-    icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
+    name: "Perfil",
+    icon: <AccountBoxOutlined sx={{ mr: 2, ml: 1 }} />,
     items: [
       {
         component: CNavItem,
-        name: 'Actualizar mis Datos',
-        to: '/profile',
+        name: "Datos personales",
+        to: "/profile",
       },
       {
         component: CNavItem,
-        name: 'Cambiar Contraseña',
-        to: '/noexist',
+        name: "Cambiar Contraseña",
+        to: "/noexist",
       },
       {
         component: CNavItem,
-        name: 'Plan de Cobertura',
-        to: '/user-plan',
+        name: "Plan de Cobertura",
+        to: "/user-plan",
       },
     ],
   },
   ////////FAMILIARES/////
   {
     code: 3,
-    component: CNavTitle,
-    name: 'Beneficiarios',
-  },
-  {
-    code: 3,
     component: CNavItem,
-    name: 'Familiares',
-    to: '/beneficiaries',
-    icon: <CIcon icon={cilGroup} customClassName="nav-icon" />,
+    name: "Familiares",
+    to: "/beneficiaries",
+    icon: <FamilyRestroomOutlined sx={{ mr: 2, ml: 1 }} />,
   },
   // {
   //   code: '6',
@@ -71,69 +73,105 @@ const _nav = [
   {
     code: 4,
     component: CNavTitle,
-    name: 'panel administrativo',
-  },
-  ////////RECEPCION////////
-  {
-    code: 5,
-    component: CNavItem,
-    name: 'Consultas',
-    to: '/typeofconsultations',
-    icon: <CIcon icon={cilPencil} customClassName="nav-icon" />,
+    name: "panel administrativo",
   },
   {
     code: 5,
-    component: CNavItem,
-    name: 'Laboratorio',
-    to: '/laboratoryAssistant',
-    icon: <CIcon icon={cilPencil} customClassName="nav-icon" />,
+    component: CNavGroup,
+    name: "Roles",
+    icon: <PermContactCalendar sx={{ mr: 2, ml: 1 }} />,
+    items: [
+      {
+        component: CNavItem,
+        name: "Administrar roles",
+        to: "/register-new-role",
+      },
+      {
+        component: CNavItem,
+        name: "Asignar roles",
+        to: "/assign-role",
+      },
+    ],
   },
-  ////////MEDICO GENERAL////////
+  {
+    code: 6,
+    component: CNavGroup,
+    name: "Servicios",
+    description: "Servicios",
+    icon: <MedicalServices sx={{ mr: 2, ml: 1 }} />,
+    items: [
+      {
+        component: CNavItem,
+        name: "Consultas",
+        to: "/medical-consultation",
+      },
+      {
+        component: CNavItem,
+        name: "Laboratorios",
+        to: "/laboratories",
+      },
+    ],
+  },
   {
     code: 6,
     component: CNavItem,
-    name: 'Consultas Pendientes',
-    to: '/pendingconsultations',
+    name: "Consultas",
+    to: "/typeofconsultations",
     icon: <CIcon icon={cilPencil} customClassName="nav-icon" />,
-    badge: {
-      color: 'success',
-      text: 'M. General',
-    },
   },
-
-  ////////MEDICO EMERGENCIA////////
   {
     code: 7,
     component: CNavItem,
-    name: 'Consultas Pendientes',
-    to: '/pendingconsultations',
+    name: "Laboratorio",
+    to: "/laboratoryAssistant",
+    icon: <CIcon icon={cilPencil} customClassName="nav-icon" />,
+  },
+  ////////MEDICO GENERAL////////
+  /*  {
+    code: 8,
+    component: CNavItem,
+    name: "Consultas Pendientes",
+    to: "/pendingconsultations",
     icon: <CIcon icon={cilPencil} customClassName="nav-icon" />,
     badge: {
-      color: 'success',
-      text: 'M. Emergencia',
+      color: "success",
+      text: "M. General",
     },
-  },
+  }, */
+
+  ////////MEDICO EMERGENCIA////////
+  /* {
+    code: 7,
+    component: CNavItem,
+    name: "Consultas Pendientes",
+    to: "/pendingconsultations",
+    icon: <CIcon icon={cilPencil} customClassName="nav-icon" />,
+    badge: {
+      color: "success",
+      text: "M. Emergencia",
+    },
+  }, */
   ////////ADMINISTRAR USUARIOS////////
   {
     code: 11,
     component: CNavGroup,
-    name: 'Administrar Usuarios',
+    name: "Administrar Usuarios",
     icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
     items: [
       {
         component: CNavItem,
-        name: 'Titulares',
-        to: '/titulares',
+        name: "Titulares",
+        to: "/titulares",
       },
       {
         component: CNavItem,
-        name: 'Familiares',
-        to: '/noexist',
+        name: "Familiares",
+        to: "/noexist",
       },
       {
         component: CNavItem,
-        name: 'Especialistas Externos',
-        to: '/noexist',
+        name: "Especialistas Externos",
+        to: "/noexist",
       },
     ],
   },
@@ -141,31 +179,31 @@ const _nav = [
   {
     code: 12,
     component: CNavGroup,
-    name: 'Administrar Servicios',
+    name: "Administrar Servicios",
     icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
     items: [
       {
         component: CNavItem,
-        name: 'Servicios',
-        to: '/services',
+        name: "Servicios",
+        to: "/services",
       },
       {
         component: CNavItem,
-        name: 'Planes',
-        to: '/plan-setting',
+        name: "Planes",
+        to: "/plan-setting",
       },
       {
         component: CNavItem,
-        name: 'Valor de Tasas (divisas)',
-        to: '/exchange_rates',
+        name: "Valor de Tasas (divisas)",
+        to: "/exchange_rates",
       },
     ],
   },
   {
     code: 12,
     component: CNavItem,
-    name: 'Administrar citas',
-    to: '/appointments',
+    name: "Administrar citas",
+    to: "/appointments",
     icon: <CIcon icon={cilPencil} customClassName="nav-icon" />,
   },
   //////////
@@ -428,6 +466,6 @@ const _nav = [
   //     },
   //   ],
   // },
-]
+];
 
-export default _nav
+export default _nav;

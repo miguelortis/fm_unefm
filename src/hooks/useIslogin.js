@@ -5,40 +5,17 @@ import { useHistory } from "react-router-dom";
 import axios from "axios";
 import Socket from "../components/Socket";
 import { useDispatch, useSelector } from "react-redux";
+import { getProfilePic, userInfo } from "src/redux/actions/userActions";
 
 // const CancelToken = axios.CancelToken
 // const source = CancelToken.source()
 const useIsLogin = () => {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user);
+  const { successUserLogin } = useSelector((state) => state.userAuth);
+  const { loadingUserInfo, successUserInfo, currentUser } = useSelector(
+    (state) => state.user
+  );
   const history = useHistory();
-
-  const fetchDataUser = async () => {
-    try {
-      const { data } = await axios.get(
-        `${process.env.REACT_APP_TEST_URL}/auth/user`,
-        {
-          headers: {
-            authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
-      console.log(data);
-      dispatch({
-        type: "SAVE_USER",
-        payload: data.content,
-      });
-    } catch (error) {
-      //console.log(error)
-      if (error?.response?.status === 401 && !!localStorage.getItem("token")) {
-        localStorage.removeItem("token");
-        dispatch({
-          type: "RESET_LOGOUT",
-        });
-        history.push("/login");
-      }
-    }
-  };
 
   const getDataToUpdate = async () => {
     try {
@@ -71,12 +48,20 @@ const useIsLogin = () => {
 
   /////////////////SOLICITUD DATOS USUARIO /////////////////////////https://backend-fmunefm.herokuapp.com/
   useEffect(() => {
-    if (!!localStorage.getItem("token") && user === null) {
-      fetchDataUser();
-    } else if (!!localStorage.getItem("oldUserToken") && user === null) {
+    if (!!localStorage.getItem("token") && successUserInfo === undefined) {
+      dispatch(userInfo());
+    } else if (
+      !!localStorage.getItem("oldUserToken") &&
+      successUserInfo === undefined
+    ) {
       getDataToUpdate();
     }
-  }, [dispatch, user, history]);
+  }, [successUserLogin]);
+  useEffect(() => {
+    if (successUserInfo) {
+      dispatch(getProfilePic());
+    }
+  }, [currentUser]);
 
   /////////////PACKAGES////////////////////////////
   useEffect(() => {
@@ -102,11 +87,11 @@ const useIsLogin = () => {
     };
     if (
       !!localStorage.getItem("token") &&
-      user?.role?.options?.find((role) => role.code === 12)
+      currentUser?.role?.options?.find((role) => role.code === 12)
     ) {
       handlePackages();
     }
-  }, [dispatch, user]);
+  }, [dispatch, successUserInfo]);
   //////////////////////////////////////////////////
 
   ///////////////////////////////////////////////////////////////////
