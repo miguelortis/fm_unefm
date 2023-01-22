@@ -73,7 +73,7 @@
   },
   "devDependencies": {
     "auto-changelog": "~2.3.0",
-    "react-scripts": "^4.0.3",
+    "react-scripts": "4.0.3",
     "sass": "^1.43.5"
   },
   "engines": {
