@@ -31,7 +31,7 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-export default function SignInSide() {
+export default function LoginView() {
   const history = useHistory();
   const dispatch = useDispatch();
 

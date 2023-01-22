@@ -26,7 +26,7 @@ const DefaultLayout = lazy(() => import("./layout/DefaultLayout"));
 
 // Pages
 const Home = lazy(() => import("./views/home/Home"));
-const Login = lazy(() => import("./views/pages/login/Login"));
+const LoginView = lazy(() => import("./views/pages/login/LoginView"));
 const Register = lazy(() => import("./views/pages/register/Register"));
 const Page404 = lazy(() => import("./views/pages/page404/Page404"));
 const Page500 = lazy(() => import("./views/pages/Unauthorised/Unauthorised"));
@@ -53,7 +53,7 @@ const App = () => {
                 exact
                 path="/login"
                 name="Login Page"
-                render={(props) => <Login {...props} />}
+                render={(props) => <LoginView {...props} />}
               />
               <Route
                 exact

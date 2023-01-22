@@ -25,13 +25,10 @@ export const userlogin = (idCard, password) => async (dispatch) => {
   try {
     dispatch({ type: USER_LOGIN_REQUEST });
 
-    const res = await axios.post(
-      `${process.env.REACT_APP_TEST_URL}/auth/login`,
-      {
-        idCard,
-        password,
-      }
-    );
+    const res = await Request.post(`/auth/login`, {
+      idCard,
+      password,
+    });
 
     /* const decoded = parseJwt(data.token)
     const userSession = {
